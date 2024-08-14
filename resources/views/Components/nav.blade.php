@@ -56,12 +56,12 @@
               <ul class="nav nav-collapse">
                 <li>
                   <a href="{{route('truckregister')}}">
-                    <span class="sub-item">Register Trucks</span>
+                    <span class="sub-item">Trucks</span>
                   </a>
                 </li>
                 <li>
-                  <a href="{{route('truckregister')}}">
-                    <span class="sub-item">Register Drivers</span>
+                  <a href="{{route('truckdriver')}}">
+                    <span class="sub-item">Drivers</span>
                   </a>
                 </li>
               </ul>
