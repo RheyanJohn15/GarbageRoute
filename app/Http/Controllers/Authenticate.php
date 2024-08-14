@@ -6,32 +6,32 @@ use Illuminate\Http\Request;
 use App\Services\Auth;
 class Authenticate extends Controller
 {
-    public function Dashboard(){
-       return $this->redirectRoute('index');
+    public function Dashboard(Request $req){
+       return $this->redirectRoute('index', $req);
     }
 
-    public function Routes(){
-        return $this->redirectRoute('routes');
+    public function Routes(Request $req){
+        return $this->redirectRoute('routes', $req);
     }
 
-    public function TruckRegister(){
-       return $this->redirectRoute('truckregister');
+    public function TruckRegister(Request $req){
+       return $this->redirectRoute('truckregister', $req);
     }
 
-    public function TruckDriver(){
-        return $this->redirectRoute('truckdriver');
+    public function TruckDriver(Request $req){
+        return $this->redirectRoute('truckdriver', $req);
     }
 
-    public function Complaints(){
-        return $this->redirectRoute('complaints');
+    public function Complaints(Request $req){
+        return $this->redirectRoute('complaints', $req);
     }
     
-    public function Waypoints(){
-        return $this->redirectRoute('waypoints');
+    public function Waypoints(Request $req){
+        return $this->redirectRoute('waypoints', $req);
     }
 
-    public function MapNavigator(){
-        return $this->redirectRoute('mapnavigator');
+    public function MapNavigator(Request $req){
+        return $this->redirectRoute('mapnavigator', $req);
     }
 
     /*
@@ -40,11 +40,8 @@ class Authenticate extends Controller
     *Description: Check if the use is authenticated and redirect to login page if not
     *Params: $routes - name of blade file to redirect if the use is authenticated
     */
-    private function redirectRoute($routes){
+    private function redirectRoute($routes, $req){
         $auth = new Auth();
-        if($auth->checkAuth()){
-            return view('Dashboard.'. $routes);
-        }
-        return redirect()->route('login');
+        return $auth->checkAuth($req) ? view('Dashboard.'. $routes) : redirect()->route('login');
     }
 }

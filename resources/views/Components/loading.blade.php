@@ -11,7 +11,7 @@
         z-index: 99999;
         place-items: center;
         background-color: rgba(1,1,1,0.4);
-        backdrop-filter: blur(5px); 
+        backdrop-filter: blur(2px); 
     }
   .containerLoader {
     --uib-size: 45px;

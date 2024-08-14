@@ -2,7 +2,6 @@
 namespace App\Services;
 use App\Models\Accounts;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 class Auth {
     
 
@@ -41,9 +40,7 @@ class Auth {
                 $token = $this->genAuthToken();
             }
             $acc->update(['acc_token'=> $token]);
-
-            Session::put('api_token', $token);
-
+            session(['api_token' => $token]);
             return $this->parseResult('success', $token);
           }else{
             return $this->parseResult('fail', 'Invalid Password');
@@ -81,11 +78,7 @@ class Auth {
     *Date: August, 12, 2024
     *Description: Check Session if there is an api_token exist means user is authenticated
     */
-    public function checkAuth(){
-      if(Session::has('api_token')){
-        return true;
-      }
-
-      return false;
+    public function checkAuth($req){
+      return $req->session()->has('api_token');
     }
 }
