@@ -39,7 +39,7 @@ function isEmptyInput(inp, text, group){
     const text_error = document.getElementById(text);
     const div_group = document.getElementById(group);
 
-    if(input.value === '' || inp.value == '0'){
+    if(input.value === '' || input.value == '0'){
         text_error.style.display = '';
         div_group.classList.add('border', 'border-danger');
         return 0;
@@ -81,7 +81,7 @@ function parseResult(res){
          align: 'right',
        },
        time: 1000,
-       delay: 0,
+       delay: 2000,
        });
       }else{
        $.notify(res.message, {
@@ -91,7 +91,7 @@ function parseResult(res){
             align: 'right',
           },
           time: 1000,
-          delay: 0,
+          delay: 2000,
           });
       }
 }

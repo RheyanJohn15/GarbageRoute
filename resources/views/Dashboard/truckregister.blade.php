@@ -21,8 +21,8 @@
               <h6 class="op-7 mb-2">Manage All Trucks in the City</h6>
             </div>
             <div class="ms-md-auto py-2 py-md-0">
-              <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
-              <button data-bs-toggle="modal" data-bs-target="#addDriverModal" class="btn btn-primary btn-round">Add Trucks</button>
+              <button style="display: none" id="closeView" onclick="CloseView()" class="btn btn-label-danger btn-round me-2">Close View</button>
+              <button data-bs-toggle="modal" data-bs-target="#addTruckModal" class="btn btn-primary btn-round">Add Trucks</button>
             </div>
           </div>
 
@@ -36,8 +36,8 @@
                 >
                   <div class="profile-picture">
                     <div class="avatar avatar-xl">
-                      <img
-                        src="assets/img/logo.png"
+                      <img id="dumpTruckProfile"
+                      src=""
                         alt="..."
                         class="avatar-img rounded-circle"
                       />
@@ -46,9 +46,9 @@
                 </div>
                 <div class="card-body">
                   <div class="user-profile text-center">
-                    <div class="name">Truck Model</div>
-                    <div class="job">Tons/Kilo</div>
-                    <div class="desc">Route</div>
+                    <div id="dumpTruckModel" class="name"></div>
+                    <div id="dumpTruckCanCarry" class="job"></div>
+                    <div id="dumpTruckDriver" class="desc"></div>
                     
                     <div class="view-profile">
                       <a href="#" class="btn btn-secondary w-100"
@@ -69,8 +69,8 @@
                 >
                   <div class="profile-picture">
                     <div class="avatar avatar-xl">
-                      <img
-                        src="assets/img/logo.png"
+                      <img id="truckDriverProfile"
+                      src=""
                         alt="..."
                         class="avatar-img rounded-circle"
                       />
@@ -79,9 +79,9 @@
                 </div>
                 <div class="card-body">
                   <div class="user-profile text-center">
-                    <div class="name">User Name</div>
-                    <div class="job">License Num</div>
-                    <div class="desc">Truck</div>
+                    <div id="truckDriverName" class="name"></div>
+                    <div id="truckDriverLicense" class="job"></div>
+                    <div id="truckDriverAddress" class="desc"></div>
                     
                     <div class="view-profile">
                       <a href="#" class="btn btn-secondary w-100"
@@ -95,6 +95,7 @@
             </div>
             
           </div>
+
 
            {{-- Datatable --}}
           <div class="row">
@@ -111,22 +112,18 @@
                     >
                       <thead>
                         <tr>
-                          <th>Name</th>
-                          <th>Username</th>
-                          <th>License #</th>
-                          <th>Contact</th>
-                          <th>Address</th>
-                          <th>Action</th>
+                          <th>Truck Model</th>
+                          <th>Can Carry</th>
+                          <th>Driver</th>
+                          <th>Action</thA>
                         </tr>
                       </thead>
                       <tfoot>
                         <tr>
-                          <th>Name</th>
-                          <th>Username</th>
-                          <th>License #</th>
-                          <th>Contact</th>
-                          <th>Address</th>
-                          <th>Action</thA>
+                          <th>Truck Model</th>
+                          <th>Can Carry</th>
+                          <th>Driver</th>
+                          <th>Action</th> 
                         </tr>
                       </tfoot>
                       <tbody>
@@ -140,20 +137,22 @@
           </div>
       
           
+
+          {{-- Add Truck Modal --}}
      
           <div
           class="modal fade"
-          id="addDriverModal"
+          id="addTruckModal"
           tabindex="-1"
           role="dialog"
           aria-hidden="true"
         >
-          <div class="modal-dialog" role="document">
+          <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
               <div class="modal-header border-0">
                 <h5 class="modal-title">
                   <span class="fw-mediumbold"> New</span>
-                  <span class="fw-light"> Driver </span>
+                  <span class="fw-light"> Truck </span>
                 </h5>
                 <button
                   type="button"
@@ -166,104 +165,66 @@
               </div>
               <div class="modal-body">
                 <p class="small">
-                  Create a new truck driver account
+                  Create a new truck data
                 </p>
-                <form id="addDriverForm" method="post">
+                <form id="addTruckForm" method="post">
                   @csrf
                   <div class="row">
                     <div class="col-sm-12">
-                      <div id="addName_g" class="form-group form-group-default">
-                        <label>Name</label>
+                      <div id="addModel_g" class="form-group form-group-default">
+                        <label>Truck Model</label>
                         <input
-                          id="addName"
+                          id="addModel"
                           type="text"
-                          name="name"
+                          name="model"
                           class="form-control"
                           placeholder="Full Name"
                         />
-                        <small id="addName_e" style="display: none" class="text-danger">(This field is required)</small>
+                        <small id="addModel_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
                     </div>
                     <div class="col-md-6 pe-0">
-                      <div id="addUsername_g" class="form-group form-group-default">
-                        <label>Username</label>
+                      <div id="addCanCarry_g" class="form-group form-group-default">
+                        <label>Can Carry</label>
                         <input
-                          id="addUsername"
-                          name="username"
+                          id="addCanCarry"
+                          name="can_carry"
                           type="text"
                           class="form-control"
                           placeholder="fill username"
                         />
-                        <small id="addUsername_e" style="display: none" class="text-danger">(This field is required)</small>
+                        <small id="addCanCarry_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <div id="addPassword_g" class="form-group form-group-default">
-                        <label>Password</label>
-                        <input
-                          id="addPassword"
-                          type="password"
-                          name="password"
-                          class="form-control"
-                          placeholder="fill password"
-                        />
-                        <small id="addPassword_e" style="display: none" class="text-danger">(This field is required)</small>
+                      <div id="addDriver_g" class="form-group form-group-default">
+                        <label>Driver</label>
+                          <select name="driver" id="addDriver" class="form-select">
+                            <option selected disabled value="0">------Select Driver------</options>
+                             @php
+                         $driver = App\Models\TruckDriverModel::where('td_id', '!=', 0)->get();   
+                        @endphp
+                        @foreach ($driver as $d)
+                            <option value="{{$d->td_id}}">{{$d->name}}</option>
+                        @endforeach
+                          </select>
+                        <small id="addDriver_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
                     </div>
 
-                    <div class="col-sm-12">
-                      <div id="addLicense_g" class="form-group form-group-default">
-                        <label>License</label>
-                        <input
-                          id="addLicense"
-                          name="licensenum"
-                          type="text"
-                          class="form-control"
-                          placeholder="fill license number"
-                        />
-                        <small id="addLicense_e" style="display: none" class="text-danger">(This field is required)</small>
-                      </div>
-                    </div>
-
-                    <div class="col-md-6">
-                      <div id="addContact_g" class="form-group form-group-default">
-                        <label>Contact #</label>
-                        <input
-                          id="addContact"
-                          type="text"
-                          name="contact"
-                          class="form-control"
-                          placeholder="fill contact #"
-                        />
-                        <small id="addContact_e" style="display: none" class="text-danger">(This field is required)</small>
-                      </div>
-                    </div>
-
-                    <div class="col-md-6">
-                      <div id="addAddress_g" class="form-group form-group-default">
-                        <label>Address</label>
-                        <input
-                          id="addAddress"
-                          type="text"
-                          name="address"
-                          class="form-control"
-                          placeholder="fill address"
-                        />
-                        <small id="addAddress_e" style="display: none" class="text-danger">(This field is required)</small>
-                      </div>
-                    </div>
                   </div>
                 </form>
               </div>
               <div class="modal-footer border-0">
                 <button
                   type="button"
-                  id="addDriver"
+                  id="addTruck"
                   class="btn btn-primary"
                   >
                   Add
                 </button>
                 <button
+                  id="closeAddModal"
                   type="button"
                   class="btn btn-danger"
                   data-bs-dismiss="modal"
@@ -275,7 +236,104 @@
           </div>
         </div>
 
-        
+        {{-- Update Truck Modal --}}
+        <div
+          class="modal fade"
+          id="updateTruckModal"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h5 class="modal-title">
+                  <span class="fw-mediumbold"> Update</span>
+                  <span class="fw-light"> Truck </span>
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p class="small">
+                  Update a new truck data
+                </p>
+                <form id="updateTruckForm" method="post">
+                  @csrf
+                  <input type="hidden" name="id" id="updateId">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div id="updateModel_g" class="form-group form-group-default">
+                        <label>Truck Model</label>
+                        <input
+                          id="updateModel"
+                          type="text"
+                          name="model"
+                          class="form-control"
+                          placeholder="Full Name"
+                        />
+                        <small id="updateModel_e" style="display: none" class="text-danger">(This field is required)</small>
+                      </div>
+                    </div>
+                    <div class="col-md-6 pe-0">
+                      <div id="updateCanCarry_g" class="form-group form-group-default">
+                        <label>Can Carry</label>
+                        <input
+                          id="updateCanCarry"
+                          name="can_carry"
+                          type="text"
+                          class="form-control"
+                          placeholder="fill username"
+                        />
+                        <small id="updateCanCarry_e" style="display: none" class="text-danger">(This field is required)</small>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div id="updateDriver_g" class="form-group form-group-default">
+                        <label>Driver</label>
+                          <select name="driver" id="updateDriver" class="form-select">
+                            <option selected disabled value="0">------Select Driver------</options>
+                             @php
+                         $driver = App\Models\TruckDriverModel::where('td_id', '!=', 0)->get();   
+                        @endphp
+                        @foreach ($driver as $d)
+                            <option value="{{$d->td_id}}">{{$d->name}}</option>
+                        @endforeach
+                          </select>
+                        <small id="updateDriver_e" style="display: none" class="text-danger">(This field is required)</small>
+                      </div>
+                    </div>
+
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer border-0">
+                <button
+                  type="button"
+                  id="updateTruck"
+                  class="btn btn-primary"
+                  >
+                  Add
+                </button>
+                <button
+                  id="closeUpdateModal"
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
           </div>
         </div>
 
@@ -283,7 +341,7 @@
 
     </div>
     <!--   Core JS Files   -->
-    <script src="{{asset('Scripts/truckdriver.js')}}"></script>
+    <script src="{{asset('Scripts/dumptruck.js')}}"></script>
     @include('Components.script')
   </body>
 </html>

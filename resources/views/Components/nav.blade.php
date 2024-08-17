@@ -43,7 +43,7 @@
           <li class="nav-item  {{$active == 'routes' ? 'active' : ''}}">
             <a href="{{route('routes')}}">
               <i class="fas fa-route"></i>
-              <p>Routes</p>
+              <p>Routes & Schedule</p>
             </a>
           </li>
           <li class="nav-item  {{$active == 'truck' ? 'active' : ''}}">
