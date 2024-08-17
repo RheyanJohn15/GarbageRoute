@@ -15,3 +15,9 @@ Route::get('/waypoints', [Authenticate::class, 'Waypoints'])->name('waypoints');
 Route::get('/auth/login', function () {
     return view('Auth/login');
 })->name('login');
+
+
+//Get CSRF Token
+Route::get('/csrf-token', function () {
+    return csrf_token();
+});

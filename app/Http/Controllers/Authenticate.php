@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\Auth;
+use App\Services\V1\Auth;
 class Authenticate extends Controller
 {
     public function Dashboard(Request $req){
@@ -33,6 +33,11 @@ class Authenticate extends Controller
     public function MapNavigator(Request $req){
         return $this->redirectRoute('mapnavigator', $req);
     }
+
+    public function UserAccount(Request $req){
+        return $this->redirectRoute('useraccounts', $req);
+    }
+
 
     /*
     *Author: Rheyan John Blanco

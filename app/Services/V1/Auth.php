@@ -1,5 +1,5 @@
 <?php
-namespace App\Services;
+namespace App\Services\V1;
 use App\Models\Accounts;
 use Illuminate\Support\Facades\Hash;
 class Auth {
