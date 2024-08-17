@@ -15,7 +15,10 @@ class ApiEntry{
     private $TYPE;
     private $METHOD;
     private $MESSAGE_RESPONSE;
-    public function __construct(string $type, string $method, $request)
+
+    private $isVALID = false;
+
+    public function __construct(string $type, string $method, $request, $requestType)
     {
 
         if(array_key_exists($type, self::API_LIST)){
@@ -24,6 +27,7 @@ class ApiEntry{
             throw new ApiException(ApiException::NOT_VALID_TYPE);
         }
 
+      
         if(array_key_exists($method, $this->VALID_TYPE)){
             $this->VALID_METHOD = $this->VALID_TYPE[$method];
         }else{
@@ -33,14 +37,25 @@ class ApiEntry{
         
         $this->TYPE = $type;
         $this->METHOD = $method;
-        
-        if($this->VALID_METHOD != NULL && $this->VALID_TYPE != NULL){
-            if($this->checkParams($request)){
-                $init = new ApiRequest($type, $method, $request);
-                $this->RESULT = $init->getResponse();
-            };
-        }
 
+        if($this->VALID_METHOD != NULL && $this->VALID_TYPE != NULL){
+          $this->isVALID = true;
+        }
+        
+   
+        if($this->isVALID){
+           
+            $init = new ApiRequest($type, $method, $request);
+            if($requestType == 'get'){
+                $this->RESULT = $init->getResponse();
+            }else{
+                if($this->checkParams($request)){
+                $this->RESULT = $init->getResponse();
+                };
+            }
+        }
+            
+        
     }
 
     private function checkParams($request){
@@ -57,6 +72,7 @@ class ApiEntry{
     }
 
     public function getResponse(){
+       
         return $this->parseResult($this->RESULT);
     }
 
@@ -66,7 +82,7 @@ class ApiEntry{
         $this->RES_DATA = $result[2];
      
         return [
-           'status'=> 'succes',
+           'status'=> 'success',
            'type'=> $this->TYPE,
            'method'=> $this->METHOD,
            'result'=> ['message'=>$this->MESSAGE,'response'=> $this->MESSAGE_RESPONSE, 'data'=> $this->RES_DATA ]
@@ -81,9 +97,16 @@ class ApiEntry{
              'update' => ['name','username', 'id', 'licensenum', 'contact', 'address'],
              'changepass'=> ['currentpass', 'newpass', 'id'],
              'details' => ['id'],
-             'list'=> null,
+             'list'=> ['empty'],
             ],
-        
+       'dumptruck' =>
+             [
+                'add' => ['model', 'can_carry', 'driver'],
+                'delete'=> ['id'],
+                'update'=> ['model', 'can_carry', 'driver', 'id'],
+                'details'=> ['id'],
+                'list' => ['empty']
+             ]
     ];
 
 }

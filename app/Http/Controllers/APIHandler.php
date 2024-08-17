@@ -11,7 +11,8 @@ class APIHandler extends Controller
 {
     public function APIEntryGet(Request $req, string $data, string $method){
         $check = new Auth($method, $req);
-        return response()->json($this->isAuthenticated($check, $req, $data, $method));
+
+        return response()->json($this->isAuthenticated($check, $req, $data, $method, 'get'));
     }
 
     public function APIEntryPost(Request $req, string $data, string $method){
@@ -25,13 +26,13 @@ class APIHandler extends Controller
            return response()->json($response);
         }
     
-        return response()->json($this->isAuthenticated($check, $req, $data, $method));
+        return response()->json($this->isAuthenticated($check, $req, $data, $method, 'post'));
     
     }
 
-    private function isAuthenticated($check, $req, $data, $method){
+    private function isAuthenticated($check, $req, $data, $method, $reqType){
         if($check->checkAuth($req)){
-            $entry = new ApiEntry($data, $method, $req);
+            $entry = new ApiEntry($data, $method, $req, $reqType);
             return $entry->getResponse();
         }else{
             throw new ApiException(ApiException::NOT_AUTHENTICATED);

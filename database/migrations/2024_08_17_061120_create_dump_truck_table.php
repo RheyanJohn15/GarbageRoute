@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('truck_drivers', function (Blueprint $table) {
-            $table->id('td_id');
-            $table->string('username');
-            $table->string('password');
-            $table->string('name');
-            $table->string('license');
-            $table->string('contact');
-            $table->string('address');
+        Schema::create('dump_truck', function (Blueprint $table) {
+            $table->id('dt_id');
+            $table->string('model');
+            $table->string('can_carry');
+            $table->unsignedBigInteger('td_id'); 
+            $table->foreign('td_id')->references('td_id')->on('truck_drivers');
             $table->string('profile_pic')->nullable();
             $table->timestamps();
         });
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('truck_drivers');
+        Schema::dropIfExists('dump_truck_models');
     }
 };

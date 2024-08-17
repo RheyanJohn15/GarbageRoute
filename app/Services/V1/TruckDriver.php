@@ -3,6 +3,7 @@ namespace App\Services\V1;
 use App\Models\TruckDriverModel;
 use Illuminate\Support\Facades\Hash;
 use App\Services\ApiException;
+use App\Models\DumpTruckModel;
 class TruckDriver {
     
     private $RESULT = null;
@@ -25,10 +26,18 @@ class TruckDriver {
     }
 
     private function delete($req){
+        
        $check = TruckDriverModel::where('td_id', $req->id)->first();
 
        if(!$check){
          throw new ApiException(ApiException::NO_DATA_FOUND);
+       }
+
+       $truck = DumpTruckModel::where('td_id', $req->id)->get();
+       if($truck->count() > 0){
+         foreach($truck as $t){
+            $t->update(['td_id' => '0']);
+         }
        }
 
        $check->delete();
@@ -59,6 +68,21 @@ class TruckDriver {
 
         $this->RESULT = ['update', 'Update Truck Driver', $update];
     }
+
+    private function details($req){
+      $check = TruckDriverModel::where('td_id', $req->id)->first();
+
+      if(!$check){
+        throw new ApiException(ApiException::NO_DATA_FOUND);
+      }
+
+      $truck = DumpTruckModel::where('td_id', $req->id)->first();
+      
+      $check->truck = $truck;
+
+      $this->RESULT = ['details', 'Show truck details', $check];
+    }
+
     public function getResult(){
         return $this->RESULT;
     }

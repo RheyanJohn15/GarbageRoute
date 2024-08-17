@@ -16,6 +16,7 @@ class TruckDriverModel extends Model
        'name',
        'license',
        'contact',
-       'address'
+       'address',
+       'profile_pic'
     ];
 }

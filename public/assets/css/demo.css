@@ -1,3 +1,6 @@
+body{
+  scroll-behavior: smooth;
+}
 .gg-check {
   box-sizing: border-box;
   position: relative;
