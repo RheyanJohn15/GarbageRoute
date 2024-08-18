@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\GpsUpdate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authenticate;
 
@@ -20,4 +21,10 @@ Route::get('/auth/login', function () {
 //Get CSRF Token
 Route::get('/csrf-token', function () {
     return csrf_token();
+});
+
+Route::get('/test', function(){
+  event(new GpsUpdate('this is test'));
+
+  return 'done';
 });

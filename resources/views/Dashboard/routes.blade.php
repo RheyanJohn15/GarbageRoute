@@ -4,6 +4,7 @@
    @include('Components.header', ['title'=> 'Routes'])
   </head>
   <body>
+    @vite('resources/js/app.js')
     <div class="wrapper">
         @include('Components.nav', ['active'=>'routes'])
 
@@ -28,7 +29,14 @@
 
     </div>
     <!--   Core JS Files   -->
-
+   <script>
+    setTimeout(() => {
+      window.Echo.channel('gps-update')
+      .listen('GpsUpdate', (e)=> {
+        console.log(e);
+      })
+    }, 2000);
+   </script>
     @include('Components.script')
   </body>
 </html>
