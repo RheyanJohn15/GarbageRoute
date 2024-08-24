@@ -106,7 +106,14 @@ class ApiEntry{
                 'update'=> ['model', 'can_carry', 'driver', 'id'],
                 'details'=> ['id'],
                 'list' => ['empty']
-             ]
+             ],
+        'routes' => [
+            'add' => ['name', 'start_longitude', 'start_latitude', 'end_longitude', 'end_latitude', 'assigned_truck'],
+            'delete'=> ['id'],
+            'update' =>  ['id','name', 'start_longitude', 'start_latitude', 'end_longitude', 'end_latitude', 'assigned_truck'],
+            'details'=> ['id'],
+            'list'=> ['empty']
+        ]
     ];
 
 }

@@ -35,3 +35,6 @@
 <script src="{{asset('assets/js/plugin/datatables/datatables.min.js')}}"></script>
 <scrip src="{{asset('assets/js/demo.js')}}"></script>
 
+<!--Map Box -->    
+<script src='https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js'></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.js"></script>

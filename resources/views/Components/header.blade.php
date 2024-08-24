@@ -29,7 +29,9 @@
     },
   });
 </script>
-
+<!--Map Box-->
+<link href='https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css' rel='stylesheet' />
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.css" />
 <!-- CSS Files -->
 <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/css/plugins.min.css')}}" />

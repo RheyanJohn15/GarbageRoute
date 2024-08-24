@@ -46,6 +46,10 @@ class TruckDriver {
 
     private function list($req){
         $truck = TruckDriverModel::all();
+        foreach($truck as $tr){
+          $dump = DumpTruckModel::where('td_id', $tr->td_id)->first();
+          $tr->dumptruck = $dump ? $dump : null;
+        }
         
         $this->RESULT = ['list', 'List of all truck drivers', $truck];
     }

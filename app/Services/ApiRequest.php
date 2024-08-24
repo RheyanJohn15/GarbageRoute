@@ -2,6 +2,7 @@
 namespace App\Services;
 use App\Services\V1\TruckDriver;
 use App\Services\V1\DumpTruck;
+use App\Services\V1\Routes;
 use App\Services\ApiException;
 class ApiRequest{
 
@@ -14,6 +15,9 @@ class ApiRequest{
            break;
         case 'dumptruck':
            $result = new DumpTruck($method,$request);
+           break;
+        case 'routes':
+           $result = new Routes($method,$request);
            break;
         default:
           throw new ApiException(ApiException::NOT_VALID_TYPE);
