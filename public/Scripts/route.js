@@ -1,6 +1,7 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoicmhleWFuIiwiYSI6ImNsenpydzA4eDFnajUyanB4M2V3NjZjdDUifQ.7cXuHyW86hXStq6Mh2kF8Q';
 let map;
 let clickCount = 0;
+let directions;
 
 map = new mapboxgl.Map({
     container: 'map', // container ID
@@ -9,7 +10,7 @@ map = new mapboxgl.Map({
     zoom: 11, // starting zoom
 });
 
-const directions = new MapboxDirections({
+directions = new MapboxDirections({
     accessToken: mapboxgl.accessToken,
     unit: 'metric',
     profile: 'mapbox/driving',
@@ -23,20 +24,22 @@ map.addControl(directions, 'top-left');
 
 map.on('click', async (e) => {
     const coordinates = [e.lngLat.lng, e.lngLat.lat]; // Convert to array format
-    console.log('Clicked coordinates:', coordinates);
-    clickCount++;
 
+    clickCount++;
+    console.log(coordinates);
     try {
         const placeName = await getPlaceName(coordinates);
-
+       
         if (clickCount == 1) {
             setText('startRouteSpan', `(A) ${placeName}`);
             setValue('saveRouteStartLongitude', coordinates[0]);
             setValue('saveRouteStartLatitude', coordinates[1]);
+            setValue('saveRouteStartLocation', placeName);
         } else {
             setText('endRouteSpan', `(B) ${placeName} `);
             setValue('saveRouteEndLongitude', coordinates[0]);
             setValue('saveRouteEndLatitude', coordinates[1]);
+            setValue('saveRouteEndLocation', placeName);
         }
     } catch (error) {
         console.error('Error fetching location name:', error);
@@ -57,10 +60,10 @@ async function getPlaceName(coordinates) {
 }
 
 document.getElementById('clearWaypoints').addEventListener('click', () => {
-    removeAllWaypoints(directions);
+    removeAllWaypoints();
 });
 
-function removeAllWaypoints(directions) {
+function removeAllWaypoints() {
     map.remove();
 
     // Recreate the map instance
@@ -87,35 +90,102 @@ function removeAllWaypoints(directions) {
     // Assign the new map and directions instances to global variables if needed
     map = newMap;
     directions = newDirections;
-
+    setText('startRouteSpan', 'N/A');
+    setText('endRouteSpan', 'N/A')
     isVisible('none', 'clearWaypoints')
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const response = await fetch(getApi('truckdriver', 'list', 'get'));
-        const data = await response.json();
-        const driver = data.result;
 
-        console.log('Driver data:', driver); // Check if this logs the expected 45 items
-
-        if (!driver || !driver.data) {
-            console.error('Driver data is missing or empty.');
-            return;
-        }
-
-        const select = document.getElementById('selectDriver');
-        select.innerHTML = '<option selected disabled value="">-----Select Driver-----</option>';
-
-        driver.data.forEach(e => {
-            console.log('Option data:', e); // Verify each item before adding to the DOM
-            select.innerHTML += `
-                <option value="${e.td_id}">${e.name} - ${e.dumptruck.model}/${e.dumptruck.can_carry}</option>
-            `;
-        });
-
-        console.log('Options added to select element.');
-    } catch (error) {
-        console.error('Error fetching driver data:', error);
-    }
+document.getElementById('routeName').addEventListener('input', (e)=> {
+   setValue('saveRouteName', e.target.value);
 });
+
+document.getElementById('selectDriver').addEventListener('change', (e)=> {
+  setValue('saveRouteAssignedTruck', e.target.value);
+});
+
+document.getElementById('saveRoute').addEventListener('click', ()=> {
+    load.on();
+    
+    $.ajax({
+       type:"POST",
+       url: getApi('routes', 'add', 'post'),
+       data: $('form#saveRouteForm').serialize(),
+       success: res=> {
+        load.off()
+        parseResult(res)
+        removeAllWaypoints()
+        setValue('routeName', '');
+        setValue('selectDriver', 'none');
+        loadAllRoute();
+       }, 
+       error: xhr => {
+        load.off();
+        parseResult(JSON.parse(xhr.responseText));
+       }
+    });
+
+});
+
+function loadAllRoute(){
+    
+    if ($.fn.DataTable.isDataTable('#routes')) {
+        $('#routes').DataTable().clear().destroy();
+    }
+
+    $.ajax({
+      type:"GET",
+      url: getApi('routes', 'list', 'get'),
+      dataType: "json",
+      success: res=> {
+          $('#routes').DataTable({
+            data: res.result.data,
+            columns: [
+                {title: "Route Name", data: "r_name"},
+                {title: "Start", data: "r_start_location"},
+                {title: "End", data: "r_end_location"},
+                {title: "Assigned Driver", data: "truck_driver"},
+                {title: "Action" , data: null,
+                   render: data=> {
+                    return `
+                    <div class="d-flex gap-1">
+                <button class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
+                <button onclick="RemoveRoute('${data.r_id}')" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+              </div>`
+                   }, orderable: false
+                }
+            ],
+            pageLength: 5,
+          })
+      }, error: xhr => console.log(xhr.responseText)
+    });
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+   loadAllRoute();
+});
+
+function RemoveRoute(id){
+   confirmAction().then(async confirm => {
+      if(confirm){
+        load.on();
+
+        const csrf = await getCSRF();
+
+        $.ajax({
+            type: "POST",
+            url: getApi('routes', 'delete', 'post'),
+            data: {"_token": csrf, "id": id},
+            success: res=> {
+                load.off();
+                parseResult(res);
+                loadAllRoute();
+            },
+            error: xhr => {
+                load.off();
+                parseResult(JSON.parse(xhr.responseText))
+            }
+        })
+      }
+   })
+}

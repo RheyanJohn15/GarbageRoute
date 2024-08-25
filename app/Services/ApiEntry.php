@@ -45,11 +45,14 @@ class ApiEntry{
    
         if($this->isVALID){
            
-            $init = new ApiRequest($type, $method, $request);
+           
             if($requestType == 'get'){
+                $init = new ApiRequest($type, $method, $request);
                 $this->RESULT = $init->getResponse();
             }else{
+                
                 if($this->checkParams($request)){
+                $init = new ApiRequest($type, $method, $request);
                 $this->RESULT = $init->getResponse();
                 };
             }
@@ -62,11 +65,17 @@ class ApiEntry{
         $this->PARAMS = [];
         foreach ($this->VALID_METHOD as $param) {
             if (isset($request[$param])) {
-                $this->PARAMS[$param] = $request[$param];
+                if($request[$param] != ''){
+                    $this->PARAMS[$param] = $request[$param];
+                }else{
+                    throw new ApiException(ApiException::INVALID_BODY);
+                }
+              
             } else {
                 throw new ApiException(ApiException::INVALID_PARAMS);
             }
         }
+
 
         return true;
     }
@@ -108,9 +117,9 @@ class ApiEntry{
                 'list' => ['empty']
              ],
         'routes' => [
-            'add' => ['name', 'start_longitude', 'start_latitude', 'end_longitude', 'end_latitude', 'assigned_truck'],
+            'add' => ['name', 'start_longitude', 'start_latitude','start_location', 'end_longitude', 'end_latitude','end_location', 'assigned_truck'],
             'delete'=> ['id'],
-            'update' =>  ['id','name', 'start_longitude', 'start_latitude', 'end_longitude', 'end_latitude', 'assigned_truck'],
+            'update' =>  ['id','name', 'start_longitude', 'start_latitude','start_location', 'end_longitude', 'end_latitude', 'end_location', 'assigned_truck'],
             'details'=> ['id'],
             'list'=> ['empty']
         ]

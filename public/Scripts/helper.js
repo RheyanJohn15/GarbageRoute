@@ -84,8 +84,8 @@ function parseResult(res){
        delay: 2000,
        });
       }else{
-       $.notify(res.message, {
-          type: 'error',
+       $.notify({'message' : res.message, 'icon' : 'fas fa-exclamation-triangle'}, {
+          type: 'danger',
           placement: {
             from: 'top',
             align: 'right',

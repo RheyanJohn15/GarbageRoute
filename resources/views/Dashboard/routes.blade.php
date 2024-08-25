@@ -10,6 +10,7 @@
 }
   </style>
   <body>
+    @include('Components.dashload')
     @vite('resources/js/app.js')
     <div class="wrapper">
         @include('Components.nav', ['active'=>'routes'])
@@ -32,43 +33,30 @@
                 <button id="addRouteBtn" class="btn btn-primary btn-round">Add Routes</button>
               </div>
             </div>
-            <table
+            <table id="routes"
             class="table table-hover table-bordered table-head-bg-info table-bordered-bd-info mt-4"
           >
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th>Route Name</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Assigned Driver</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
+                <td colspan="6"><div style="height: 5vh" class="d-flex justify-content-center align-items-center">Loading...<img src="{{asset('assets/img/loader.gif')}}" class="h-100"></div></td>
               </tr>
             </tbody>
           </table>
-            <div class="card" id="addRouteCard">
+            <div class="card mt-8" id="addRouteCard">
               <div class="card-header d-flex justify-content-between align-items-center">
                 <div class="card-title">Add Route</div>
                 <div class="d-flex gap-2">
                   <button class="btn btn-label-danger gap-2 align-items-center" id="clearWaypoints"  style="display: none"> <i class="fas fa-minus-circle"></i>Remove Route</button>
-                  <button class="btn btn-primary d-flex gap-2 align-items-center"> <i class="fas fa-save"></i> Save</button>
+                  <button id="saveRoute" class="btn btn-primary d-flex gap-2 align-items-center"> <i class="fas fa-save"></i> Save</button>
                 </div>
               </div>
               <div class="card-body">
@@ -76,10 +64,10 @@
                   <input
                     type="text"
                     class="form-control"
-                    id="floatingInput"
+                    id="routeName"
                     placeholder="Route 1"
                   />
-                  <label for="floatingInput">Route Name</label>
+                  <label for="routeName">Route Name</label>
                 </div>
                 <div id="map" class="mb-4" style="height:50vh; width:100%; border: 1px solid black"></div>
 
@@ -87,8 +75,17 @@
                 <p>End Route: <span id="endRouteSpan"></span></p>
 
                 <label for="selectDriver" class="form-label">Assigned Truck Driver</label>
-                <select id="selectDriver">
-                  
+                <select id="selectDriver" class="form-select">
+                  <option value="none" selected disabled>------Select Driver------</option>
+                  @php
+                      $driver = App\Models\TruckDriverModel::where('td_id', '!=', 0)->get();
+                  @endphp
+                  @foreach ($driver as $dr)
+                      @php
+                          $truck = App\Models\DumpTruckModel::where('td_id', $dr->td_id)->first();
+                      @endphp
+                      <option value="{{$dr->td_id}}">{{$dr->name}} - {{$truck ? $truck->model : "Not Assigned"}}/{{$truck ? $truck->can_carry : 'Not Assigned'}}</option>
+                  @endforeach
                 </select>
               </div>
             </div>
@@ -105,8 +102,10 @@
       <input type="hidden" name="name" id="saveRouteName">
       <input type="hidden" name="start_longitude" id="saveRouteStartLongitude">
       <input type="hidden" name="start_latitude" id="saveRouteStartLatitude">
+      <input type="hidden" name="start_location" id="saveRouteStartLocation">
       <input type="hidden" name="end_longitude" id="saveRouteEndLongitude">
       <input type="hidden" name="end_latitude" id="saveRouteEndLatitude">
+      <input type="hidden" name="end_location" id="saveRouteEndLocation">
       <input type="hidden" name="assigned_truck" id="saveRouteAssignedTruck">
     </form>
 

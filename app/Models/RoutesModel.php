@@ -14,8 +14,10 @@ class RoutesModel extends Model
       'r_name',
       'r_start_longitude',
       'r_start_latitude',
+      'r_start_location',
       'r_end_longitude',
       'r_end_latitude',
+      'r_end_location',
       'r_assigned_truck'
     ];
 }

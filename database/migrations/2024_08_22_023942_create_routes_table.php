@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('r_name');
             $table->string('r_start_longitude');
             $table->string('r_start_latitude');
+            $table->string('r_start_location');
             $table->string('r_end_longitude');
             $table->string('r_end_latitude');
+            $table->string('r_end_location');
             $table->string('r_assigned_truck');
             $table->timestamps();
         });

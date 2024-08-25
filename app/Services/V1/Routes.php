@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\V1;
 use App\Models\RoutesModel;
+use App\Models\TruckDriverModel;
 class Routes{
 
     private $RESULT = null;
@@ -16,8 +17,10 @@ class Routes{
        $route->r_name = $req->name;
        $route->r_start_longitude = $req->start_longitude;
        $route->r_start_latitude = $req->start_latitude;
+       $route->r_start_location = $req->start_location;
        $route->r_end_longitude = $req->end_longitude;
        $route->r_end_latitude = $req->end_latitude;
+       $route->r_end_location = $req->end_location;
        $route->r_assigned_truck = $req->assigned_truck;
        $route->save();
 
@@ -34,6 +37,11 @@ class Routes{
     private function list($req){
         $route = RoutesModel::all();
 
+        foreach($route as $r){
+            $driver = TruckDriverModel::where('td_id', $r->r_assigned_truck)->first();
+            $r->truck_driver = $driver->name;
+        }
+
         $this->RESULT = ['list', 'Get All Routes', $route];
     }
 
@@ -44,8 +52,10 @@ class Routes{
            'r_name'=>$req->name,
            'r_start_longitude'=> $req->start_longitude,
            'r_start_latitude' => $req->start_latitude,
+           'r_start_location'=> $req->start_location,
            'r_end_longitude'=> $req->end_longitude,
            'r_end_latitude'=> $req->end_latitude,
+           'r_end_location'=> $req->end_location,
            'r_assigned_truck'=> $req->assigned_truck
         ]);
 

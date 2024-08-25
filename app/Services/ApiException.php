@@ -18,4 +18,5 @@ class ApiException extends \Exception
     public const NOT_AUTHENTICATED = 'Cannot Access API not Authenticated';
     public const NO_DATA_FOUND = 'No data found in this api request';
     public const INVALID_PARAMS = 'The paramater body is incomplete or invalid';
+    public const INVALID_BODY = 'The request body is incomplete or invalid';
 }

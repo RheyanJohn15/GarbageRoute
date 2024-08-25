@@ -65,7 +65,10 @@ function getDumpTruckList() {
           },
         });
       },
-      error: xhr => console.log(xhr.responseText)
+      error: xhr => {
+        load.off();
+        parseResult(JSON.parse(xhr.responseText));
+      }
     });
   }
 
@@ -89,7 +92,10 @@ function getDumpTruckList() {
          parseResult(res);
          clicked('closeAddModal');
          getDumpTruckList();
-        }, error: xhr => console.log(xhr.responseText)
+        }, error: xhr => {
+          load.off();
+          parseResult(JSON.parse(xhr.responseText));
+        }
       });
      }
   });
@@ -114,7 +120,10 @@ function getDumpTruckList() {
              load.off();
              parseResult(res);
              getDumpTruckList();
-           }, error: xhr => console.log(xhr.responseText)
+           }, error: xhr => {
+            load.off();
+            parseResult(JSON.parse(xhr.responseText));
+           }
         });
        }
     });
@@ -149,7 +158,10 @@ async function ViewDumpTruck(id){
         setImage('dumpTruckProfile', truck.profile_pic == null ? fallback_image : getAsset(`assets/user/${truck.profile_pic}`));
         setImage('truckDriverProfile', driver.profile_pic == null ? fallback_image : getAsset(`assets/user/${driver.profile_pic}`));
       }
-    }, error: xhr => console.log(xhr.responseText)
+    }, error: xhr => {
+      load.off();
+      parseResult(JSON.parse(xhr.responseText));
+    }
   });
 }
 
@@ -177,7 +189,10 @@ function CloseView(){
             parseResult(res);
             getDumpTruckList();
             clicked('closeUpdateModal');
-        }, error: xhr => console.log(xhr.responseText)
+        }, error: xhr => {
+          load.off();
+          parseResult(JSON.parse(xhr.responseText));
+        }
       });
     }
   });

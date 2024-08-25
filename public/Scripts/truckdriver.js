@@ -22,7 +22,10 @@ document.getElementById('addDriver').addEventListener('click', () => {
          getTruckDriverList();
          parseResult(res);
          clicked('closeButton');
-      }, error: xhr => console.log(xhr.responseText)
+      }, error: xhr => {
+        load.off();
+        parseResult(JSON.parse(xhr.responseText));
+      }
      })
    }
 });
@@ -98,7 +101,10 @@ function getTruckDriverList() {
         },
       });
     },
-    error: xhr => console.log(xhr.responseText)
+    error: xhr =>{
+      load.off();
+      parseResult(JSON.parse(xhr.responseText));
+    }
   });
 }
 
@@ -131,7 +137,10 @@ async function ViewDriver(id){
         setImage('dumpTruckProfile', truck.profile_pic == null ? fallback_image : getAsset(`assets/user/${truck.profile_pic}`));
         setImage('truckDriverProfile', driver.profile_pic == null ? fallback_image : getAsset(`assets/user/${driver.profile_pic}`));
       }
-    }, error: xhr => console.log(xhr.responseText)
+    }, error: xhr => {
+      load.off();
+      parseResult(JSON.parse(xhr.responseText));
+    }
   });
 }
 function CloseView(){
@@ -170,7 +179,10 @@ function ConfirmedUpdateDriver(){
         parseResult(res);
         clicked('closeButtonUpdate');
         getTruckDriverList();
-      }, error: xhr=>console.log(xhr.responseText)
+      }, error: xhr=>{
+        load.off();
+        parseResult(JSON.parse(xhr.responseText));
+      }
     })
   }
 }
@@ -187,7 +199,10 @@ function RemoveDriver(id){
               load.off();
               parseResult(res);
               getTruckDriverList();
-            },error: xhr=> console.log(xhr.responseText)
+            },error: xhr=> {
+              load.off();
+              parseResult(JSON.parse(xhr.responseText));
+            }
          });
       }
   });
