@@ -13,6 +13,9 @@ Route::get('/truckregister', [Authenticate::class, 'TruckRegister'])->name('truc
 Route::get('/useraccounts', [Authenticate::class, 'UserAccount'])->name('useraccounts');
 Route::get('/waypoints', [Authenticate::class, 'Waypoints'])->name('waypoints');
 
+
+Route::get('/complaint', function () {return view('User.complaint');})->name('usercomplaints');
+
 Route::get('/auth/login', function () {
     return view('Auth/login');
 })->name('login');
