@@ -34,10 +34,6 @@ class Authenticate extends Controller
         return $this->redirectRoute('mapnavigator', $req);
     }
 
-    public function UserAccount(Request $req){
-        return $this->redirectRoute('useraccounts', $req);
-    }
-
 
 
     /*

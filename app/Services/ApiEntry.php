@@ -122,6 +122,13 @@ class ApiEntry{
             'update' =>  ['id','name', 'start_longitude', 'start_latitude','start_location', 'end_longitude', 'end_latitude', 'end_location', 'assigned_truck'],
             'details'=> ['id'],
             'list'=> ['empty']
+        ],
+        'complaints' => [
+            'submit' => ['comp_name', 'email', 'contact', 'nature', 'remarks'],
+            'list'=> ['empty'],
+            'remove'=> ['comp_id'],
+            'details'=> ['comp_id'],
+            'update'=> ['comp_id', 'status']
         ]
     ];
 

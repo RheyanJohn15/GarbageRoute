@@ -33,7 +33,7 @@
 <!-- Kaiadmin DEMO methods, don't include it in your project! -->
 <script src="{{asset('assets/js/setting-demo.js')}}"></script>
 <script src="{{asset('assets/js/plugin/datatables/datatables.min.js')}}"></script>
-<scrip src="{{asset('assets/js/demo.js')}}"></script>
+<script src="{{asset('assets/js/demo.js')}}"></script>
 
 <!--Map Box -->    
 <script src='https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js'></script>

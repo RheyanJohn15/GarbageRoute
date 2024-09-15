@@ -111,75 +111,7 @@
 
 
 
-    {{-- Add Route Modal --}}
-    {{-- <div
-    class="modal fade"
-    id="addRouteModal"
-    tabindex="-1"
-    role="dialog"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-xl" role="document">
-      <div class="modal-content">
-        <div class="modal-header border-0">
-          <h5 class="modal-title">
-            <span class="fw-mediumbold"> New </span>
-            <span class="fw-light"> Route </span>
-          </h5>
-          <button
-            type="button"
-            class="close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p class="small">
-            Create a new route
-          </p>
-          <form id="addRouteForm" method="post">
-            @csrf
-            <div class="row">
-              <div class="col-sm-12">
-                <div id="addName_g" class="form-group form-group-default">
-                  <label>Route Name</label>
-                  <input
-                    id="addName"
-                    type="text"
-                    name="name"
-                    class="form-control"
-                    placeholder="Full Name"
-                  />
-                  <small id="addName_e" style="display: none" class="text-danger">(This field is required)</small>
-                </div>
-              </div>
-             
-            
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer border-0">
-          <button
-            type="button"
-            id="addDriver"
-            class="btn btn-primary"
-            >
-            Add
-          </button>
-          <button
-          id="closeButton";
-            type="button"
-            class="btn btn-danger"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div> --}}
+
 
     <!--   Core JS Files   -->
    {{-- <script>

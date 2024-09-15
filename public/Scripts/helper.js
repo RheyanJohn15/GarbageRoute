@@ -72,6 +72,17 @@ function setValue(id, value){
     document.getElementById(id).value = value;
 }
 
+function parseDate(dateString) {
+  const date = new Date(dateString);
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const hours12 = hours % 12 || 12;
+
+  return `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()} ${hours12}:${minutes.toString().padStart(2, "0")} ${ampm}`;
+}
+
 function parseResult(res){
     if(res.status == 'success'){
         $.notify({'message': res.result.response,'icon': 'icon-check' }, {

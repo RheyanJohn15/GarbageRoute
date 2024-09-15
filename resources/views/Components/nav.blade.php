@@ -67,26 +67,12 @@
               </ul>
             </div>
           </li>
+
           <li class="nav-item  {{$active == 'complaints' ? 'active' : ''}}">
-            <a data-bs-toggle="collapse" href="#forms">
-              <i class="far fa-paper-plane"></i>
+            <a href="{{route('complaints')}}">
+              <i class="fas fa-paper-plane"></i>
               <p>Complaints</p>
-              <span class="caret"></span>
             </a>
-            <div class="collapse" id="forms">
-              <ul class="nav nav-collapse">
-                <li>
-                  <a href="{{route('useraccounts')}}">
-                    <span class="sub-item">User Accounts</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="{{route('complaints')}}">
-                    <span class="sub-item">Complaints</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
           </li>
           <li class="nav-item  {{$active == 'waypoints' ? 'active' : ''}}">
             <a href="{{route('waypoints')}}">
