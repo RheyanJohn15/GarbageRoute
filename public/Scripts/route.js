@@ -2,7 +2,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicmhleWFuIiwiYSI6ImNsenpydzA4eDFnajUyanB4M2V3N
 let map;
 let clickCount = 0;
 let directions;
-
+let markers = [];
+let coordinatesList = [];    
 map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/streets-v12', // style URL
@@ -26,30 +27,34 @@ map.on('click', async (e) => {
     const coordinates = [e.lngLat.lng, e.lngLat.lat]; // Convert to array format
 
     clickCount++;
-    console.log(coordinates);
     try {
         const placeName = await getPlaceName(coordinates);
        
-        if (clickCount == 1) {
-            setText('startRouteSpan', `(A) ${placeName}`);
-            setValue('saveRouteStartLongitude', coordinates[0]);
-            setValue('saveRouteStartLatitude', coordinates[1]);
-            setValue('saveRouteStartLocation', placeName);
-        } else {
-            setText('endRouteSpan', `(B) ${placeName} `);
-            setValue('saveRouteEndLongitude', coordinates[0]);
-            setValue('saveRouteEndLatitude', coordinates[1]);
-            setValue('saveRouteEndLocation', placeName);
-        }
+        coordinatesList.push(`${coordinates[0]}-${coordinates[1]}`);
+        
+        const list = document.getElementById('waypointListTable');
+
+        clickCount == 1 ? list.innerHTML = '' : null;
+        
+        list.innerHTML += `<tr>
+                    <td>${clickCount}</td>  
+                     <td>${coordinates[0]}, ${coordinates[1]}</td>    
+                      <td>${placeName}</td>          
+                    </tr>`;
     } catch (error) {
         console.error('Error fetching location name:', error);
     }
+
+    const marker = new mapboxgl.Marker()
+    .setLngLat(coordinates)
+    .addTo(map);
+
+    markers.push(marker); 
 
     const waypoints = directions.getWaypoints();
     if (waypoints.length < 25) {
         directions.addWaypoint(waypoints.length, coordinates);
     }
-
     isVisible('flex', 'clearWaypoints');
 });
 
@@ -90,27 +95,37 @@ function removeAllWaypoints() {
     // Assign the new map and directions instances to global variables if needed
     map = newMap;
     directions = newDirections;
-    setText('startRouteSpan', 'N/A');
-    setText('endRouteSpan', 'N/A')
+    coordinatesList.length = 0; 
     isVisible('none', 'clearWaypoints')
 }
-
-
-document.getElementById('routeName').addEventListener('input', (e)=> {
-   setValue('saveRouteName', e.target.value);
-});
-
-document.getElementById('selectDriver').addEventListener('change', (e)=> {
-  setValue('saveRouteAssignedTruck', e.target.value);
-});
-
-document.getElementById('saveRoute').addEventListener('click', ()=> {
+let selectedScheduleType = 'daily';
+document.getElementById('saveRoute').addEventListener('click', async ()=> {
     load.on();
     
+    const sched = parseSchedule(selectedScheduleType);
+    if(sched[0] == 'error'){
+        load.off();
+        showError(sched[1]);
+        return;
+    }
+    let parseCoordinate = '';
+    coordinatesList.forEach((data)=>{
+        parseCoordinate += `${data},`;
+    });
+    const routeName = getVal('routeName');
+    const csrf = await getCSRF();
+    const data = {
+        "_token": csrf,
+        "route_name": routeName ,
+        "coordinates": parseCoordinate,
+        "assigned_driver": getVal('selectDriver'),
+        "schedule": sched
+    }
+
     $.ajax({
        type:"POST",
        url: getApi('routes', 'add', 'post'),
-       data: $('form#saveRouteForm').serialize(),
+       data: data,
        success: res=> {
         load.off()
         parseResult(res)
@@ -142,9 +157,9 @@ function loadAllRoute(){
             data: res.result.data,
             columns: [
                 {title: "Route Name", data: "r_name"},
-                {title: "Start", data: "r_start_location"},
-                {title: "End", data: "r_end_location"},
-                {title: "Assigned Driver", data: "truck_driver"},
+                {title: "Schedule", data: "r_schedule"},
+                {title: "Status", data: "r_status"},
+                {title: "Assigned Driver", data: "r_assigned_driver"},
                 {title: "Action" , data: null,
                    render: data=> {
                     return `
@@ -189,3 +204,116 @@ function RemoveRoute(id){
       }
    })
 }
+
+document.querySelectorAll('input[name="schedType"]').forEach((radio) => {
+    radio.addEventListener('click', (e) => {
+        
+        isShow('weeklySched', false, 'block');
+        isShow('dailySched', false, 'block');
+        isShow('monthlySched', false, 'block');
+        isShow('weekendHolidaySched', false, 'block');
+
+        switch(e.target.value){
+            case "daily":
+                isShow('dailySched', true, 'block');
+                selectedScheduleType = "daily";
+                break;
+            case "weekly":
+                isShow('weeklySched', true, 'block');
+                selectedScheduleType = "weekly";
+                break;
+            case "monthly":
+                isShow('monthlySched', true, 'block');
+                selectedScheduleType = "monthly";
+                break;
+            default:
+                isShow('weekendHolidaySched', true, 'block');
+                selectedScheduleType = "weekendHoliday";
+                break;
+        }
+    });
+  });
+
+document.getElementById('noDurationDaily').addEventListener('click', ()=>{
+    isShow('dailyDuration', false);
+});
+
+document.getElementById('setDurationDaily').addEventListener('click', ()=>{
+    isShow('dailyDuration', true);
+});
+
+function parseSchedule(type){
+    switch(type){
+        case "daily":
+            const radios = document.querySelectorAll('input[name="duration"]');
+            let selectedValue = null;
+            radios.forEach(radio => {
+                if (radio.checked) {
+                    selectedValue = radio.value;
+                }
+            });
+
+            let duration;
+            if(selectedValue == 'noDuration'){
+                duration = selectedValue;
+            }else{
+                const startDateDaily = getVal('startDateDaily');
+                const endDateDaily = getVal('endDateDaily');
+                if(startDateDaily == '' || endDateDaily == ''){
+                    return ['error', 'Start Date or End Date Duration is Empty'];
+                }
+                duration = `${selectedValue}**${startDateDaily}**${endDateDaily}`;
+            }
+            
+            return `daily**${duration}`;
+        case "weekly":
+            const checkboxes = document.querySelectorAll('input[name="weeklyDays"]');
+
+            let selectedDays = [];
+            checkboxes.forEach((checkbox) => {
+                // If the checkbox is checked, push its value into the array
+                if (checkbox.checked) {
+                  selectedDays.push(checkbox.value);
+                }
+              });
+
+              if(selectedDays.length == 0){
+                return ['error', 'No Days Selected'];
+              }
+              
+              let parseData = '';
+
+              selectedDays.forEach((data)=>{
+                parseData += `${data}**`;
+              });
+            return `weekly**${parseData}`;
+        case "monthly":
+            const monthlySelect = getVal('selectMonthlyOptions');
+            
+            let monthly;
+            if(monthlySelect == 'setCustomDate'){
+                const date = getVal('monthlyCustomDate');
+                if(date == ''){
+                    return ['error', 'No Date Selected'];
+                }
+                
+                monthly = `setCustomDate**${date}`;
+                
+            }else{
+                monthly = monthlySelect;
+            }
+
+            return `monthly**${monthly}`;
+        default:
+            const selectedData = getVal('selectWeekendHolidays');
+            return `weekendholiday**${selectedData}`;
+    }
+}
+
+document.getElementById('selectMonthlyOptions').addEventListener('change',(e)=> {
+    if(e.target.value == 'setCustomDate'){
+        isShow('setMonthlyCustomDate', true, 'block');
+    }else{
+        isShow('setMonthlyCustomDate', false, 'block');
+    }
+});

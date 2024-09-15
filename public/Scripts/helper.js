@@ -128,4 +128,33 @@ function confirmAction(){
     });
 }
 
+function getVal(id){
+    return document.getElementById(id).value;
+}
 
+function isShow(id, status, type = 'flex'){
+    const div = document.getElementById(id);
+
+    switch(type){
+        case 'flex':
+            div.classList.remove(status ? 'd-none' : 'd-flex');
+            div.classList.add(status ? 'd-flex': 'd-none');
+            break;
+        default:
+            status ? div.classList.remove('d-none') : null;
+            status ? null : div.classList.add('d-none');
+            break;
+    }
+}
+
+function showError(message){
+    $.notify({'message' : message, 'icon' : 'fas fa-exclamation-triangle'}, {
+        type: 'danger',
+        placement: {
+          from: 'top',
+          align: 'right',
+        },
+        time: 1000,
+        delay: 2000,
+        });
+}

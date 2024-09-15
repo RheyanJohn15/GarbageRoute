@@ -14,14 +14,11 @@ class Routes{
     private function add($req){
        $route = new RoutesModel();
 
-       $route->r_name = $req->name;
-       $route->r_start_longitude = $req->start_longitude;
-       $route->r_start_latitude = $req->start_latitude;
-       $route->r_start_location = $req->start_location;
-       $route->r_end_longitude = $req->end_longitude;
-       $route->r_end_latitude = $req->end_latitude;
-       $route->r_end_location = $req->end_location;
-       $route->r_assigned_truck = $req->assigned_truck;
+       $route->r_name = $req->route_name;
+       $route->r_coordinates = $req->coordinates;
+       $route->r_schedule = $req->schedule;
+       $route->r_assigned_driver = $req->assigned_driver;
+       $route->r_status = "1";
        $route->save();
 
        $this->RESULT = ['add', 'Successfully Saved Route', $route];
@@ -38,7 +35,7 @@ class Routes{
         $route = RoutesModel::all();
 
         foreach($route as $r){
-            $driver = TruckDriverModel::where('td_id', $r->r_assigned_truck)->first();
+            $driver = TruckDriverModel::where('td_id', $r->r_assigned_driver)->first();
             $r->truck_driver = $driver->name;
         }
 

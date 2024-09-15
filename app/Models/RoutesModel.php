@@ -12,12 +12,9 @@ class RoutesModel extends Model
     protected $primaryKey = 'r_id';
     protected $fillable = [
       'r_name',
-      'r_start_longitude',
-      'r_start_latitude',
-      'r_start_location',
-      'r_end_longitude',
-      'r_end_latitude',
-      'r_end_location',
+      'r_coordinates',
+      'r_schedule',
+      'r_status',
       'r_assigned_truck'
     ];
 }

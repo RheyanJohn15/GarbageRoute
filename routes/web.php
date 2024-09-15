@@ -24,8 +24,8 @@ Route::get('/csrf-token', function () {
     return csrf_token();
 });
 
-Route::get('/test', function(){
-  event(new GpsUpdate('this is test'));
+// Route::get('/test', function(){
+//   event(new GpsUpdate('this is test'));
 
-  return 'done';
-});
+//   return 'done';
+// });

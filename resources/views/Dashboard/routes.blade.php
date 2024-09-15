@@ -11,7 +11,7 @@
   </style>
   <body>
     @include('Components.dashload')
-    @vite('resources/js/app.js')
+    {{-- @vite('resources/js/app.js') --}}
     <div class="wrapper">
         @include('Components.nav', ['active'=>'routes'])
 
@@ -39,8 +39,8 @@
             <thead>
               <tr>
                 <th>Route Name</th>
-                <th>Start</th>
-                <th>End</th>
+                <th>Schedule</th>
+                <th>Status</th>
                 <th>Assigned Driver</th>
                 <th>Action</th>
               </tr>
@@ -51,12 +51,12 @@
               </tr>
             </tbody>
           </table>
-            <div class="card mt-8" id="addRouteCard">
+            <div class="card mt-4" id="addRouteCard">
               <div class="card-header d-flex justify-content-between align-items-center">
                 <div class="card-title">Add Route</div>
                 <div class="d-flex gap-2">
                   <button class="btn btn-label-danger gap-2 align-items-center" id="clearWaypoints"  style="display: none"> <i class="fas fa-minus-circle"></i>Remove Route</button>
-                  <button id="saveRoute" class="btn btn-primary d-flex gap-2 align-items-center"> <i class="fas fa-save"></i> Save</button>
+                  
                 </div>
               </div>
               <div class="card-body">
@@ -71,8 +71,20 @@
                 </div>
                 <div id="map" class="mb-4" style="height:50vh; width:100%; border: 1px solid black"></div>
 
-                <p>Start Route: <span id="startRouteSpan"></span></p>
-                <p>End Route: <span id="endRouteSpan"></span></p>
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Waypoint</th>
+                      <th scope="col">Coordinates</th>
+                      <th scope="col">Name</th>
+                    </tr>
+                  </thead>
+                 <tbody id="waypointListTable">
+                  <tr>
+                    <td colspan="3" class="text-center">No Waypoint Added</td>
+                  </tr>
+                 </tbody>
+                </table>
 
                 <label for="selectDriver" class="form-label">Assigned Truck Driver</label>
                 <select id="selectDriver" class="form-select">
@@ -87,6 +99,234 @@
                       <option value="{{$dr->td_id}}">{{$dr->name}} - {{$truck ? $truck->model : "Not Assigned"}}/{{$truck ? $truck->can_carry : 'Not Assigned'}}</option>
                   @endforeach
                 </select>
+
+                <div class="form-group">
+                  <label class="form-label">Route Schedule</label>
+                  <div class="selectgroup w-100">
+                    <label class="selectgroup-item">
+                      <input
+                        type="radio"
+                        name="schedType"
+                        value="daily"
+                        class="selectgroup-input"
+                        checked=""
+                      />
+                      <span class="selectgroup-button">Daily</span>
+                    </label>
+                    <label class="selectgroup-item">
+                      <input
+                        type="radio"
+                        name="schedType"
+                        value="weekly"
+                        class="selectgroup-input"
+                      />
+                      <span class="selectgroup-button">Weekly</span>
+                    </label>
+                    <label class="selectgroup-item">
+                      <input
+                        type="radio"
+                        name="schedType"
+                        value="monthly"
+                        class="selectgroup-input"
+                      />
+                      <span class="selectgroup-button">Monthly</span>
+                    </label>
+                    <label class="selectgroup-item">
+                      <input
+                        type="radio"
+                        name="schedType"
+                        value="endsholidays"
+                        class="selectgroup-input"
+                      />
+                      <span class="selectgroup-button">Weekends/Holidays</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="w-100 p-4" id="dailySched">
+                  <small class="text-primary">Collection every day, ensuring constant service and timely waste removal.</small>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="duration"
+                      id="noDurationDaily"
+                      value="noDuration"
+                      checked
+                    />
+                    <label
+                      class="form-check-label"
+                      for="flexRadioDefault1"
+                    >
+                      No Duration
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="duration"
+                      id="setDurationDaily"
+                      value="setDuration"
+                    />
+                    <label
+                      class="form-check-label"
+                      for="flexRadioDefault2"
+                    >
+                      Set Duration
+                    </label>
+                  </div>
+
+                  <div class="d-none w-100 p-2 gap-3" id="dailyDuration">
+                    <div class="form-group w-100">
+                      <label for="startDateDaily">Start Date</label>
+                      <input type="date" class="form-control" id="startDateDaily" >
+                   
+                    </div>
+                    <div class="form-group w-100">
+                      <label for="endDateDaily">End Date</label>
+                      <input type="date" class="form-control" id="endDateDaily">
+                    
+                    </div>
+                  </div>
+                </div>
+
+                <div class="w-100 p-4 d-none" id="weeklySched">
+                  <div class="form-group">
+                    <label class="form-label">Select Days</label>
+                    <div class="selectgroup selectgroup-pills">
+                      <label class="selectgroup-item">
+                        <input
+                          type="checkbox"
+                          name="weeklyDays"
+                          value="Monday"
+                          class="selectgroup-input"
+                        />
+                        <span class="selectgroup-button">Monday</span>
+                      </label>
+                      <label class="selectgroup-item">
+                        <input
+                          type="checkbox"
+                          name="weeklyDays"
+                          value="Tuesday"
+                          class="selectgroup-input"
+                        />
+                        <span class="selectgroup-button">Tuesday</span>
+                      </label>
+                      <label class="selectgroup-item">
+                        <input
+                          type="checkbox"
+                          name="weeklyDays"
+                          value="Wednesday"
+                          class="selectgroup-input"
+                        />
+                        <span class="selectgroup-button">Wednesday</span>
+                      </label>
+                      <label class="selectgroup-item">
+                        <input
+                          type="checkbox"
+                          name="weeklyDays"
+                          value="Thursday"
+                          class="selectgroup-input"
+                        />
+                        <span class="selectgroup-button">Thursday</span>
+                      </label>
+                      <label class="selectgroup-item">
+                        <input
+                          type="checkbox"
+                          name="weeklyDays"
+                          value="Friday"
+                          class="selectgroup-input"
+                        />
+                        <span class="selectgroup-button">Friday</span>
+                      </label>
+                      <label class="selectgroup-item">
+                        <input
+                          type="checkbox"
+                          name="weeklyDays"
+                          value="Saturday"
+                          class="selectgroup-input"
+                        />
+                        <span class="selectgroup-button">Saturday</span>
+                      </label>
+                      <label class="selectgroup-item">
+                        <input
+                          type="checkbox"
+                          name="weeklyDays"
+                          value="Sunday"
+                          class="selectgroup-input"
+                        />
+                        <span class="selectgroup-button">Sunday</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                </div>
+
+                <div class="w-100 p-4 d-none" id="monthlySched">
+                  <div class="form-floating form-floating-custom mb-3">
+                    <select class="form-select" id="selectMonthlyOptions" required>
+                      <option value="onceAMonth">Once a month</option>
+                      <option value="oneWeekPerMonth">A week per month</option>
+                      <option value="firstWeek">First Week of the month</option>
+                      <option value="lastWeek">Last Week of the month</option>
+                      <option value="setCustomDate">Set Custom date</option>
+                    </select>
+                    <label for="selectMonthlyOptions">Select Monthly Type</label>
+                  </div>
+
+                  <div id="setMonthlyCustomDate" class="form-group d-none">
+                    <label for="email2">Set Custom Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="monthlyCustomDate"
+                    />
+                    <small id="monthlyCustomDate" class="form-text text-muted"
+                      >The Waste collection will for this route will be done on the selected date</small
+                    >
+                  </div>
+                </div>
+
+                <div class="w-100 p-4 d-none" id="weekendHolidaySched">
+                  <div class="form-floating form-floating-custom mb-3">
+                    <select class="form-select" id="selectWeekendHolidays" required>
+                      <optgroup label="Weekends">
+                        <option>Saturday</option>
+                        <option>Sunday</option>
+                      </optgroup>
+                      <optgroup label="National Holidays">
+                        <option>New Year’s Day - January 1</option>
+                        <option>Maundy Thursday</option>
+                        <option>Good Friday</option>
+                        <option>Araw ng Kagitingan (Day of Valor) - April 9</option>
+                        <option>Labor Day - May 1</option>
+                        <option>Independence Day - June 12</option>
+                        <option>National Heroes Day - Last Monday of August</option>
+                        <option>Bonifacio Day - November 30</option>
+                        <option>Christmas Day - December 25</option>
+                        <option>Rizal Day - December 30</option>
+                      </optgroup>
+
+                      <optgroup label="Special and Local Holidays">
+                        <option>Chinese New Year</option>
+                        <option>EDSA People Power Revolution Anniversary - February 25</option>
+                        <option>Black Saturday</option>
+                        <option>Ninoy Aquino Day - August 21</option>
+                        <option>All Saints’ Day - November 1</option>
+                        <option>All Souls’ Day - November 2</option>
+                        <option>Feast of the Immaculate Conception - December 8</option>
+                        <option>Christmas Eve - December 24</option>
+                        <option>New Year’s Eve - December 31</option>
+                        <option>Sily City Charter Day - December 31</option>
+                      </optgroup>
+                    </select>
+                    <label for="selectFloatingLabel">Select Weekend/Holidays</label>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-end w-100 p-4"><button id="saveRoute" class="btn btn-primary d-flex gap-2 align-items-center"> <i class="fas fa-save"></i> Save</button></div>
+
               </div>
             </div>
           
@@ -96,20 +336,6 @@
       </div>
 
     </div>
-
-    <form id="saveRouteForm">
-      @csrf
-      <input type="hidden" name="name" id="saveRouteName">
-      <input type="hidden" name="start_longitude" id="saveRouteStartLongitude">
-      <input type="hidden" name="start_latitude" id="saveRouteStartLatitude">
-      <input type="hidden" name="start_location" id="saveRouteStartLocation">
-      <input type="hidden" name="end_longitude" id="saveRouteEndLongitude">
-      <input type="hidden" name="end_latitude" id="saveRouteEndLatitude">
-      <input type="hidden" name="end_location" id="saveRouteEndLocation">
-      <input type="hidden" name="assigned_truck" id="saveRouteAssignedTruck">
-    </form>
-
-
 
 
 

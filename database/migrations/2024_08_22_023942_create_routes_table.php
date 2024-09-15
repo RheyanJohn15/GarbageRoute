@@ -14,13 +14,10 @@ return new class extends Migration
         Schema::create('routes', function (Blueprint $table) {
             $table->id('r_id');
             $table->string('r_name');
-            $table->string('r_start_longitude');
-            $table->string('r_start_latitude');
-            $table->string('r_start_location');
-            $table->string('r_end_longitude');
-            $table->string('r_end_latitude');
-            $table->string('r_end_location');
-            $table->string('r_assigned_truck');
+            $table->string('r_coordinates');
+            $table->string('r_schedule');
+            $table->string('r_status');
+            $table->string('r_assigned_driver');
             $table->timestamps();
         });
     }

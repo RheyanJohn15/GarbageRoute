@@ -117,7 +117,7 @@ class ApiEntry{
                 'list' => ['empty']
              ],
         'routes' => [
-            'add' => ['name', 'start_longitude', 'start_latitude','start_location', 'end_longitude', 'end_latitude','end_location', 'assigned_truck'],
+            'add' => ['route_name', 'coordinates', 'assigned_driver','schedule'],
             'delete'=> ['id'],
             'update' =>  ['id','name', 'start_longitude', 'start_latitude','start_location', 'end_longitude', 'end_latitude', 'end_location', 'assigned_truck'],
             'details'=> ['id'],
