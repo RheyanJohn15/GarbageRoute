@@ -167,8 +167,12 @@ function loadAllRoute(){
                         return sched;
                     }
                 },
-                {title: "Status", data: "r_status"},
-                {title: "Assigned Driver", data: "r_assigned_driver"},
+                {title: "Status", data: null, 
+                    render: data=> {
+                        return `<span class="badge badge-${data.r_status == 1 ? 'success': 'danger'}">${data.r_status == 1 ? 'Active': 'Inactive'}</span>`
+                    }
+                },
+                {title: "Assigned Driver", data: "truck_driver"},
                 {title: "Action" , data: null,
                    render: data=> {
                     return `
@@ -339,18 +343,24 @@ function processSchedule(sched){
                 return `Daily(${schedule[2]} / ${schedule[3]})`;
             }
         case "weekly":
-            let days;
-            for(let i = 0; i < schedule.length; i++){
-                if(i!==0 && i!==1){
-                    if(schedule[i] != '0'){
-                        days+= `${parseDays(schedule[i])}-`;
-
+            let days = '';
+            for (let i = 0; i < schedule.length; i++) {
+                if (i != 0) {
+                    if (schedule[i] != '') {
+                        days += `${parseDays(schedule[i])}-`;
                     }
-                }
+                } 
             }
-            const parseDay = days.substring(0, days.length, -1);
-            return `Weekly(${parseDay})`;
-           
+            return `Weekly(${days.slice(0, -1)})`;
+        
+        case "monthly":
+            if(schedule[1] == "setCustomDate"){
+                return `Monthly(${schedule[2]})`;
+            }
+
+            return `Monthly(${schedule[1]})`;
+        default:
+            return schedule[1];
     }
 }
 

@@ -266,10 +266,10 @@
                 <div class="w-100 p-4 d-none" id="monthlySched">
                   <div class="form-floating form-floating-custom mb-3">
                     <select class="form-select" id="selectMonthlyOptions" required>
-                      <option value="onceAMonth">Once a month</option>
-                      <option value="oneWeekPerMonth">A week per month</option>
-                      <option value="firstWeek">First Week of the month</option>
-                      <option value="lastWeek">Last Week of the month</option>
+                      <option >Once a month</option>
+                      <option >A week per month</option>
+                      <option >First Week of the month</option>
+                      <option >Last Week of the month</option>
                       <option value="setCustomDate">Set Custom date</option>
                     </select>
                     <label for="selectMonthlyOptions">Select Monthly Type</label>

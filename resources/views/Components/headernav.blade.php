@@ -371,7 +371,7 @@
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="#">Account Setting</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Logout</a>
+                  <button class="dropdown-item" id="logout">Logout</button>
                 </li>
               </div>
             </ul>

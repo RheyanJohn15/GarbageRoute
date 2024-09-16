@@ -161,3 +161,21 @@ function showError(message){
         delay: 2000,
         });
 }
+
+
+//Logout Function
+document.getElementById('logout').addEventListener('click', async ()=> {
+    load.on();
+
+    const csrf = await getCSRF();
+    $.ajax({
+        type: "POST",
+        url: "/api/post/user/logout",
+        data: {"_token": csrf},
+        success: res=> {
+            load.off();
+            parseResult(res);
+            window.location.href="/auth/login";
+        }, error: xhr=> console.log(xhr.responseText)
+    })
+});

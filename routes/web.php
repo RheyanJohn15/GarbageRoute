@@ -14,9 +14,12 @@ Route::get('/truckregister', [Authenticate::class, 'TruckRegister'])->name('truc
 Route::get('/user/complaint', function () {return view('User.complaint');})->name('usercomplaints');
 
 Route::get('/auth/login', function () {
-    return view('Auth/login');
+    return view('Auth.login');
 })->name('login');
 
+Route::get('/auth/driver/login', function () {
+    return view('User/login');
+})->name('login');
 
 //Get CSRF Token
 Route::get('/csrf-token', function () {
