@@ -10,7 +10,6 @@ Route::get('/complaints', [Authenticate::class, 'Complaints'])->name('complaints
 Route::get('/mapnavigator', [Authenticate::class, 'MapNavigator'])->name('mapnavigator');
 Route::get('/truckdriver', [Authenticate::class, 'TruckDriver'])->name('truckdriver');
 Route::get('/truckregister', [Authenticate::class, 'TruckRegister'])->name('truckregister');
-Route::get('/waypoints', [Authenticate::class, 'Waypoints'])->name('waypoints');
 
 Route::get('/user/complaint', function () {return view('User.complaint');})->name('usercomplaints');
 

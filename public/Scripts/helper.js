@@ -18,6 +18,9 @@ function setText(id, value){
    document.getElementById(id).textContent = value;
 }
 
+function setHtml(id, value){
+    document.getElementById(id).innerHTML = value;
+}
 function setImage(id, value){
     document.getElementById(id).src = value;
 }

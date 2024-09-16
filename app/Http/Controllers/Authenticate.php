@@ -26,10 +26,6 @@ class Authenticate extends Controller
         return $this->redirectRoute('complaints', $req);
     }
     
-    public function Waypoints(Request $req){
-        return $this->redirectRoute('waypoints', $req);
-    }
-
     public function MapNavigator(Request $req){
         return $this->redirectRoute('mapnavigator', $req);
     }

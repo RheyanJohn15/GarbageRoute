@@ -74,12 +74,6 @@
               <p>Complaints</p>
             </a>
           </li>
-          <li class="nav-item  {{$active == 'waypoints' ? 'active' : ''}}">
-            <a href="{{route('waypoints')}}">
-              <i class="fas fa-map-marker-alt"></i>
-              <p>Way Points</p>
-            </a>
-          </li>
           <li class="nav-item  {{$active == 'mapnavigator' ? 'active' : ''}}">
             <a href="{{route('mapnavigator')}}">
               <i class="fas fa-map-marked-alt"></i>

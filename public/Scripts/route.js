@@ -133,6 +133,10 @@ document.getElementById('saveRoute').addEventListener('click', async ()=> {
         setValue('routeName', '');
         setValue('selectDriver', 'none');
         loadAllRoute();
+        const empty = ` <tr>
+                    <td colspan="3" class="text-center">No Waypoint Added</td>
+                  </tr>`;
+        setHtml('waypointListTable', empty);
        }, 
        error: xhr => {
         load.off();
@@ -157,7 +161,12 @@ function loadAllRoute(){
             data: res.result.data,
             columns: [
                 {title: "Route Name", data: "r_name"},
-                {title: "Schedule", data: "r_schedule"},
+                {title: "Schedule", data: null,
+                    render: data => {
+                        const sched = processSchedule(data.r_schedule);
+                        return sched;
+                    }
+                },
                 {title: "Status", data: "r_status"},
                 {title: "Assigned Driver", data: "r_assigned_driver"},
                 {title: "Action" , data: null,
@@ -165,6 +174,7 @@ function loadAllRoute(){
                     return `
                     <div class="d-flex gap-1">
                 <button class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
+                 <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
                 <button onclick="RemoveRoute('${data.r_id}')" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
               </div>`
                    }, orderable: false
@@ -317,3 +327,48 @@ document.getElementById('selectMonthlyOptions').addEventListener('change',(e)=> 
         isShow('setMonthlyCustomDate', false, 'block');
     }
 });
+
+function processSchedule(sched){
+    const schedule = sched.split('**');
+  
+    switch(schedule[0]){
+        case "daily":
+            if(schedule[1] == 'noDuration'){
+                return  "Daily(Every Day)";
+            }else{
+                return `Daily(${schedule[2]} / ${schedule[3]})`;
+            }
+        case "weekly":
+            let days;
+            for(let i = 0; i < schedule.length; i++){
+                if(i!==0 && i!==1){
+                    if(schedule[i] != '0'){
+                        days+= `${parseDays(schedule[i])}-`;
+
+                    }
+                }
+            }
+            const parseDay = days.substring(0, days.length, -1);
+            return `Weekly(${parseDay})`;
+           
+    }
+}
+
+function parseDays(num){
+    switch(num){
+        case "1":
+            return "Mon";
+        case "2":
+            return "Tue";
+        case "3":
+            return "Wed";
+        case "4":
+            return "Thu";
+        case "5":
+            return "Fri";
+        case "6":
+            return "Sat";
+        case "7":
+            return "Sun";
+    }
+}

@@ -199,7 +199,7 @@
                         <input
                           type="checkbox"
                           name="weeklyDays"
-                          value="Monday"
+                          value="1"
                           class="selectgroup-input"
                         />
                         <span class="selectgroup-button">Monday</span>
@@ -208,7 +208,7 @@
                         <input
                           type="checkbox"
                           name="weeklyDays"
-                          value="Tuesday"
+                          value="2"
                           class="selectgroup-input"
                         />
                         <span class="selectgroup-button">Tuesday</span>
@@ -217,7 +217,7 @@
                         <input
                           type="checkbox"
                           name="weeklyDays"
-                          value="Wednesday"
+                          value="3"
                           class="selectgroup-input"
                         />
                         <span class="selectgroup-button">Wednesday</span>
@@ -226,7 +226,7 @@
                         <input
                           type="checkbox"
                           name="weeklyDays"
-                          value="Thursday"
+                          value="4"
                           class="selectgroup-input"
                         />
                         <span class="selectgroup-button">Thursday</span>
@@ -235,7 +235,7 @@
                         <input
                           type="checkbox"
                           name="weeklyDays"
-                          value="Friday"
+                          value="5"
                           class="selectgroup-input"
                         />
                         <span class="selectgroup-button">Friday</span>
@@ -244,7 +244,7 @@
                         <input
                           type="checkbox"
                           name="weeklyDays"
-                          value="Saturday"
+                          value="6"
                           class="selectgroup-input"
                         />
                         <span class="selectgroup-button">Saturday</span>
@@ -253,7 +253,7 @@
                         <input
                           type="checkbox"
                           name="weeklyDays"
-                          value="Sunday"
+                          value="7"
                           class="selectgroup-input"
                         />
                         <span class="selectgroup-button">Sunday</span>
