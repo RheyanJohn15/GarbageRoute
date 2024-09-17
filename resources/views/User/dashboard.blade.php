@@ -28,12 +28,9 @@
               >
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
+                    <th>Route Name</th>
+                    <th>Schedule</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tfoot>
