@@ -6,14 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
     <link rel="stylesheet" href="{{asset('UsersAsset/style.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 <body>
-    <form method="get" action="javascript: void(0);" id="login-form" class="login-form" autocomplete="off" role="main">
-        <h1 class="a11y-hidden">Login Form</h1>
+    @include('User.UserLoading')
+    <h1 class="title-header mx-1">Silay Waste Management Driver Access</h1>
+    <form id="login-form" class="login-form" autocomplete="off" role="main">
+        @csrf
         <div>
           <label class="label-email">
-            <input type="email" class="text" name="email" placeholder="Email" tabindex="1" required />
-            <span class="required">Email</span>
+            <input type="text" class="text" name="username" placeholder="Username" tabindex="1" required />
+            <span class="required">Username</span>
           </label>
         </div>
         <input type="checkbox" name="show-password" class="show-password a11y-hidden" id="show-password" tabindex="3" />
@@ -27,9 +32,7 @@
           </label>
         </div>
         <input type="submit" value="Log In" />
-        <div class="email">
-          <a href="#">Forgot password?</a>
-        </div>
+
         <figure aria-hidden="true">
           <div class="person-body"></div>
           <div class="neck skin"></div>
@@ -43,5 +46,8 @@
           <div class="shirt-2"></div>
         </figure>
       </form>
+
+    <script src="{{ asset('Scripts/helper.js') }}"></script>
+    <script src="{{ asset('Scripts/userLogin.js') }}"></script>
 </body>
 </html>

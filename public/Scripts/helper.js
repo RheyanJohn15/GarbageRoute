@@ -4,7 +4,7 @@ function getApi(data, method, type){
     if(type == 'post'){
         return `${url}/api/post/${data}/${method}`;
     }
-    
+
     return `${url}/api/get/${data}/${method}`;
 }
 
@@ -59,7 +59,7 @@ const load = {
         document.getElementById('mainloader').style.display = 'none';
     },
     on: ()=> {
-        document.getElementById('mainloader').style.display = 'grid';
+        document.getElementById('mainloader').style.display = 'flex';
     }
 }
 
@@ -127,7 +127,7 @@ function confirmAction(){
             },
         },
     }).then((willDelete) => {
-        return willDelete; 
+        return willDelete;
     });
 }
 
@@ -164,18 +164,21 @@ function showError(message){
 
 
 //Logout Function
-document.getElementById('logout').addEventListener('click', async ()=> {
-    load.on();
+const logoutBtn = document.getElementById('logout');
+if(logoutBtn){
+    document.getElementById('logout').addEventListener('click', async ()=> {
+        load.on();
 
-    const csrf = await getCSRF();
-    $.ajax({
-        type: "POST",
-        url: "/api/post/user/logout",
-        data: {"_token": csrf},
-        success: res=> {
-            load.off();
-            parseResult(res);
-            window.location.href="/auth/login";
-        }, error: xhr=> console.log(xhr.responseText)
-    })
-});
+        const csrf = await getCSRF();
+        $.ajax({
+            type: "POST",
+            url: "/api/post/user/logout",
+            data: {"_token": csrf},
+            success: res=> {
+                load.off();
+                parseResult(res);
+                window.location.href="/auth/login";
+            }, error: xhr=> console.log(xhr.responseText)
+        })
+    });
+}

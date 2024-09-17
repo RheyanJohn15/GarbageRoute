@@ -1,5 +1,6 @@
 <div id="mainloader" style="display: none;" class="mainloader">
   <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  <p class="text-muted fs-4">Loading Please Wait..........</p>
 </div>
 <style>
   .mainloader{
@@ -8,7 +9,10 @@
     position: fixed;
     z-index: 99999;
     background-color: rgba(0,0,0,0.4);
-    place-items: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap:1.5rem;
     backdrop-filter: blur(3px);
   }
 

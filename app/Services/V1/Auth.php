@@ -1,9 +1,10 @@
 <?php
 namespace App\Services\V1;
 use App\Models\Accounts;
+use App\Models\TruckDriverModel;
 use Illuminate\Support\Facades\Hash;
 class Auth {
-    
+
 
      /*
     *@Author: Rheyan John Blanco
@@ -48,10 +49,30 @@ class Auth {
         }else{
             return $this->parseResult('fail', 'No Account Found');
         }
-    
+
     }
 
-    
+    public function authdriver(){
+        $driver = TruckDriverModel::where('username', $this->username)->first();
+
+        if($driver){
+            if(Hash::check($this->password, $driver->password)){
+                $token = $this->genAuthToken();
+                while($driver->acc_token == $token){
+                    $token = $this->genAuthToken();
+                }
+                $driver->update(['acc_token'=> $token]);
+                session(['api_token' => $token]);
+                return $this->parseResult('success', $token);
+            }else{
+                return $this->parseResult('fail', 'Invalid Password');
+            }
+        }else{
+            return $this->parseResult('fail', 'No Account Found');
+        }
+    }
+
+
     private function parseResult($status, $result){
         return [
            'status'=>$status,
@@ -69,7 +90,7 @@ class Auth {
     private function genAuthToken($length = 32){
       $bytes = random_bytes($length);
       $token = bin2hex($bytes);
-    
+
       return $token;
     }
 
