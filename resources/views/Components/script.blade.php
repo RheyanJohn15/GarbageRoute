@@ -1,21 +1,21 @@
-<script src="assets/js/core/jquery-3.7.1.min.js"></script>
-<script src="assets/js/core/popper.min.js"></script>
-<script src="assets/js/core/bootstrap.min.js"></script>
+<script src="{{asset('assets/js/core/jquery-3.7.1.min.js')}}"></script>
+<script src="{{asset('assets/js/core/popper.min.js')}}"></script>
+<script src="{{asset('assets/js/core/bootstrap.min.js')}}"></script>
 
 <!-- jQuery Scrollbar -->
-<script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="{{asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js')}}"></script>
 
 <!-- Chart JS -->
-<script src="assets/js/plugin/chart.js/chart.min.js"></script>
+<script src="{{asset('assets/js/plugin/chart.js/chart.min.js')}}"></script>
 
 <!-- jQuery Sparkline -->
-<script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+<script src="{{asset('assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js')}}"></script>
 
 <!-- Chart Circle -->
-<script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+<script src="{{asset('assets/js/plugin/chart-circle/circles.min.js')}}"></script>
 
 <!-- Datatables -->
-<script src="assets/js/plugin/datatables/datatables.min.js"></script>
+<script src="{{asset('assets/js/plugin/datatables/datatables.min.js')}}"></script>
 
 <!-- Bootstrap Notify -->
 <script src="{{asset('assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js')}}"></script>
