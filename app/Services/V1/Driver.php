@@ -16,6 +16,12 @@ class Driver{
         $this->RESULT = ['routes', 'Successfully Fetch All drivers route', $route];
     }
 
+    private function routedetails($request){
+        $route = RoutesModel::where('r_id', $request->routeid)->first();
+
+        $this->RESULT = ['details', 'Succesffully Fetch Route Details', $route];
+    }
+
     public function getResult(){
         return $this->RESULT;
     }

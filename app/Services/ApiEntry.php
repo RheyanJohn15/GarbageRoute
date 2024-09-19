@@ -134,7 +134,8 @@ class ApiEntry{
             'update'=> ['comp_id', 'status']
         ],
         'drivers' => [
-            'getroute'=> ['driverid']
+            'getroute'=> ['driverid'],
+            'routedetails'=> ['routeid'],
         ],
     ];
 

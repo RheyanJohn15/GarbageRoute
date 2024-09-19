@@ -250,3 +250,10 @@ function parseSchedule(type){
             return `weekendholiday**${selectedData}`;
     }
 }
+
+function getUrlquery(id){
+    const url = new URL(window.location.href);
+    const queryParams = url.searchParams;
+
+    return queryParams.get(id);
+}

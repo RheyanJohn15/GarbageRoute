@@ -13,6 +13,7 @@ Route::get('/truckregister', [Authenticate::class, 'TruckRegister'])->name('truc
 
 Route::get('/user/complaint', function () {return view('User.complaint');})->name('usercomplaints');
 Route::get('/user/driver/dashboard', function () {return view('User.dashboard');})->name('userDashboard');
+Route::get('/user/driver/routejourney', function () {return view('User.journey');})->name('userJourney');
 Route::get('/user/driver/history', function () {return view('User.history');})->name('userHistory');
 
 Route::get('/auth/login', function () {
