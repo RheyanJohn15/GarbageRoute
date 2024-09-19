@@ -28,7 +28,7 @@
                     <input type="password" name="password" placeholder="Password" required="" id="password" />
                 </div>
                 <div>
-                    <button id="loginButton" type="button">Log in</button>
+                    <button id="loginButton" type="submit">Log in</button>
                     {{-- <a href="#">Lost your password?</a>
                     <a href="#">Register</a> --}}
                 </div>

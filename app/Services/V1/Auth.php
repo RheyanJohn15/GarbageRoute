@@ -63,7 +63,7 @@ class Auth {
                 }
                 $driver->update(['acc_token'=> $token]);
                 session(['api_token' => $token]);
-                return $this->parseResult('success', $token);
+                return $this->parseResult('success', $token."-". $driver->td_id);
             }else{
                 return $this->parseResult('fail', 'Invalid Password');
             }

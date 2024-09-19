@@ -256,73 +256,7 @@ document.getElementById('setDurationDaily').addEventListener('click', ()=>{
     isShow('dailyDuration', true);
 });
 
-function parseSchedule(type){
-    switch(type){
-        case "daily":
-            const radios = document.querySelectorAll('input[name="duration"]');
-            let selectedValue = null;
-            radios.forEach(radio => {
-                if (radio.checked) {
-                    selectedValue = radio.value;
-                }
-            });
 
-            let duration;
-            if(selectedValue == 'noDuration'){
-                duration = selectedValue;
-            }else{
-                const startDateDaily = getVal('startDateDaily');
-                const endDateDaily = getVal('endDateDaily');
-                if(startDateDaily == '' || endDateDaily == ''){
-                    return ['error', 'Start Date or End Date Duration is Empty'];
-                }
-                duration = `${selectedValue}**${startDateDaily}**${endDateDaily}`;
-            }
-            
-            return `daily**${duration}`;
-        case "weekly":
-            const checkboxes = document.querySelectorAll('input[name="weeklyDays"]');
-
-            let selectedDays = [];
-            checkboxes.forEach((checkbox) => {
-                // If the checkbox is checked, push its value into the array
-                if (checkbox.checked) {
-                  selectedDays.push(checkbox.value);
-                }
-              });
-
-              if(selectedDays.length == 0){
-                return ['error', 'No Days Selected'];
-              }
-              
-              let parseData = '';
-
-              selectedDays.forEach((data)=>{
-                parseData += `${data}**`;
-              });
-            return `weekly**${parseData}`;
-        case "monthly":
-            const monthlySelect = getVal('selectMonthlyOptions');
-            
-            let monthly;
-            if(monthlySelect == 'setCustomDate'){
-                const date = getVal('monthlyCustomDate');
-                if(date == ''){
-                    return ['error', 'No Date Selected'];
-                }
-                
-                monthly = `setCustomDate**${date}`;
-                
-            }else{
-                monthly = monthlySelect;
-            }
-
-            return `monthly**${monthly}`;
-        default:
-            const selectedData = getVal('selectWeekendHolidays');
-            return `weekendholiday**${selectedData}`;
-    }
-}
 
 document.getElementById('selectMonthlyOptions').addEventListener('change',(e)=> {
     if(e.target.value == 'setCustomDate'){

@@ -21,23 +21,9 @@
               </div>
             </div>
       
-            <div class="table-responsive">
-              <table
-                id="basic-datatables"
-                class="display table table-striped table-hover"
-              >
-                <thead>
-                  <tr>
-                    <th>Route Name</th>
-                    <th>Schedule</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tfoot>
-                 
-                  
-                </tbody>
-              </table>
+            <div class="list-group" id="routeList">
+              
+            
             </div>
 
           </div>
@@ -47,7 +33,7 @@
 
     </div>
     <!--   Core JS Files   -->
-
+    <script src="{{asset('Scripts/userDashboard.js')}}"></script>
     @include('Components.script')
   </body>
 </html>

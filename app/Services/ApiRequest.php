@@ -5,7 +5,7 @@ use App\Services\V1\DumpTruck;
 use App\Services\V1\Routes;
 use App\Services\V1\ComplaintsClass;
 use App\Services\ApiException;
-
+use App\Services\V1\Driver;
 class ApiRequest{
 
     private $RESPONSE;
@@ -24,6 +24,9 @@ class ApiRequest{
          
          case 'complaints':
             $result = new ComplaintsClass($method, $request);
+            break;
+         case 'drivers':
+            $result = new Driver($method, $request);
             break;
         default:
           throw new ApiException(ApiException::NOT_VALID_TYPE);

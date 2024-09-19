@@ -9,7 +9,9 @@ document.getElementById('login-form').addEventListener('submit', (e)=> {
         data: $('#login-form').serialize(),
         success: res => {
             load.off();
-            console.log(res);
+            const id = res.result.split('-')[1];
+
+            localStorage.setItem('driverId', id);
             if(res.status == 'success'){
                 toastr["success"]("Login Successfully");
                 window.location.href = '/user/driver/dashboard';

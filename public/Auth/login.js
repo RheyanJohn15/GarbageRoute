@@ -1,4 +1,5 @@
-document.getElementById('loginButton').addEventListener('click', ()=>{
+document.getElementById('loginForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
     let validity = 0;
 
     validity += helper.checkvalidity('username');

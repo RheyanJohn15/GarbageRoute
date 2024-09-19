@@ -20,10 +20,12 @@ class ApiEntry{
 
     public function __construct(string $type, string $method, $request, $requestType)
     {
-
+        
         if(array_key_exists($type, self::API_LIST)){
-           $this->VALID_TYPE = self::API_LIST[$type]; 
+           $this->VALID_TYPE = self::API_LIST[$type];
+
         }else{
+
             throw new ApiException(ApiException::NOT_VALID_TYPE);
         }
 
@@ -100,7 +102,8 @@ class ApiEntry{
     
 
     private const API_LIST = 
-    [ 'truckdriver' => 
+    [ 
+        'truckdriver' => 
             ['add' => ['name','username', 'password', 'licensenum', 'contact', 'address'],
              'delete' => ['id'],
              'update' => ['name','username', 'id', 'licensenum', 'contact', 'address'],
@@ -129,7 +132,10 @@ class ApiEntry{
             'remove'=> ['comp_id'],
             'details'=> ['comp_id'],
             'update'=> ['comp_id', 'status']
-        ]
+        ],
+        'drivers' => [
+            'getroute'=> ['driverid']
+        ],
     ];
 
 }
