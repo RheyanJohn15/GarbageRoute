@@ -4,6 +4,7 @@
    @include('Components.header', ['title'=> 'Admin Dashboard'])
   </head>
   <body>
+    @include('Components.dashload')
     <div class="wrapper">
       @include('Components.nav', ['active'=>'dashboard'])
 

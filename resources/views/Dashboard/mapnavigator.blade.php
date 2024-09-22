@@ -4,6 +4,7 @@
    @include('Components.header', ['title'=> 'Map Navigator'])
   </head>
   <body>
+    @include('Components.dashload')
     @vite('resources/js/app.js')
     <div class="wrapper">
         @include('Components.nav', ['active'=>'mapnavigator'])

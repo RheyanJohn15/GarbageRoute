@@ -1,3 +1,5 @@
+let profilePic;
+
 let globalUserPromise = new Promise(async (resolve, reject) => {
     try {
         const getToken = await fetch('/api/get/request/accesstoken', {
@@ -21,9 +23,20 @@ let globalUserPromise = new Promise(async (resolve, reject) => {
         setText('adminNameHeaderNav', user.acc_name);
 
         const color = getRandomColor(profileBackgrounds);
-        setImage('userProfilePic', `https://via.placeholder.com/150/${color}/000000/?text=${user.acc_name[0]}`);
-        setImage('userProfilePicMobile', `https://via.placeholder.com/150/${color}/000000/?text=${user.acc_name[0]}`);
 
+        const splitText = user.acc_name.split(' ');
+        let initials = '';
+
+        splitText.forEach(name => {
+            initials += name[0].toUpperCase();
+        });
+
+        profilePic = user.acc_profile !== null ? `/assets/img/avatars/${user.acc_profile}` : `https://via.placeholder.com/150/${color}/000000/?text=${initials}`;
+
+        setImage('userProfilePic', profilePic);
+        setImage('userProfilePicMobile', profilePic);
+        setImage('accountAvatar', profilePic);
+        setImage('changeProfileSelected', profilePic);
         setText('userNameDrop', user.acc_name);
         setText('userType', user.acc_type);
     } catch (error) {
@@ -53,3 +66,4 @@ const profileBackgrounds = [
     "e0ffff", // Light Cyan
     "f0e68c", // Khaki
 ];
+

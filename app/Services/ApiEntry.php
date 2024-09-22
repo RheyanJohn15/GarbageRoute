@@ -140,7 +140,13 @@ class ApiEntry{
         ],
         'adminaccount'=> [
             'update'=> ['id', 'name', 'username'],
-            'changepass'=> ['id', 'newPass', 'currentPass']
+            'changepass'=> ['id', 'newPass', 'currentPass'],
+            'changeavatar'=> ['id', 'avatar'],
+            'add'=> ['name', 'username', 'password'],
+            'delete'=> ['id'],
+            'changepassadmin'=> ['id', 'newpass'],
+            'getalladmin'=> ['type'],
+            'details'=> ['id']
         ]
     ];
 

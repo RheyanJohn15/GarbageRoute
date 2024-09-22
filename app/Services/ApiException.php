@@ -19,4 +19,6 @@ class ApiException extends \Exception
     public const NO_DATA_FOUND = 'No data found in this api request';
     public const INVALID_PARAMS = 'The paramater body is incomplete or invalid';
     public const INVALID_BODY = 'The request body is incomplete or invalid';
+    public const USERNAME_EXIST = 'The username already exist';
+    public const SAME_PASS = 'The new password is the same with the old password';
 }

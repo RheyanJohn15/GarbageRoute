@@ -1,11 +1,39 @@
+let accesstoken;
 let driverId;
 
-window.onload = ()=> {
-   const id = localStorage.getItem('driverId');
-   driverId = id;
+let getDriverData = new Promise(async(resolve, reject)=> {
+  try{
+    const token = localStorage.getItem('access_token');
+
+    const response = await fetch(`/api/get/auth/info?token=${token}&type=driver`, {
+      method: 'GET',
+      headers: {"Content-Type": "application/json"}
+    });
+
+    const result = response.json();
+
+    resolve(result);
+  }catch(error){
+    reject(error);
+  }
+}); 
+
+async function getDriverDataInfo(){
+  return await getDriverData;
+}
+
+window.onload = async ()=> {
+   const token = localStorage.getItem('access_token');
+   accesstoken = token;
+ 
+
+   const userInfo = await getDriverDataInfo();
+   driverId = userInfo.data.td_id;
 
    loadAllRoute();
 }
+
+
 
 async function loadAllRoute(){
     const csrf = await getCSRF()

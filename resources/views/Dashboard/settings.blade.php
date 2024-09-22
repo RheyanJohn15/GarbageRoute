@@ -33,9 +33,9 @@
             <div class="row bg-white rounded p-2 shadow">
                 <div class="col-3 p-4 d-flex flex-column gap-4 justify-content-center align-items-center">
                     <div class="avatar avatar-xxl">
-                        <img src="/assets/img/load.jfif" alt="profile" class="avatar-img rounded-circle">
+                        <img src="/assets/img/load.jfif" id="accountAvatar" alt="profile" class="avatar-img rounded-circle">
                     </div>
-                    <button data-bs-toggle="modal" data-bs-target="#changeProfilePicture" class="btn btn-secondary"><span class="btn-label">
+                    <button id="changeProfileModal" data-bs-toggle="modal" data-bs-target="#changeProfilePicture" class="btn btn-secondary"><span class="btn-label">
                     <i class="fas fa-images"></i> Change Profile Pic
                     </span></button>
                 </div>
@@ -161,16 +161,28 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body p-4  ">
        
         <p class="small">
            Update Accounts Profile Picture for more Identification
            </p>
+
+           <div class="w-full row ">
+            <div class="col-3 d-flex justify-content-center align-items-center flex-column">
+              <div class="avatar avatar-xxl">
+                <img src="/assets/img/load.jfif" alt="changeProfile" id="changeProfileSelected" class="avatar-img rounded-circle">
+              </div>
+            </div>
+            <div class="col-9 border border-1 rounded p-4" id="avatarList">
+              
+            </div>
+            
+           </div>
       </div>
       <div class="modal-footer border-0">
         <button
           type="button"
-          id="updateDriver"
+          id="updateProfilePictureBtn"
           class="btn btn-primary"
           >
           Update Profile Picture
@@ -188,6 +200,13 @@
   </div>
 </div>
 
+
+<form id="changeProfileForm">
+  @csrf
+  <input type="hidden" name="id" id="changeProfileAccId">
+  <input type="hidden" name="avatar" id="changeProfileSelectedAvatar">
+
+</form>
     @include('Components.script')
     <script src="/Scripts/settings.js"></script>
   </body>

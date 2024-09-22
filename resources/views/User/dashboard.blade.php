@@ -33,7 +33,8 @@
 
     </div>
     <!--   Core JS Files   -->
-    <script src="{{asset('Scripts/userDashboard.js')}}"></script>
+  
     @include('Components.script')
+    <script src="{{asset('Scripts/userDashboard.js')}}"></script>
   </body>
 </html>

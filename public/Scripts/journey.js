@@ -2,6 +2,7 @@
     let map;
     let directions;
     let markers = [];
+    
     map = new mapboxgl.Map({
         container: 'map', // container ID
         style: 'mapbox://styles/mapbox/streets-v12', // style URL

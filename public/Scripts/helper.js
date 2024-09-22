@@ -15,17 +15,33 @@ function getAsset(asset){
 }
 
 function reactive(id, value){
-    document.getElementById(id).disabled = value;
+    const element = document.getElementById(id);
+    if(element){
+        element.disabled = value;
+    }
+    
 }
 function setText(id, value){
-   document.getElementById(id).textContent = value;
+   const element = document.getElementById(id);
+   if(element){
+    element.textContent = value;
+   }
+ 
 }
 
 function setHtml(id, value){
-    document.getElementById(id).innerHTML = value;
+    const element = document.getElementById(id);
+    if(element){
+        element.innerHTML = value;
+    }
+ 
 }
 function setImage(id, value){
-    document.getElementById(id).src = value;
+    const element = document.getElementById(id);
+    if(element){
+        element.src = value;
+    }
+   
 }
 
 function getRandomColor(colors) {
@@ -73,15 +89,27 @@ const load = {
 }
 
 function clicked(id){
-    document.getElementById(id).click();
+    const element = document.getElementById(id);
+    if(element){
+        element.click();
+    }
+    
 }
 
 function isVisible(visible, id){
-    document.getElementById(id).style.display = visible;
+    const element = document.getElementById(id);
+    if(element){
+         element.style.display = visible;
+    }
+   
 }
 
 function setValue(id, value){
-    document.getElementById(id).value = value;
+    const element = document.getElementById(id);
+    if(element){
+        element.value = value;
+    }
+    
 }
 
 function parseDate(dateString) {
@@ -141,7 +169,11 @@ function confirmAction(){
 }
 
 function getVal(id){
-    return document.getElementById(id).value;
+    const element = document.getElementById(id);
+    if(element){
+        return element.value;
+    }
+    
 }
 
 function isShow(id, status, type = 'flex'){
