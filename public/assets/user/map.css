@@ -1,0 +1,14 @@
+.mapboxgl-ctrl-geolocate {
+    background-image: url('car-icon.png'); /* Replace with your custom car icon */
+    background-size: 24px 24px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .mapboxgl-ctrl-geolocate:hover {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }

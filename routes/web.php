@@ -10,6 +10,9 @@ Route::get('/complaints', [Authenticate::class, 'Complaints'])->name('complaints
 Route::get('/mapnavigator', [Authenticate::class, 'MapNavigator'])->name('mapnavigator');
 Route::get('/truckdriver', [Authenticate::class, 'TruckDriver'])->name('truckdriver');
 Route::get('/truckregister', [Authenticate::class, 'TruckRegister'])->name('truckregister');
+Route::get('/profile', [Authenticate::class, 'Profile']);
+Route::get('/settings', [Authenticate::class, 'Settings']);
+
 
 Route::get('/user/complaint', function () {return view('User.complaint');})->name('usercomplaints');
 Route::get('/user/driver/dashboard', function () {return view('User.dashboard');})->name('userDashboard');
@@ -29,8 +32,8 @@ Route::get('/csrf-token', function () {
     return csrf_token();
 });
 
-// Route::get('/test', function(){
-//   event(new GpsUpdate('this is test'));
+Route::get('/test', function(){
+  event(new GpsUpdate('this is test'));
 
-//   return 'done';
-// });
+  return 'done';
+});

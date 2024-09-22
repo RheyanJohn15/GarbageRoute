@@ -11,7 +11,7 @@
   </style>
   <body>
     @include('Components.dashload')
-    {{-- @vite('resources/js/app.js') --}}
+
     <div class="wrapper">
         @include('Components.nav', ['active'=>'routes'])
 

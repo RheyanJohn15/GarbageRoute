@@ -136,7 +136,12 @@ class ApiEntry{
         'drivers' => [
             'getroute'=> ['driverid'],
             'routedetails'=> ['routeid'],
+            'updatelocation'=> ['coordinates'],
         ],
+        'adminaccount'=> [
+            'update'=> ['id', 'name', 'username'],
+            'changepass'=> ['id', 'newPass', 'currentPass']
+        ]
     ];
 
 }

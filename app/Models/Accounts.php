@@ -17,6 +17,7 @@ class Accounts extends Model
         'acc_username',
         'acc_password',
         'acc_status',
-        'acc_token'
+        'acc_token',
+        'acc_profile'
     ];
 }

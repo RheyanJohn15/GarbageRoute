@@ -2,8 +2,10 @@
 <html lang="en">
   <head>
    @include('Components.header', ['title'=> 'Driver Route Journey'])
+   <link rel="stylesheet" href="{{asset('assets/user/map.css')}}">
   </head>
   <body>
+
     <div class="wrapper">
         @include('Components.userNav', ['active'=>'dashboard'])
 

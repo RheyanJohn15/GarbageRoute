@@ -6,6 +6,7 @@ use App\Services\V1\Routes;
 use App\Services\V1\ComplaintsClass;
 use App\Services\ApiException;
 use App\Services\V1\Driver;
+use App\Services\V1\AdminAccount;
 class ApiRequest{
 
     private $RESPONSE;
@@ -27,6 +28,9 @@ class ApiRequest{
             break;
          case 'drivers':
             $result = new Driver($method, $request);
+            break;
+         case 'adminaccount':
+            $result = new AdminAccount($method, $request);
             break;
         default:
           throw new ApiException(ApiException::NOT_VALID_TYPE);

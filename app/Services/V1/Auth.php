@@ -16,12 +16,18 @@ class Auth {
     private $username;
     private $password;
     private $method;
+    private $token;
+    private $userType;
     public function __construct($method = null, $data = null)
     {
       if($method == 'login'){
         $this->username = $data->username;
         $this->password = $data->password;
         $this->method = $method;
+      }
+      if($method == 'info'){
+        $this->token = $data->token;
+        $this->userType = $data->type;
       }
     }
 
@@ -41,7 +47,7 @@ class Auth {
                 $token = $this->genAuthToken();
             }
             $acc->update(['acc_token'=> $token]);
-            session(['api_token' => $token]);
+            session(['access_token' => $token]);
             return $this->parseResult('success', $token);
           }else{
             return $this->parseResult('fail', 'Invalid Password');
@@ -58,12 +64,12 @@ class Auth {
         if($driver){
             if(Hash::check($this->password, $driver->password)){
                 $token = $this->genAuthToken();
-                while($driver->acc_token == $token){
+                while($driver->access_token == $token){
                     $token = $this->genAuthToken();
                 }
-                $driver->update(['acc_token'=> $token]);
-                session(['api_token' => $token]);
-                return $this->parseResult('success', $token."-". $driver->td_id);
+                $driver->update(['access_token'=> $token]);
+                session(['access_token' => $token]);
+                return $this->parseResult('success', $token);
             }else{
                 return $this->parseResult('fail', 'Invalid Password');
             }
@@ -93,13 +99,29 @@ class Auth {
 
       return $token;
     }
+    
+    public function getAccessToken(){
+      return session('access_token');
+    }
 
+
+    public function getUserInfo(){
+      if($this->userType == 'admin'){
+        $account = Accounts::where('acc_token', $this->token)->first();
+
+        return $account;
+      }
+
+      $driver = TruckDriverModel::where('access_token', $this->token)->first();
+
+      return $driver;
+    }
     /*
     *Author: Rheyan John Blanco
     *Date: August, 12, 2024
     *Description: Check Session if there is an api_token exist means user is authenticated
     */
     public function checkAuth($req){
-      return $req->session()->has('api_token');
+      return $req->session()->has('access_token');
     }
 }

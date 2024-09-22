@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\RoutesModel;
 
 class GpsUpdate implements ShouldBroadcast
 {
@@ -20,7 +21,7 @@ class GpsUpdate implements ShouldBroadcast
     public $message;
     public function __construct($message)
     {
-        $this->message = $message;
+        $this->message = $message;            
     }
 
     /**

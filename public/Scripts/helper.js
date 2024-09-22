@@ -14,6 +14,9 @@ function getAsset(asset){
     return `${url}/${asset}`;
 }
 
+function reactive(id, value){
+    document.getElementById(id).disabled = value;
+}
 function setText(id, value){
    document.getElementById(id).textContent = value;
 }
@@ -24,6 +27,12 @@ function setHtml(id, value){
 function setImage(id, value){
     document.getElementById(id).src = value;
 }
+
+function getRandomColor(colors) {
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+}
+
 
 async function getCSRF() {
     try {

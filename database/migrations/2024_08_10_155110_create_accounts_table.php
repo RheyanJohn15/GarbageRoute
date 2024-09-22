@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('acc_password');
             $table->string('acc_status');
             $table->string('acc_token');
+            $table->string('acc_profile', 30)->nullable();
             $table->timestamps();
         });
     }

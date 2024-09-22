@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('contact');
             $table->string('address');
             $table->string('profile_pic')->nullable();
+            $table->string('access_token')->nullable();
             $table->timestamps();
         });
     }

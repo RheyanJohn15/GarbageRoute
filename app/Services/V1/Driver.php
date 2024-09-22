@@ -1,6 +1,8 @@
 <?php
 namespace App\Services\V1;
 use App\Models\RoutesModel;
+use App\Events\GpsUpdate;
+
 class Driver{
 
     private $RESULT = null;
@@ -20,6 +22,12 @@ class Driver{
         $route = RoutesModel::where('r_id', $request->routeid)->first();
 
         $this->RESULT = ['details', 'Succesffully Fetch Route Details', $route];
+    }
+
+    private function updatelocation($request){
+        event(new GpsUpdate($request->coordinates));
+
+        $this->RESULT = ['updatelocation', 'Succesfully updated the location', 'null'];
     }
 
     public function getResult(){

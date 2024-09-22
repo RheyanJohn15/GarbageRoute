@@ -30,6 +30,13 @@ class Authenticate extends Controller
         return $this->redirectRoute('mapnavigator', $req);
     }
 
+    public function Profile(Request $req){
+        return $this->redirectRoute('profile', $req);
+    }
+
+    public function Settings(Request $req){
+        return $this->redirectRoute('settings', $req);
+    }
 
 
     /*
