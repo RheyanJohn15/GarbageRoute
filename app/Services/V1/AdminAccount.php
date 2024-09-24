@@ -1,6 +1,10 @@
 <?php
 namespace App\Services\V1;
 use App\Models\Accounts;
+use App\Models\TruckDriverModel;
+use App\Models\DumpTruckModel;
+use App\Models\RoutesModel;
+use App\Models\Complaints;
 use Illuminate\Support\Facades\Hash;
 use App\Services\ApiException;
 class AdminAccount{
@@ -106,6 +110,19 @@ class AdminAccount{
 
         $this->RESULT = ['details', 'Succesfully fetch details', $account];
     }
+
+    private function dashboard($request){
+        $driver = TruckDriverModel::all();
+        $truck = DumpTruckModel::all();
+        $route = RoutesModel::all();
+        $complaint = Complaints::all();
+
+
+        $dashboard = [$driver, $truck, $route, $complaint];
+
+        $this->RESULT = ['dashboard', 'Succesfully fetch all dashboard data', $dashboard];
+    }
+
     public function getResult(){
         return $this->RESULT;
     }
