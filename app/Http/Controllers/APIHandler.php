@@ -10,9 +10,9 @@ use App\Services\ApiException;
 class APIHandler extends Controller
 {
     public function APIEntryGet(Request $req, string $data, string $method){
-        
+
         $check = new Auth($method, $req);
-        
+
         if($data== 'request' && $method == 'accesstoken'){
             return response()->json(['success'=> true, "access_token"=> $check->getAccessToken()]);
         }
@@ -40,7 +40,7 @@ class APIHandler extends Controller
 
             $response = $check->authdriver();
            if($response['status']== 'success'){
-            $req->session()->put('access_token', $response['result']);
+            $req->session()->put('driver_access_token', $response['result']);
            }
            return response()->json($response);
         }

@@ -4,7 +4,7 @@
 @include('User.components.head')
 
 <body>
-
+    @include('Components.dashload')
     @include('User.components.preloader')
     @include('User.components.header')
 
@@ -94,7 +94,7 @@
                             <div class="icon"><i class="fas fa-water icon-large"></i></div>
                             <p>Addresses waste-related issues that contribute to flooding and landslides in vulnerable areas.</p>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -150,7 +150,7 @@
                                         <p>Collaborating for a cleaner, greener community.</p>
                                     </div>
                                 </div>
-                            </div>                            
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -269,7 +269,7 @@
                     </div>
                 </div>
                 <div class="col-lg-7 align-self-center">
-                    <form id="contact" action="" method="post">
+                    <form id="contact" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-lg-12">
@@ -286,7 +286,7 @@
                             </div>
                             <div class="col-lg-12">
                                 <fieldset>
-                                    <input type="text" name="contact" id="contact" placeholder="Contact"
+                                    <input type="text" name="contact" id="contacts" placeholder="Contact"
                                         required>
                                 </fieldset>
                             </div>
@@ -345,7 +345,11 @@
     @include('User.components.footer')
 
 </body>
+
+
 @include('User.components.scripts')
+<script src="{{asset('assets/complaints.js')}}"></script>
+<script src="{{asset('Scripts/helper.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 </html>

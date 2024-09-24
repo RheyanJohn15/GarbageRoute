@@ -4,7 +4,7 @@ use App\Events\GpsUpdate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authenticate;
 
-Route::get('/', [Authenticate::class, 'Dashboard'])->name('dashboard');
+Route::get('/dashboard', [Authenticate::class, 'Dashboard'])->name('dashboard');
 Route::get('/routes', [Authenticate::class, 'Routes'])->name('routes');
 Route::get('/complaints', [Authenticate::class, 'Complaints'])->name('complaints');
 Route::get('/mapnavigator', [Authenticate::class, 'MapNavigator'])->name('mapnavigator');
@@ -13,7 +13,7 @@ Route::get('/truckregister', [Authenticate::class, 'TruckRegister'])->name('truc
 Route::get('/profile', [Authenticate::class, 'Profile']);
 Route::get('/settings', [Authenticate::class, 'Settings']);
 
-Route::get('/home', function () {return view('User.index');})->name('home');
+Route::get('/', function () {return view('User.index');})->name('home');
 Route::get('/user/complaint', function () {return view('User.complaint');})->name('usercomplaints');
 Route::get('/user/driver/dashboard', function () {return view('User.dashboard');})->name('userDashboard');
 Route::get('/user/driver/routejourney', function () {return view('User.journey');})->name('userJourney');

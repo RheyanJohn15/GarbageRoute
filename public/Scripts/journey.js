@@ -2,7 +2,7 @@
     let map;
     let directions;
     let markers = [];
-    
+
     map = new mapboxgl.Map({
         container: 'map', // container ID
         style: 'mapbox://styles/mapbox/streets-v12', // style URL
@@ -23,7 +23,7 @@
         },
         trackUserLocation: true
       });
-      
+
       map.addControl(geolocate, 'top-right');
 
       geolocate.on('geolocate', async (e) => {
@@ -53,9 +53,6 @@
                 const coordinates = data.r_coordinates.split(',');
                 coordinates.pop();
 
-            
-
-
                 directions = new MapboxDirections({
                     accessToken: mapboxgl.accessToken,
                     unit: 'metric',
@@ -65,7 +62,7 @@
                         instructions: true,
                     },
                 });
-        
+
                 map.addControl(directions, 'top-left');
 
                 // Add markers to each waypoint

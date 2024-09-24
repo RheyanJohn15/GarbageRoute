@@ -3,7 +3,7 @@ let map;
 let clickCount = 0;
 let directions;
 let markers = [];
-let coordinatesList = [];    
+let coordinatesList = [];
 map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/streets-v12', // style URL
@@ -29,27 +29,27 @@ map.on('click', async (e) => {
     clickCount++;
     try {
         const placeName = await getPlaceName(coordinates);
-       
+
         coordinatesList.push(`${coordinates[0]}-${coordinates[1]}`);
-        
+
         const list = document.getElementById('waypointListTable');
 
         clickCount == 1 ? list.innerHTML = '' : null;
-        
+
         list.innerHTML += `<tr>
-                    <td>${clickCount}</td>  
-                     <td>${coordinates[0]}, ${coordinates[1]}</td>    
-                      <td>${placeName}</td>          
+                    <td>${clickCount}</td>
+                     <td>${coordinates[0]}, ${coordinates[1]}</td>
+                      <td>${placeName}</td>
                     </tr>`;
     } catch (error) {
         console.error('Error fetching location name:', error);
     }
 
     const marker = new mapboxgl.Marker()
-    .setLngLat(coordinates)
-    .addTo(map);
+        .setLngLat(coordinates)
+        .addTo(map);
 
-    markers.push(marker); 
+    markers.push(marker);
 
     const waypoints = directions.getWaypoints();
     if (waypoints.length < 25) {
@@ -95,139 +95,188 @@ function removeAllWaypoints() {
     // Assign the new map and directions instances to global variables if needed
     map = newMap;
     directions = newDirections;
-    coordinatesList.length = 0; 
+    coordinatesList.length = 0;
     isVisible('none', 'clearWaypoints')
 }
 let selectedScheduleType = 'daily';
-document.getElementById('saveRoute').addEventListener('click', async ()=> {
+document.getElementById('saveRoute').addEventListener('click', async () => {
     load.on();
-    
+
     const sched = parseSchedule(selectedScheduleType);
-    if(sched[0] == 'error'){
+    if (sched[0] == 'error') {
         load.off();
         showError(sched[1]);
         return;
     }
     let parseCoordinate = '';
-    coordinatesList.forEach((data)=>{
+    coordinatesList.forEach((data) => {
         parseCoordinate += `${data},`;
     });
     const routeName = getVal('routeName');
     const csrf = await getCSRF();
     const data = {
         "_token": csrf,
-        "route_name": routeName ,
+        "route_name": routeName,
         "coordinates": parseCoordinate,
         "assigned_driver": getVal('selectDriver'),
         "schedule": sched
     }
 
     $.ajax({
-       type:"POST",
-       url: getApi('routes', 'add', 'post'),
-       data: data,
-       success: res=> {
-        load.off()
-        parseResult(res)
-        removeAllWaypoints()
-        setValue('routeName', '');
-        setValue('selectDriver', 'none');
-        loadAllRoute();
-        const empty = ` <tr>
+        type: "POST",
+        url: getApi('routes', 'add', 'post'),
+        data: data,
+        success: res => {
+            load.off()
+            parseResult(res)
+            removeAllWaypoints()
+            setValue('routeName', '');
+            setValue('selectDriver', 'none');
+            loadAllRoute();
+            const empty = ` <tr>
                     <td colspan="3" class="text-center">No Waypoint Added</td>
                   </tr>`;
-        setHtml('waypointListTable', empty);
-       }, 
-       error: xhr => {
-        load.off();
-        parseResult(JSON.parse(xhr.responseText));
-       }
+            setHtml('waypointListTable', empty);
+        },
+        error: xhr => {
+            load.off();
+            parseResult(JSON.parse(xhr.responseText));
+        }
     });
 
 });
 
-function loadAllRoute(){
-    
+function loadAllRoute() {
+
     if ($.fn.DataTable.isDataTable('#routes')) {
         $('#routes').DataTable().clear().destroy();
     }
 
     $.ajax({
-      type:"GET",
-      url: getApi('routes', 'list', 'get'),
-      dataType: "json",
-      success: res=> {
-          $('#routes').DataTable({
-            data: res.result.data,
-            columns: [
-                {title: "Route Name", data: "r_name"},
-                {title: "Schedule", data: null,
-                    render: data => {
-                        const sched = processSchedule(data.r_schedule);
-                        return sched;
-                    }
-                },
-                {title: "Status", data: null, 
-                    render: data=> {
-                        return `<span class="badge badge-${data.r_status == 1 ? 'success': 'danger'}">${data.r_status == 1 ? 'Active': 'Inactive'}</span>`
-                    }
-                },
-                {title: "Assigned Driver", data: "truck_driver"},
-                {title: "Action" , data: null,
-                   render: data=> {
-                    return `
+        type: "GET",
+        url: getApi('routes', 'list', 'get'),
+        dataType: "json",
+        success: res => {
+
+            const card = document.getElementById('addRouteCard');
+            card.classList.add('d-none');
+            $('#routes').DataTable({
+                data: res.result.data,
+                columns: [
+                    { title: "Route Name", data: "r_name" },
+                    {
+                        title: "Schedule", data: null,
+                        render: data => {
+                            const sched = processSchedule(data.r_schedule);
+                            return sched;
+                        }
+                    },
+                    {
+                        title: "Status", data: null,
+                        render: data => {
+                            return `<span class="badge badge-${data.r_status == 1 ? 'success' : 'danger'}">${data.r_status == 1 ? 'Active' : 'Inactive'}</span>`
+                        }
+                    },
+                    { title: "Assigned Driver", data: "truck_driver" },
+                    {
+                        title: "Action", data: null,
+                        render: data => {
+                            return `
                     <div class="d-flex gap-1">
-                <button class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
-                 <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
+                <button onclick="EditRoute('${data.r_id}')" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
                 <button onclick="RemoveRoute('${data.r_id}')" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
               </div>`
-                   }, orderable: false
-                }
-            ],
-            pageLength: 5,
-          })
-      }, error: xhr => console.log(xhr.responseText)
+                        }, orderable: false
+                    }
+                ],
+                pageLength: 5,
+            })
+        }, error: xhr => console.log(xhr.responseText)
     });
 }
 
-document.addEventListener('DOMContentLoaded', ()=>{
-   loadAllRoute();
+document.addEventListener('DOMContentLoaded', () => {
+    loadAllRoute();
 });
 
-function RemoveRoute(id){
-   confirmAction().then(async confirm => {
-      if(confirm){
-        load.on();
+async function EditRoute(id) {
+    const card = document.getElementById('addRouteCard');
 
-        const csrf = await getCSRF();
+    const classes = Array.from(card.classList);
 
-        $.ajax({
-            type: "POST",
-            url: getApi('routes', 'delete', 'post'),
-            data: {"_token": csrf, "id": id},
-            success: res=> {
-                load.off();
-                parseResult(res);
-                loadAllRoute();
-            },
-            error: xhr => {
-                load.off();
-                parseResult(JSON.parse(xhr.responseText))
-            }
-        })
-      }
-   })
+    if (classes.includes('d-none')) {
+        card.classList.remove('d-none');
+    } else {
+        card.classList.add('d-none');
+    }
+
+
+    $.ajax({
+        type: "GET",
+        url: `/api/get/routes/details?id=${id}`,
+        dataType: "json",
+        success: res => {
+            console.log(res);
+            removeAllWaypoints();
+            const data = res.result.data;
+
+            const coords = data.r_coordinates.split(',');
+            coords.pop();
+            coords.forEach((cd) => {
+                const coordinates = cd.split('-');
+                const marker = new mapboxgl.Marker()
+                    .setLngLat(coordinates)
+                    .addTo(map);
+
+                markers.push(marker);
+
+                const waypoints = directions.getWaypoints();
+                if (waypoints.length < 25) {
+                    directions.addWaypoint(waypoints.length, coordinates);
+                }
+            });
+
+            setValue('routeName', data.r_name);
+            isVisible('flex', 'clearWaypoints');
+        },
+        error: xhr => console.log(xhr.responseText)
+    });
+}
+
+function RemoveRoute(id) {
+    confirmAction().then(async confirm => {
+        if (confirm) {
+            load.on();
+
+            const csrf = await getCSRF();
+
+            $.ajax({
+                type: "POST",
+                url: getApi('routes', 'delete', 'post'),
+                data: { "_token": csrf, "id": id },
+                success: res => {
+                    load.off();
+                    parseResult(res);
+                    loadAllRoute();
+                },
+                error: xhr => {
+                    load.off();
+                    parseResult(JSON.parse(xhr.responseText))
+                }
+            })
+        }
+    })
 }
 
 document.querySelectorAll('input[name="schedType"]').forEach((radio) => {
     radio.addEventListener('click', (e) => {
-        
+
         isShow('weeklySched', false, 'block');
         isShow('dailySched', false, 'block');
         isShow('monthlySched', false, 'block');
         isShow('weekendHolidaySched', false, 'block');
 
-        switch(e.target.value){
+        switch (e.target.value) {
             case "daily":
                 isShow('dailySched', true, 'block');
                 selectedScheduleType = "daily";
@@ -246,34 +295,34 @@ document.querySelectorAll('input[name="schedType"]').forEach((radio) => {
                 break;
         }
     });
-  });
+});
 
-document.getElementById('noDurationDaily').addEventListener('click', ()=>{
+document.getElementById('noDurationDaily').addEventListener('click', () => {
     isShow('dailyDuration', false);
 });
 
-document.getElementById('setDurationDaily').addEventListener('click', ()=>{
+document.getElementById('setDurationDaily').addEventListener('click', () => {
     isShow('dailyDuration', true);
 });
 
 
 
-document.getElementById('selectMonthlyOptions').addEventListener('change',(e)=> {
-    if(e.target.value == 'setCustomDate'){
+document.getElementById('selectMonthlyOptions').addEventListener('change', (e) => {
+    if (e.target.value == 'setCustomDate') {
         isShow('setMonthlyCustomDate', true, 'block');
-    }else{
+    } else {
         isShow('setMonthlyCustomDate', false, 'block');
     }
 });
 
-function processSchedule(sched){
+function processSchedule(sched) {
     const schedule = sched.split('**');
-  
-    switch(schedule[0]){
+
+    switch (schedule[0]) {
         case "daily":
-            if(schedule[1] == 'noDuration'){
-                return  "Daily(Every Day)";
-            }else{
+            if (schedule[1] == 'noDuration') {
+                return "Daily(Every Day)";
+            } else {
                 return `Daily(${schedule[2]} / ${schedule[3]})`;
             }
         case "weekly":
@@ -283,12 +332,12 @@ function processSchedule(sched){
                     if (schedule[i] != '') {
                         days += `${parseDays(schedule[i])}-`;
                     }
-                } 
+                }
             }
             return `Weekly(${days.slice(0, -1)})`;
-        
+
         case "monthly":
-            if(schedule[1] == "setCustomDate"){
+            if (schedule[1] == "setCustomDate") {
                 return `Monthly(${schedule[2]})`;
             }
 
@@ -298,8 +347,8 @@ function processSchedule(sched){
     }
 }
 
-function parseDays(num){
-    switch(num){
+function parseDays(num) {
+    switch (num) {
         case "1":
             return "Mon";
         case "2":
@@ -316,3 +365,25 @@ function parseDays(num){
             return "Sun";
     }
 }
+
+document.getElementById('addRouteBtn').addEventListener('click', (e) => {
+
+    const element = e.target;
+
+
+    const card = document.getElementById('addRouteCard');
+
+    const classes = Array.from(card.classList);
+
+    if (classes.includes('d-none')) {
+        card.classList.remove('d-none');
+        element.classList.add('btn-danger');
+        element.classList.remove('btn-primary');
+        element.textContent = 'X';
+    } else {
+        element.classList.remove('btn-danger');
+        element.classList.add('btn-primary');
+        element.textContent = 'Add Route';
+        card.classList.add('d-none');
+    }
+});

@@ -29,7 +29,6 @@
               </div>
 
               <div class="ms-md-auto py-2 py-md-0">
-                <button class="btn btn-label-info btn-round me-2">Close View</button>
                 <button id="addRouteBtn" class="btn btn-primary btn-round">Add Routes</button>
               </div>
             </div>
@@ -56,7 +55,7 @@
                 <div class="card-title">Add Route</div>
                 <div class="d-flex gap-2">
                   <button class="btn btn-label-danger gap-2 align-items-center" id="clearWaypoints"  style="display: none"> <i class="fas fa-minus-circle"></i>Remove Route</button>
-                  
+
                 </div>
               </div>
               <div class="card-body">
@@ -181,12 +180,12 @@
                     <div class="form-group w-100">
                       <label for="startDateDaily">Start Date</label>
                       <input type="date" class="form-control" id="startDateDaily" >
-                   
+
                     </div>
                     <div class="form-group w-100">
                       <label for="endDateDaily">End Date</label>
                       <input type="date" class="form-control" id="endDateDaily">
-                    
+
                     </div>
                   </div>
                 </div>
@@ -329,7 +328,7 @@
 
               </div>
             </div>
-          
+
           </div>
         </div>
 
@@ -339,15 +338,7 @@
 
 
 
-    <!--   Core JS Files   -->
-   {{-- <script>
-    setTimeout(() => {
-      window.Echo.channel('gps-update')
-      .listen('GpsUpdate', (e)=> {
-        console.log(e);
-      })
-    }, 2000);
-   </script> --}}
+
 
     @include('Components.script')
     <script src="{{asset('Scripts/route.js')}}"></script>
