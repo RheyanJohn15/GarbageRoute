@@ -146,7 +146,8 @@ class ApiEntry{
             'delete'=> ['id'],
             'changepassadmin'=> ['id', 'newpass'],
             'getalladmin'=> ['type'],
-            'details'=> ['id']
+            'details'=> ['id'],
+            'dashboard'=>['empty']
         ]
     ];
 
