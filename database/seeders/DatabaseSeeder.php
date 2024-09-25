@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         // $this->call(TruckDriverSeeder::class);
         // $this->call(DumpTruckSeeder::class);
-        $this->call(RouterTableSeeder::class);
+        // $this->call(RouterTableSeeder::class);
+        $this->call(AdminSeeder::class);
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',

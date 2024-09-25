@@ -113,7 +113,7 @@
                       <thead>
                         <tr>
                           <th>Truck Model</th>
-                          <th>Can Carry</th>
+                          <th>Capacity(Tons)</th>
                           <th>Driver</th>
                           <th>Action</thA>
                         </tr>

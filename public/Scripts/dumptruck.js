@@ -12,7 +12,7 @@ function getDumpTruckList() {
           data: res.result.data,
           columns: [
             { title: "Truck Model", data: "model" },
-            { title: "Can Carry", data: "can_carry" },
+            { title: "Capacity(Tons)", data: "can_carry" },
             { title: "Driver", data: "driver" },
             { 
               title: "Action", 
