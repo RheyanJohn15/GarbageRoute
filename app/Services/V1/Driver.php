@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\V1;
 use App\Models\RoutesModel;
+use App\Models\RouteProgress;
 use App\Events\GpsUpdate;
 
 class Driver{
@@ -28,6 +29,24 @@ class Driver{
         event(new GpsUpdate($request->coordinates));
 
         $this->RESULT = ['updatelocation', 'Succesfully updated the location', 'null'];
+    }
+
+    private function startcollection($request){
+        $prog = new RouteProgress();
+        $route = RoutesModel::where('r_id', $request->route_id)->first();
+        
+        $prog->r_id = $request->route_id;
+        $progress = [];
+        $coordinates = explode(',',$route->r_coordinates);
+        foreach($coordinates as $coord){
+          array_push($progress,  $coord. "**False");
+        }
+        $prog->rp_progress = implode(',', $progress);
+        $prog->rp_status = 0;
+        $prog->save();
+
+        $this->RESULT = ['startcollection', "Start Garbage Collection", 'null'];
+
     }
 
     public function getResult(){

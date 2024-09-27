@@ -30,7 +30,6 @@
         const coordinates = e.coords.longitude + ', ' + e.coords.latitude;
 
         const csrf = await getCSRF();
-
         $.ajax({
             type: "POST",
             url: "/api/post/drivers/updatelocation",
@@ -88,5 +87,24 @@
         });
     }
 
-    document.getElementById('startDrive').addEventListener('click', ()=>{});
+    document.getElementById('startGarbageCollection').addEventListener('click', async (e)=>{
+        load.on();
+        const id = getUrlquery('id');
+        const csrf = await getCSRF();
+
+        $.ajax({
+            type: "POST",
+            url: "/api/post/drivers/startcollection",
+            data: {"_token": csrf, "route_id": id},
+            success: res=> {
+                load.off();
+                parseResult(res);
+                e.target.innerHTML = "<i class='fa fa-truck-moving'></i> Collecting Garbage";
+            }, error: xhr => {
+                console.log(xhr.responseText);
+                load.off();
+                parseResult(JSON.parse(xhr.responseText))
+            }
+        })
+    });
 

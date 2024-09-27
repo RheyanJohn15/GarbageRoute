@@ -137,6 +137,7 @@ class ApiEntry{
             'getroute'=> ['driverid'],
             'routedetails'=> ['routeid'],
             'updatelocation'=> ['coordinates'],
+            'startcollection'=> ['route_id']
         ],
         'adminaccount'=> [
             'update'=> ['id', 'name', 'username'],

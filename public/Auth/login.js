@@ -6,13 +6,13 @@ document.getElementById('loginForm').addEventListener('submit', (e)=>{
     validity += helper.checkvalidity('password');
 
     if(validity == 2){
-        helper.loadingOn();
+        load.on();
         $.ajax({
            type: 'post',
            url: LoginApi,
            data: $('form#loginForm').serialize(),
            success: res=> {
-             helper.loadingOff();
+             load.off();
              if(res.status == 'success'){
                 toastr.success('Login Successfully', 'Success')
                 window.location.href= dashboard;

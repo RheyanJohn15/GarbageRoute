@@ -4,8 +4,9 @@
    @include('Components.header', ['title'=> 'Map Navigator'])
   </head>
   <body>
-    @include('Components.dashload')
     @vite('resources/js/app.js')
+    @include('Components.dashload')
+
     <div class="wrapper">
         @include('Components.nav', ['active'=>'mapnavigator'])
 
@@ -30,7 +31,14 @@
 
     </div>
     <!--   Core JS Files   -->
-
+    <script>
+      setTimeout(() => {
+        window.Echo.channel('gps-update')
+          .listen('GpsUpdate', (e)=> {
+          console.log(e);
+        })
+      }, 2000);
+    </script>
     @include('Components.script')
     <script class="{{asset('Scripts/mapnavigator.js')}}"></script>
   </body>

@@ -14,7 +14,7 @@
   </script>
 </head>
 <body>
-    @include('Components.loading')
+    @include('Components.dashload')
     <div class="container">
         <section id="content">
             <h1>Silay Waste Management</h1>
@@ -37,6 +37,7 @@
     </div><!-- container -->
     </body>
     <script src="{{asset('helper.js')}}"></script>
+    <script src="{{asset('Scripts/helper.js')}}"></script>
     <script src="{{asset('Auth/login.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </html>

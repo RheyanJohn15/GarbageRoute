@@ -5,6 +5,7 @@
    <link rel="stylesheet" href="{{asset('assets/user/map.css')}}">
   </head>
   <body>
+    @include('Components.dashload')
 
     <div class="wrapper">
         @include('Components.userNav', ['active'=>'dashboard'])
@@ -22,11 +23,11 @@
                 <h6 class="op-7 mb-2">Way points are the collection point of garbage gathering</h6>
               </div>
             </div>
-            <button class="btn btn-secondary w-100 mb-2" id="startDrive">
+            <button class="btn btn-secondary w-100 mb-2" id="startGarbageCollection">
                 <span class="btn-label">
                   <i class="fa fa-map"></i>
                 </span>
-                Start Drive
+                Start Garbage Collection
               </button>
             <div id="map" class="w-100" style="height: 70vh"></div>
           </div>
