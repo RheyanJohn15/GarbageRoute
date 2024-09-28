@@ -14,5 +14,6 @@ class RouteProgress extends Model
         'r_id',
         'rp_progress',
         'rp_status',
+        'rp_current_location'
     ];
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('r_id')->references('r_id')->on('routes');
             $table->string('rp_progress', 500);
             $table->string('rp_status',500);
+            $table->string('rp_current_location')->nullable();
             $table->timestamps();
         });
     }

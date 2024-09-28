@@ -9,7 +9,9 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\RouteProgress;
 use App\Models\RoutesModel;
+use App\Models\TruckDriverModel;
 
 class GpsUpdate implements ShouldBroadcast
 {
@@ -18,10 +20,10 @@ class GpsUpdate implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public $message;
-    public function __construct($message)
+
+    public function __construct()
     {
-        $this->message = $message;            
+        //
     }
 
     /**
@@ -31,7 +33,15 @@ class GpsUpdate implements ShouldBroadcast
      */
 
      public function broadcastWith():array{
-        return ['message'=> $this->message];
+        $routes = RouteProgress::where('rp_status', 0)->get();
+        foreach($routes as $route){
+            $driverRoute = RoutesModel::where('r_id', $route->r_id)->first();
+            $driver = TruckDriverModel::where('td_id', $driverRoute->r_assigned_driver)->first();
+
+            $route->drivername = $driver->name;
+        }
+
+        return ['message'=> "success", "data"=> $routes];
      }
     public function broadcastOn(): array
     {

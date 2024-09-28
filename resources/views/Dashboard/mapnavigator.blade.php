@@ -3,8 +3,14 @@
   <head>
    @include('Components.header', ['title'=> 'Map Navigator'])
   </head>
+  <style>
+    #map {
+    width: 100%;
+    height: 50vh;
+}
+  </style>
   <body>
-    @vite('resources/js/app.js')
+  
     @include('Components.dashload')
 
     <div class="wrapper">
@@ -20,9 +26,11 @@
             >
               <div>
                 <h3 class="fw-bold mb-3">Map Navigator</h3>
-                <h6 class="op-7 mb-2">Blank Page</h6>
+                <h6 class="op-7 mb-2">Track all active drivers that currently collecting waste</h6>
               </div>
             </div>
+
+            <div id="map" class="mb-4" style="height:70vh; width:100%; border: 1px solid black"></div>
       
           </div>
         </div>
@@ -31,15 +39,16 @@
 
     </div>
     <!--   Core JS Files   -->
+    @vite('resources/js/app.js')
     <script>
       setTimeout(() => {
         window.Echo.channel('gps-update')
           .listen('GpsUpdate', (e)=> {
-          console.log(e);
+            updateRouteStatus(e);
         })
       }, 2000);
     </script>
     @include('Components.script')
-    <script class="{{asset('Scripts/mapnavigator.js')}}"></script>
+    <script src="{{asset('Scripts/mapnavigator.js')}}"></script>
   </body>
 </html>

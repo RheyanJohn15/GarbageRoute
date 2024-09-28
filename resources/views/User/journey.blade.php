@@ -24,10 +24,7 @@
               </div>
             </div>
             <button class="btn btn-secondary w-100 mb-2" id="startGarbageCollection">
-                <span class="btn-label">
-                  <i class="fa fa-map"></i>
-                </span>
-                Start Garbage Collection
+               Loading........
               </button>
             <div id="map" class="w-100" style="height: 70vh"></div>
           </div>
