@@ -4,6 +4,8 @@
    @include('Components.header', ['title'=> 'Driver Dashboard'])
   </head>
   <body>
+    @include('Components.dashload')
+
     <div class="wrapper">
         @include('Components.userNav', ['active'=>'dashboard'])
 
@@ -22,7 +24,10 @@
             </div>
       
             <div class="list-group" id="routeList">
-              
+              <div class="w-100 d-flex justify-content-center align-items-center flex-column gap-2" style="height: 50vh">
+                <div class="contentLoader"></div>
+                <p>Loading Routes please wait.....</p>
+              </div>
             
             </div>
 
@@ -34,7 +39,7 @@
     </div>
     <!--   Core JS Files   -->
   
-    @include('Components.script')
+    @include('Components.script', ['type'=> 'driver'])
     <script src="{{asset('Scripts/userDashboard.js')}}"></script>
   </body>
 </html>

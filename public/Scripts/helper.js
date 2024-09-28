@@ -204,26 +204,6 @@ function showError(message){
 }
 
 
-//Logout Function
-const logoutBtn = document.getElementById('logout');
-if(logoutBtn){
-    document.getElementById('logout').addEventListener('click', async ()=> {
-        load.on();
-
-        const csrf = await getCSRF();
-        $.ajax({
-            type: "POST",
-            url: "/api/post/user/logout",
-            data: {"_token": csrf},
-            success: res=> {
-                load.off();
-                parseResult(res);
-                window.location.href="/auth/login";
-            }, error: xhr=> console.log(xhr.responseText)
-        })
-    });
-}
-
 function parseSchedule(type){
     switch(type){
         case "daily":
@@ -297,4 +277,46 @@ function getUrlquery(id){
     const queryParams = url.searchParams;
 
     return queryParams.get(id);
+}
+
+
+
+//Logout Function
+const logoutBtn = document.getElementById('logout');
+if(logoutBtn){
+    document.getElementById('logout').addEventListener('click', async ()=> {
+        load.on();
+
+        const csrf = await getCSRF();
+        $.ajax({
+            type: "POST",
+            url: "/api/post/user/logout",
+            data: {"_token": csrf},
+            success: res=> {
+                load.off();
+                parseResult(res);
+                window.location.href="/auth/login";
+            }, error: xhr=> console.log(xhr.responseText)
+        })
+    });
+}
+
+
+const driverLogoutBtn = document.getElementById('driverlogout');
+
+if(driverLogoutBtn){
+    driverLogoutBtn.addEventListener('click', async ()=> {
+        load.on();
+        const csrf = await getCSRF();
+        $.ajax({
+            type: "POST",
+            url: "/api/post/drivers/logout",
+            data: {"_token": csrf},
+            success: res=> {
+                load.off();
+                parseResult(res);
+                window.location.href="/auth/driver/login";
+            }, error: xhr=> console.log(xhr.responseText)
+        })
+    });
 }

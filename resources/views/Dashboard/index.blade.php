@@ -120,7 +120,7 @@
     </div>
     <!--   Core JS Files   -->
 
-    @include('Components.script')
+    @include('Components.script', ['type'=> 'admin'])
     <script src="/Scripts/dashboard.js"></script>
   </body>
 </html>

@@ -18,8 +18,10 @@ class Auth {
     private $method;
     private $token;
     private $userType;
+    private $request;
     public function __construct($method = null, $data = null)
     {
+      $this->request = $data;
       if($method == 'login'){
         $this->username = $data->username;
         $this->password = $data->password;
@@ -101,7 +103,10 @@ class Auth {
     }
     
     public function getAccessToken(){
-      return session('access_token');
+      if($this->request->userType == 'admin' ){
+        return session('access_token');
+      }
+      return session('driver_access_token');
     }
 
 

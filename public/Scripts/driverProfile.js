@@ -2,14 +2,14 @@ let profilePic;
 
 let globalUserPromise = new Promise(async (resolve, reject) => {
     try {
-        const getToken = await fetch('/api/get/request/accesstoken?userType=admin', {
+        const getToken = await fetch('/api/get/request/accesstoken?userType=driver', {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         });
 
         const token = await getToken.json();
 
-        const getUserInfo = await fetch(`/api/get/auth/info?token=${token.access_token}&type=admin`, {
+        const getUserInfo = await fetch(`/api/get/auth/info?token=${token.access_token}&type=driver`, {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         });
@@ -20,25 +20,23 @@ let globalUserPromise = new Promise(async (resolve, reject) => {
         resolve(globalUser); // Resolve the promise when data is ready
 
         const user = userInfo.data;
-        setText('adminNameHeaderNav', user.acc_name);
+        setText('driverHeaderName', user.name);
 
         const color = getRandomColor(profileBackgrounds);
 
-        const splitText = user.acc_name.split(' ');
+        const splitText = user.name.split(' ');
         let initials = '';
 
         splitText.forEach(name => {
             initials += name[0].toUpperCase();
         });
 
-        profilePic = user.acc_profile !== null ? `/assets/img/avatars/${user.acc_profile}` : `https://via.placeholder.com/150/${color}/000000/?text=${initials}`;
+        profilePic = user.profile_pic !== null ? `/assets/img/avatars/${user.profile_pic}` : `https://via.placeholder.com/150/${color}/000000/?text=${initials}`;
 
         setImage('userProfilePic', profilePic);
         setImage('userProfilePicMobile', profilePic);
-        setImage('accountAvatar', profilePic);
-        setImage('changeProfileSelected', profilePic);
-        setText('userNameDrop', user.acc_name);
-        setText('userType', user.acc_type);
+        setText('driverNameSub', user.name);
+        setText('driverLicense', user.license);
     } catch (error) {
         reject(error); 
     }

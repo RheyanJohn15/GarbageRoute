@@ -250,7 +250,7 @@ aria-hidden="true"
   </div>
 </div>
 </div>
-    @include('Components.script')
+@include('Components.script', ['type'=> 'admin'])
     <script src="/Scripts/profile.js"></script>
   </body>
 </html>

@@ -127,6 +127,7 @@
             >
               <div class="avatar-sm">
                 <img
+                  id="userProfilePic"
                   src="/assets/img/load.jfif"
                   alt="..."
                   class="avatar-img rounded-circle"
@@ -134,7 +135,7 @@
               </div>
               <span class="profile-username">
                 <span class="op-7">Hi,</span>
-                <span class="fw-bold">Admin</span>
+                <span id="driverHeaderName" class="fw-bold">Loading.....</span>
               </span>
             </a>
             <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -143,16 +144,17 @@
                   <div class="user-box">
                     <div class="avatar-lg">
                       <img
+                        id="userProfilePicMobile"
                          src="/assets/img/load.jfif"
                         alt="image profile"
                         class="avatar-img rounded"
                       />
                     </div>
                     <div class="u-text">
-                      <h4>Hizrian</h4>
-                      <p class="text-muted">hello@example.com</p>
+                      <h4 id="driverNameSub">Loading......</h4>
+                      <p id="driverLicense" class="text-muted">Loading.....</p>
                       <a
-                        href="profile.html"
+                        href="/user/driver/profile"
                         class="btn btn-xs btn-secondary btn-sm"
                         >View Profile</a
                       >
@@ -161,11 +163,11 @@
                 </li>
                 <li>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">My Profile</a>
+                  <a class="dropdown-item" href="/user/driver/profile">My Profile</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Account Setting</a>
+                  <a class="dropdown-item" href="/user/driver/settings">Account Setting</a>
                   <div class="dropdown-divider"></div>
-                  <button class="dropdown-item" id="logout">Logout</button>
+                  <button class="dropdown-item" id="driverlogout">Logout</button>
                 </li>
               </div>
             </ul>

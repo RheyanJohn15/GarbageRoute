@@ -94,7 +94,9 @@ geolocate.on('geolocate', async (e) => {
         url: "/api/post/drivers/updatelocation",
         data: { "_token": csrf, "coordinates": coordinates, "waypointTime": timeForWaypoint, "routeId": id },
         success: res => {
-            console.log(res);
+            if(res.result.data){
+                setHtml('startGarbageCollection', `<i class="fa fa-check-circle"></i> Garbage Collection Done`)
+            }
         }, error: xhr => console.log(xhr.responseText)
     });
 });
@@ -111,7 +113,13 @@ function loadRoute() {
             coordinates.pop();
             console.log(data.progress);
             if (data.progress != "null") {
-                setHtml('startGarbageCollection', "<i class='fa fa-truck-moving'></i> Collecting Garbage(Click to Stop)");
+
+                if(data.progress.rp_status == 0){
+                    setHtml('startGarbageCollection', "<i class='fa fa-truck-moving'></i> Collecting Garbage(Click to Stop)");
+                }else{
+                    setHtml('startGarbageCollection', "<i class='fa fa-truck-moving'></i> Continue to Journey");
+                }
+               
             } else {
                 setHtml('startGarbageCollection', ` <span class="btn-label">
                   <i class="fa fa-map"></i>
@@ -194,8 +202,28 @@ document.getElementById('startGarbageCollection').addEventListener('click', asyn
         success: res => {
             load.off();
             parseResult(res);
-            e.target.innerHTML = '';
-            e.target.innerHTML = "<i class='fa fa-truck-moving'></i> Collecting Garbage(Click to Stop)";
+            const map =   document.getElementById('map');
+            switch(res.result.data.rp_status){
+                case 1:
+                    e.target.innerHTML = '';
+                    e.target.innerHTML = "<i class='fa fa-truck-moving'></i> Continue Collecting";
+                    map.classList.add('opacity-0');
+                    map.classList.remove('opacity-100');
+                    break;
+                case 0:
+                    e.target.innerHTML = '';
+                    e.target.innerHTML = "<i class='fa fa-truck-moving'></i> Collecting Garbage(Click to Stop)";
+                    map.classList.remove('opacity-0');
+                    map.classList.add('opacity-100');
+                    break;
+                default:
+                    e.target.innerHTML = '';
+                    e.target.innerHTML = "<i class='fa fa-truck-moving'></i> Start Garbage Collection";
+                    map.classList.add('opacity-0');
+                    map.classList.remove('opacity-100');
+                    break;
+            }
+                
         }, error: xhr => {
             console.log(xhr.responseText);
             load.off();

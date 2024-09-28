@@ -27,7 +27,12 @@
 <!-- Sweet Alert -->
 <script src="{{asset('assets/js/plugin/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('Scripts/helper.js')}}"></script>
-<script src="{{asset('Scripts/admin.js')}}"></script>
+
+@if ($type == 'admin')
+    <script src="{{asset('Scripts/admin.js')}}"></script>
+@else
+    <script src="{{asset('Scripts/driverProfile.js')}}"></script>
+@endif
 <!-- Kaiadmin JS -->
 <script src="{{asset('assets/js/kaiadmin.min.js')}}"></script>
 <script src="{{asset('helper.js')}}"></script>

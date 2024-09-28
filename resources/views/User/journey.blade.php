@@ -24,9 +24,9 @@
               </div>
             </div>
             <button class="btn btn-secondary w-100 mb-2" id="startGarbageCollection">
-               Loading........
+                Loading........
               </button>
-            <div id="map" class="w-100" style="height: 70vh"></div>
+            <div id="map" class="w-100 opacity-0" style="height: 70vh"></div>
           </div>
         </div>
 
@@ -35,7 +35,7 @@
     </div>
     <!--   Core JS Files   -->
 
-    @include('Components.script')
+    @include('Components.script', ['type'=> 'driver'])
     <script src="{{asset('Scripts/journey.js')}}"></script>
   </body>
 </html>

@@ -3,6 +3,7 @@
 use App\Events\GpsUpdate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authenticate;
+use App\Http\Middleware\DriverAuth;
 
 Route::get('/dashboard', [Authenticate::class, 'Dashboard'])->name('dashboard');
 Route::get('/routes', [Authenticate::class, 'Routes'])->name('routes');
@@ -15,9 +16,15 @@ Route::get('/settings', [Authenticate::class, 'Settings']);
 
 Route::get('/', function () {return view('User.index');})->name('home');
 Route::get('/user/complaint', function () {return view('User.complaint');})->name('usercomplaints');
-Route::get('/user/driver/dashboard', function () {return view('User.dashboard');})->name('userDashboard');
-Route::get('/user/driver/routejourney', function () {return view('User.journey');})->name('userJourney');
-Route::get('/user/driver/history', function () {return view('User.history');})->name('userHistory');
+
+Route::middleware([DriverAuth::class])->group( function () {
+    Route::get('/user/driver/dashboard', function () {return view('User.dashboard');})->name('userDashboard');
+    Route::get('/user/driver/routejourney', function () {return view('User.journey');})->name('userJourney');
+    Route::get('/user/driver/history', function () {return view('User.history');})->name('userHistory');
+    Route::get('/user/driver/profile', function () {return view('User.profile');});
+    Route::get('/user/driver/settings', function () {return view('User.settings');});
+});
+
 
 Route::get('/auth/login', function () {
     return view('Auth.login');
@@ -25,7 +32,7 @@ Route::get('/auth/login', function () {
 
 Route::get('/auth/driver/login', function () {
     return view('User/login');
-})->name('userL ogin');
+})->name('userLogin');
 
 //Get CSRF Token
 Route::get('/csrf-token', function () {

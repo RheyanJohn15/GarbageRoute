@@ -48,7 +48,7 @@
         })
       }, 2000);
     </script>
-    @include('Components.script')
+        @include('Components.script', ['type'=> 'admin'])
     <script src="{{asset('Scripts/mapnavigator.js')}}"></script>
   </body>
 </html>

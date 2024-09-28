@@ -339,8 +339,7 @@
 
 
 
-
-    @include('Components.script')
+    @include('Components.script', ['type'=> 'admin'])
     <script src="{{asset('Scripts/route.js')}}"></script>
   </body>
 </html>

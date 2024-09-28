@@ -51,6 +51,11 @@ class APIHandler extends Controller
             return response()->json(["status"=>"success", "method"=> "logout", "result"=> "Logout Successfully" ]);
         }
 
+        if($method === 'logout' && $data === 'drivers'){
+            $req->session()->flush();
+            return response()->json(["status"=>"success", "method"=> "logout", "result"=> "Logout Successfully" ]);
+        }
+
         return response()->json($this->isAuthenticated($check, $req, $data, $method, 'post'));
 
     }

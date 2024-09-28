@@ -414,6 +414,6 @@
     </form>
     <!--   Core JS Files   -->
     <script src="{{asset('Scripts/truckdriver.js')}}"></script>
-    @include('Components.script')
+    @include('Components.script', ['type'=> 'admin'])
   </body>
 </html>

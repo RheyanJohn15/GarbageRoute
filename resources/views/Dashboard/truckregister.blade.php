@@ -342,6 +342,6 @@
     </div>
     <!--   Core JS Files   -->
     <script src="{{asset('Scripts/dumptruck.js')}}"></script>
-    @include('Components.script')
+    @include('Components.script', ['type'=> 'admin'])
   </body>
 </html>

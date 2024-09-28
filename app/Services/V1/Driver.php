@@ -66,8 +66,24 @@ class Driver{
             ]);
         }
 
+        $checkRoutesProgress = $routes->rp_progress;
+        $listRouteProgress = explode(',', $checkRoutesProgress);
+        array_pop($listRouteProgress);
+        $statusCheck = 0;
+        foreach($listRouteProgress as $list){
+            $getStatus = explode('**', $list);
+            if($getStatus[1]){
+                $statusCheck++;
+            }
+        }  
+        
+        $statusResult = false;
+        if($statusCheck == count($listRouteProgress)){
+            $statusResult = true;
+        }
+
         event(new GpsUpdate());
-        $this->RESULT = ['updatelocation', 'Succesfully updated the location', 'null'];
+        $this->RESULT = ['updatelocation', 'Succesfully updated the location', $statusResult];
     }
 
     private function startcollection($request){
@@ -87,13 +103,21 @@ class Driver{
             $prog->rp_status = 0;
             $prog->save();
         }else{
-            $check->update([
-                'rp_status'=> 1
-            ]);
+
+            if($check->rp_status == 1){
+                $check->update([
+                    'rp_status'=> 0,
+                ]);
+            }else{
+                $check->update([
+                    'rp_status'=> 1
+                ]);
+            }
+          
         }
         
 
-        $this->RESULT = ['startcollection', "Start Garbage Collection", 'null'];
+        $this->RESULT = ['startcollection', "Start Garbage Collection", $check];
 
     }
     

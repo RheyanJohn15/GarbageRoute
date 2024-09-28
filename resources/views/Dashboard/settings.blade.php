@@ -207,7 +207,7 @@
   <input type="hidden" name="avatar" id="changeProfileSelectedAvatar">
 
 </form>
-    @include('Components.script')
+@include('Components.script', ['type'=> 'admin'])
     <script src="/Scripts/settings.js"></script>
   </body>
 </html>

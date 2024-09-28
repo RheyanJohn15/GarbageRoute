@@ -4,6 +4,8 @@
    @include('Components.header', ['title'=> 'History'])
   </head>
   <body>
+    @include('Components.dashload')
+
     <div class="wrapper">
         @include('Components.userNav', ['active'=>'history'])
 
@@ -47,6 +49,6 @@
     </div>
     <!--   Core JS Files   -->
 
-    @include('Components.script')
+    @include('Components.script', ['type'=> 'driver'])
   </body>
 </html>
