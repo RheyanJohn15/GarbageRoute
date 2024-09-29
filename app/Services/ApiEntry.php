@@ -138,6 +138,11 @@ class ApiEntry{
             'routedetails'=> ['routeid'],
             'updatelocation'=> ['coordinates', 'waypointTime', 'routeId'],
             'startcollection'=> ['route_id'],
+            'update'=> ['id', 'name', 'license', 'address', 'contact', 'username'],
+            'changepass'=>['id', 'currentpass', 'newpass'],
+            'changeprofilepic'=>['id', 'pic'],
+            'updatetruck'=> ['id', 'model', 'capacity'],
+            'changetruckimage'=> ['id', 'pic'],
         ],
         'adminaccount'=> [
             'update'=> ['id', 'name', 'username'],

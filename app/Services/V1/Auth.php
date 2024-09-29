@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\V1;
 use App\Models\Accounts;
+use App\Models\DumpTruckModel;
 use App\Models\TruckDriverModel;
 use Illuminate\Support\Facades\Hash;
 class Auth {
@@ -118,7 +119,9 @@ class Auth {
       }
 
       $driver = TruckDriverModel::where('access_token', $this->token)->first();
+      $truck = DumpTruckModel::where('td_id', $driver->td_id)->first();
 
+      $driver->truck = $truck ? $truck : "null";
       return $driver;
     }
     /*

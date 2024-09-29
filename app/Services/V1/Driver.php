@@ -3,6 +3,10 @@ namespace App\Services\V1;
 use App\Models\RoutesModel;
 use App\Models\RouteProgress;
 use App\Events\GpsUpdate;
+use App\Models\TruckDriverModel;
+use App\Models\DumpTruckModel;
+use Illuminate\Support\Facades\Hash;
+use App\Services\ApiException;
 
 class Driver{
 
@@ -119,6 +123,96 @@ class Driver{
 
         $this->RESULT = ['startcollection', "Start Garbage Collection", $check];
 
+    }
+
+
+    private function update($request){
+        $driver = TruckDriverModel::where('td_id', $request->id)->first();
+
+        $driver->update([
+            'username'=> $request->username,
+            'name'=> $request->name,
+            'license'=> $request->license,
+            'address' => $request->address,
+            'contact'=> $request->contact
+        ]);
+
+        $this->RESULT = ['update', "Account Successfully Updated", 'null'];
+    }
+
+    private function changepass($request){
+        $driver = TruckDriverModel::where('td_id', $request->id)->first();
+
+        if(Hash::check($request->currentpass, $driver->password)){
+            $driver->update([
+                'password' => Hash::make($request->newpass)
+            ]);
+
+            $this->RESULT = ['changepass', "Password is successfully updated", "null"];
+        }else{
+            throw new ApiException(ApiException::CURRENT_PASS_INVALID);
+        }
+    }
+
+    private function changeprofilepic($request){
+        $pic = $request->file('pic');
+        
+        $validType = ['jpg', 'jpeg', 'png'];
+        $picType = $pic->getClientOriginalExtension();
+        if(!in_array($picType, $validType)){
+            throw new ApiException(ApiException::INVALID_PIC_TYPE);
+        }
+
+        if($pic->getSize() > 10485760){
+            throw new ApiException(ApiException::LARGE_IMAGE);
+        }   
+
+        $fileName =  "Driver". $request->id . ".". $picType;
+        $pic->move(public_path('UserPics/Driver/'), $fileName);
+
+        $driver = TruckDriverModel::where('td_id', $request->id)->first();
+
+        $driver->update([
+            'profile_pic'=> $fileName
+        ]);
+
+        $this->RESULT = ['changeprofilepic', "Profile Pic Successfully Updated", 'null'];
+    }
+
+    private function updatetruck($request){
+        $truck = DumpTruckModel::where('dt_id', $request->id)->first();
+
+        $truck->update([
+            'model'=> $request->model,
+            'can_carry'=> $request->capacity
+        ]);
+
+        $this->RESULT = ['updatetruck', "Truck Details successfully updated", "null"];
+    }
+
+    private function changetruckimage($request){
+        $pic = $request->file('pic');
+        
+        $validType = ['jpg', 'jpeg', 'png'];
+        $picType = $pic->getClientOriginalExtension();
+        if(!in_array($picType, $validType)){
+            throw new ApiException(ApiException::INVALID_PIC_TYPE);
+        }
+
+        if($pic->getSize() > 10485760){
+            throw new ApiException(ApiException::LARGE_IMAGE);
+        }   
+
+        $fileName =  "Truck". $request->id . ".". $picType;
+        $pic->move(public_path('UserPics/Truck/'), $fileName);
+
+        $truck = DumpTruckModel::where('dt_id', $request->id)->first();
+
+        $truck->update([
+            'profile_pic'=> $fileName
+        ]);
+
+        $this->RESULT = ['changetruckimage', "Truck Image successfully uploaded", "null"];
     }
     
     public function getResult(){

@@ -21,4 +21,7 @@ class ApiException extends \Exception
     public const INVALID_BODY = 'The request body is incomplete or invalid';
     public const USERNAME_EXIST = 'The username already exist';
     public const SAME_PASS = 'The new password is the same with the old password';
+    public const CURRENT_PASS_INVALID = 'Current Password does not match, not authenticated';
+    public const INVALID_PIC_TYPE = 'Invalid Image type use (.png, .jpg, .jpeg)';
+    public const LARGE_IMAGE = "File is too large below 10mb is valid";
 }

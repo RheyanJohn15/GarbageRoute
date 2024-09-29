@@ -31,12 +31,16 @@ let globalUserPromise = new Promise(async (resolve, reject) => {
             initials += name[0].toUpperCase();
         });
 
-        profilePic = user.profile_pic !== null ? `/assets/img/avatars/${user.profile_pic}` : `https://via.placeholder.com/150/${color}/000000/?text=${initials}`;
+        profilePic = user.profile_pic !== null ? `/UserPics/Driver/${user.profile_pic}` : `https://via.placeholder.com/150/${color}/000000/?text=${initials}`;
+
+        setText('driverNameSub', user.name);
+        setText('driverLicense', user.license);
 
         setImage('userProfilePic', profilePic);
         setImage('userProfilePicMobile', profilePic);
-        setText('driverNameSub', user.name);
-        setText('driverLicense', user.license);
+        setImage('profilePicSettings', profilePic);
+        setText('')
+
     } catch (error) {
         reject(error); 
     }

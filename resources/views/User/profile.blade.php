@@ -23,6 +23,26 @@
               </div>
             </div>
       
+            <div class="d-flex w-100 gap-4 justify-content-center align-items-center flex-column">
+              <div class="avatar avatar-xxl">
+                <img src="/assets/img/load.jfif" alt="..." class="avatar-img rounded-circle">
+              </div>
+
+              <div class="row w-50">
+                  <div class="col-6">
+                    <h2>Name</h2>
+                    <p>License</p>
+                    <p>Address</p>
+                    <p>Contact</p>
+                    <p>Username</p>
+                  </div>
+                  <div class="col-6">
+                      <h2>Assigned Truck</h2>
+                      <p>Model</p>
+                      <p>Capacity</p>
+                  </div>
+              </div>
+            </div>
         </div>
 
       </div>
@@ -31,5 +51,6 @@
     <!--   Core JS Files   -->
 
     @include('Components.script', ['type'=> 'driver'])
+    <script src="/Scripts/userProfile.js"></script>
   </body>
 </html>

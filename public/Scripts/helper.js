@@ -320,3 +320,19 @@ if(driverLogoutBtn){
         })
     });
 }
+
+function checkInp(inp, err){
+    const input = document.getElementById(inp);
+    const errorTxt = document.getElementById(err);
+
+    if(input.value == ''){
+        input.classList.add('border', 'border-danger');
+        errorTxt.classList.remove('d-none');
+        return 0;
+    }
+
+    input.classList.remove('border', 'border-danger');
+    errorTxt.classList.add('d-none');
+
+    return 1;
+}
