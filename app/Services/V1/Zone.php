@@ -2,8 +2,8 @@
 namespace App\Services\V1;
 use App\Models\Zones;
 use App\Models\BrgyList;
-use Database\Seeders\Brgy;
-use PDO;
+use App\Models\GeoData;
+use App\Models\GeoDataCoordinates;
 
 class Zone{
     private $RESULT = null;
@@ -42,6 +42,21 @@ class Zone{
 
 
         $this->RESULT = ['addbrgy', "Successfully Added the baranggay to a zone", "null"];
+    }
+
+    private function getgeodata($request){
+        $geoData = GeoData::join('brgy_lists', 'geo_data.brgy_id', '=', 'brgy_lists.brgy_id')->get();
+        foreach($geoData as $geo){
+            $coords = GeoDataCoordinates::where('gd_id', $geo->gd_id)->get();
+            $geo->coordinates = $coords;
+
+            if($geo->zone_id != null){
+                $zone = Zones::where('zone_id',$geo->zone_id)->first();
+                $geo->zone = $zone;
+            }
+        }
+
+        $this->RESULT = ['getgeodata', "Successfully get all geodata", $geoData];
     }
 
     public function getResult(){

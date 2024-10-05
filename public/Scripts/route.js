@@ -1,34 +1,82 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoicmhleWFuIiwiYSI6ImNsenpydzA4eDFnajUyanB4M2V3NjZjdDUifQ.7cXuHyW86hXStq6Mh2kF8Q';
-import { geoDataSilay } from "./SilayBrgyGeoData.js ";
+// import { geoDataSilay } from "./SilayBrgyGeoData.js ";
 
-const map = new mapboxgl.Map({
-  container: 'map', // container ID
-  style: 'mapbox://styles/mapbox/streets-v12', // style URL
-  center: [123.0585, 10.8039], // center set to Silay City, Negros Occidental
-  zoom: 11, // starting zoom
-});
-const zones = {
-    type: 'FeatureCollection',
-    features: geoDataSilay
-  };
+window.onload = LoadMap();
 
-map.on('load', () => {
-    map.addSource('zones', {
-      type: 'geojson',
-      data: zones,
+async function getGeoData(){
+    const response = await fetch('/api/get/zone/getgeodata');
+
+    const result = await response.json();
+    const data = result.result.data;
+    console.log(data);
+    let geoData = [];
+    
+    data.forEach(d => {
+        let mainData = {};
+        let geometry = {};
+        mainData.type = d.type;
+        geometry.type = d.geometry_type;
+        
+        let coordinates = [];
+        d.coordinates.forEach(c => {
+            coordinates.push([parseFloat(c.gd_longitude), parseFloat(c.gd_latitude)]);
+        });
+
+        let properties = {};
+
+        properties.name = d.brgy_name;
+
+        if(d.zone){
+            properties.color = d.zone.zone_color;
+        }else{
+            properties.color = d.property_color;
+        }
+  
+        
+        geometry.coordinates = [[coordinates]];
+        mainData.geometry = geometry;
+        mainData.properties = properties;
+
+        geoData.push(mainData);
     });
 
-    map.addLayer({
-      id: 'zones',
-      type: 'fill',
-      source: 'zones',
-      layout: {},
-      paint: {
-        'fill-color': ['get', 'color'],
-        'fill-opacity': 0.5,
-      },
-    });
-  });
+    return geoData;
+}
+
+async function LoadMap(){
+
+    const geoDataSilay = await getGeoData();
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/streets-v12', // style URL
+        center: [123.0585, 10.8039], // center set to Silay City, Negros Occidental
+        zoom: 11, // starting zoom
+      });
+      const zones = {
+          type: 'FeatureCollection',
+          features: geoDataSilay
+        };
+      
+      map.on('load', () => {
+          map.addSource('zones', {
+            type: 'geojson',
+            data: zones,
+          });
+      
+          map.addLayer({
+            id: 'zones',
+            type: 'fill',
+            source: 'zones',
+            layout: {},
+            paint: {
+              'fill-color': ['get', 'color'],
+              'fill-opacity': 0.5,
+            },
+          });
+        });
+      
+}
+
 
 let silayBrgyTable;
 document.getElementById('updateZonesBtn').addEventListener('click', ()=> {
@@ -209,6 +257,8 @@ document.getElementById('addBrgyToZone').addEventListener('click', async ()=> {
                     </div>`;
 
             setHtml('assignBrgyHolder', val);
+
+            LoadMap();
         },error: xhr=> {
             console.log(xhr.responseText)
             load.off();

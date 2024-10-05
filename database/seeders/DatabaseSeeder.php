@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(Brgy::class);
         $this->call(Zone::class);
         $this->call(TruckDriverSeeder::class);
-         $this->call(DumpTruckSeeder::class);
+        $this->call(DumpTruckSeeder::class);
+        $this->call(GeoDataSeeder::class);
     }
 }

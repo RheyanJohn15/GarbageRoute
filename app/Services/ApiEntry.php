@@ -46,8 +46,6 @@ class ApiEntry{
 
 
         if($this->isVALID){
-
-
             if($requestType == 'get'){
                 $init = new ApiRequest($type, $method, $request);
                 $this->RESULT = $init->getResponse();
@@ -161,7 +159,8 @@ class ApiEntry{
         ],
         'zone'=> [
             'list'=> ['empty'],
-            'addbrgy'=> ['brgy', 'zone']
+            'addbrgy'=> ['brgy', 'zone'],
+            'getgeodata'=>['empty']
         ]
     ];
 
