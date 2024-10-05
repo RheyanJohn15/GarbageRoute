@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id('dt_id');
             $table->string('model');
             $table->string('can_carry');
-            $table->unsignedBigInteger('td_id'); 
+            $table->string('plate_num')->nullable();
+            $table->unsignedBigInteger('td_id');
             $table->foreign('td_id')->references('td_id')->on('truck_drivers');
             $table->string('profile_pic')->nullable();
             $table->timestamps();

@@ -20,14 +20,14 @@ class DumpTruck{
         $dumpTruck->model = $req->model;
         $dumpTruck->can_carry = $req->can_carry;
         $dumpTruck->td_id = $req->driver;
-
+        $dumpTruck->plate_num = $req->plate_num;
         $dumpTruck->save();
 
         $this->RESULT = ['add' ,'Dump Truck Successfully Added', $dumpTruck];
     }
 
     private function list($req){
-      
+
       $dumpTruck = DumpTruckModel::all();
 
       foreach($dumpTruck as $truck){
@@ -36,10 +36,10 @@ class DumpTruck{
         $truck->driver = $driver->name == 'null' ? 'N/A' : $driver->name;
         $truck->driver_id = $driver->td_id;
       }
-      
+
       $this->RESULT = ['list', 'List of all dumptruck', $dumpTruck];
-    
-    }  
+
+    }
 
 
     private function update($req){
@@ -48,7 +48,8 @@ class DumpTruck{
       $dumpTruck->update([
          'model'=>$req->model,
          'can_carry' => $req->can_carry,
-         'driver'=> $req->driver
+         'driver'=> $req->driver,
+         'plate_num'=> $req->plate_num
       ]);
 
       $this->RESULT = ['update','Dump Truck Successfully Updated', $dumpTruck];
@@ -64,7 +65,7 @@ class DumpTruck{
 
     private function details($req){
        $dumpTruck = DumpTruckModel::where('dt_id', $req->id)->first();
-      
+
        if(!$dumpTruck){
         throw new ApiException(ApiException::NO_DATA_FOUND);
        }

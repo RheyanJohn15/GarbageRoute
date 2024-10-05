@@ -16,11 +16,12 @@ class DumpTruckSeeder extends Seeder
     public function run(): void
     {
         $truckDriverIds = DB::table('truck_drivers')->pluck('td_id')->toArray();
-
-        for ($i = 0; $i < 40; $i++) {
+        $faker = Faker::create();
+        for ($i = 0; $i < 9; $i++) {
             DB::table('dump_truck')->insert([
                 'model' => 'Model ' . ($i + 1),
-                'can_carry' => rand(1000, 5000) . ' kg',
+                'can_carry' => rand(1, 10),
+                'plate_num' => strtoupper($faker->bothify('??? ####')),
                 'td_id' => $truckDriverIds[array_rand($truckDriverIds)], // Assign a random truck driver
                 'created_at' => now(),
                 'updated_at' => now(),

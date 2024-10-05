@@ -15,6 +15,7 @@ class DumpTruckModel extends Model
        'model',
        'can_carry',
        'td_id',
-       'profile_pic'
+       'profile_pic',
+       'plate_num'
     ];
 }

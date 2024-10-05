@@ -17,7 +17,7 @@ class TruckDriverSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        for ($i = 0; $i < 40; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             DB::table('truck_drivers')->insert([
                 'username' => $faker->unique()->userName,
                 'password' => Hash::make('password'), // Default password for all drivers

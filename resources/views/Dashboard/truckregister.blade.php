@@ -49,7 +49,7 @@
                     <div id="dumpTruckModel" class="name"></div>
                     <div id="dumpTruckCanCarry" class="job"></div>
                     <div id="dumpTruckDriver" class="desc"></div>
-                    
+
                     <div class="view-profile">
                       <a href="#" class="btn btn-secondary w-100"
                         >View Full Profile</a
@@ -57,10 +57,10 @@
                     </div>
                   </div>
                 </div>
-                
+
               </div>
             </div>
-          
+
             <div class="col-md-6">
               <div class="card card-profile">
                 <div
@@ -82,7 +82,7 @@
                     <div id="truckDriverName" class="name"></div>
                     <div id="truckDriverLicense" class="job"></div>
                     <div id="truckDriverAddress" class="desc"></div>
-                    
+
                     <div class="view-profile">
                       <a href="#" class="btn btn-secondary w-100"
                         >View Full Profile</a
@@ -90,10 +90,10 @@
                     </div>
                   </div>
                 </div>
-               
+
               </div>
             </div>
-            
+
           </div>
 
 
@@ -115,6 +115,7 @@
                           <th>Truck Model</th>
                           <th>Capacity(Tons)</th>
                           <th>Driver</th>
+                          <th>Plate Number</th>
                           <th>Action</thA>
                         </tr>
                       </thead>
@@ -123,11 +124,11 @@
                           <th>Truck Model</th>
                           <th>Can Carry</th>
                           <th>Driver</th>
-                          <th>Action</th> 
+                          <th>Action</th>
                         </tr>
                       </tfoot>
                       <tbody>
-                     
+
                       </tbody>
                     </table>
                   </div>
@@ -135,11 +136,11 @@
               </div>
             </div>
           </div>
-      
-          
+
+
 
           {{-- Add Truck Modal --}}
-     
+
           <div
           class="modal fade"
           id="addTruckModal"
@@ -185,7 +186,7 @@
                     </div>
                     <div class="col-md-6 pe-0">
                       <div id="addCanCarry_g" class="form-group form-group-default">
-                        <label>Can Carry</label>
+                        <label>Capacity</label>
                         <input
                           id="addCanCarry"
                           name="can_carry"
@@ -202,7 +203,7 @@
                           <select name="driver" id="addDriver" class="form-select">
                             <option selected disabled value="0">------Select Driver------</options>
                              @php
-                         $driver = App\Models\TruckDriverModel::where('td_id', '!=', 0)->get();   
+                         $driver = App\Models\TruckDriverModel::where('td_id', '!=', 0)->get();
                         @endphp
                         @foreach ($driver as $d)
                             <option value="{{$d->td_id}}">{{$d->name}}</option>
@@ -211,7 +212,19 @@
                         <small id="addDriver_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
                     </div>
-
+                    <div class="col-sm-12">
+                        <div id="addPlateNum_g" class="form-group form-group-default">
+                          <label>Truck Plate Number</label>
+                          <input
+                            id="addPlateNum"
+                            type="text"
+                            name="plate_num"
+                            class="form-control"
+                            placeholder="Plate Number"
+                          />
+                          <small id="addPlateNum_e" style="display: none" class="text-danger">(This field is required)</small>
+                        </div>
+                      </div>
                   </div>
                 </form>
               </div>
@@ -283,13 +296,13 @@
                     </div>
                     <div class="col-md-6 pe-0">
                       <div id="updateCanCarry_g" class="form-group form-group-default">
-                        <label>Can Carry</label>
+                        <label>Capacity</label>
                         <input
                           id="updateCanCarry"
                           name="can_carry"
                           type="text"
                           class="form-control"
-                          placeholder="fill username"
+                          placeholder="Capacity"
                         />
                         <small id="updateCanCarry_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
@@ -300,7 +313,7 @@
                           <select name="driver" id="updateDriver" class="form-select">
                             <option selected disabled value="0">------Select Driver------</options>
                              @php
-                         $driver = App\Models\TruckDriverModel::where('td_id', '!=', 0)->get();   
+                         $driver = App\Models\TruckDriverModel::where('td_id', '!=', 0)->get();
                         @endphp
                         @foreach ($driver as $d)
                             <option value="{{$d->td_id}}">{{$d->name}}</option>
@@ -309,7 +322,19 @@
                         <small id="updateDriver_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
                     </div>
-
+                    <div class="col-sm-12">
+                        <div id="updatePlateNum_g" class="form-group form-group-default">
+                          <label>Truck Plate Number</label>
+                          <input
+                            id="updatePlateNum"
+                            type="text"
+                            name="plate_num"
+                            class="form-control"
+                            placeholder="Plate Number"
+                          />
+                          <small id="updatePlateNum_e" style="display: none" class="text-danger">(This field is required)</small>
+                        </div>
+                      </div>
                   </div>
                 </form>
               </div>

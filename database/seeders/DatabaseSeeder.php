@@ -16,5 +16,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(AdminSeeder::class);
         $this->call(Brgy::class);
+        $this->call(Zone::class);
+        $this->call(TruckDriverSeeder::class);
+         $this->call(DumpTruckSeeder::class);
     }
 }

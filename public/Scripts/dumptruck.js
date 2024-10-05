@@ -2,7 +2,7 @@ function getDumpTruckList() {
     if ($.fn.DataTable.isDataTable('#truckList')) {
       $('#truckList').DataTable().clear().destroy();
     }
-  
+
     $.ajax({
       type: "get",
       url: getApi('dumptruck', 'list', 'get'),
@@ -14,16 +14,18 @@ function getDumpTruckList() {
             { title: "Truck Model", data: "model" },
             { title: "Capacity(Tons)", data: "can_carry" },
             { title: "Driver", data: "driver" },
-            { 
-              title: "Action", 
-              data: null, 
+            { title: "Plate Number", data: "plate_num"},
+            {
+              title: "Action",
+              data: null,
               render: data => {
                 return `<div class="d-flex gap-1">
                   <button data-bs-toggle="modal" data-bs-target="#updateTruckModal" onclick="UpdateTruck(
                     '${data.dt_id}',
                     '${data.model}',
                     '${data.can_carry}',
-                    '${data.driver_id}'
+                    '${data.driver_id}',
+                    '${data.plate_num}'
                   )" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
                   <button onclick="ViewDumpTruck('${data.dt_id}')" class="btn btn-outline-success"><i class="fas fa-eye"></i></button>
                   <button onclick="RemoveTruck('${data.dt_id}')" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
@@ -45,12 +47,12 @@ function getDumpTruckList() {
                   .appendTo($(column.footer()).empty())
                   .on("change", function () {
                     var val = $.fn.dataTable.util.escapeRegex($(this).val());
-  
+
                     column
                       .search(val ? "^" + val + "$" : "", true, false)
                       .draw();
                   });
-  
+
                 column
                   .data()
                   .unique()
@@ -79,8 +81,8 @@ function getDumpTruckList() {
      validity += isEmptyInput('addModel', 'addModel_e', 'addModel_g');
      validity += isEmptyInput('addCanCarry', 'addCanCarry_e', 'addCanCarry_g');
      validity += isEmptyInput('addDriver', 'addDriver_e', 'addDriver_g');
-
-     if(validity == 3){
+        validity += isEmptyInput('addPlateNum', 'addPlateNum_e', 'addPlateNum_g');
+     if(validity == 4){
       load.on();
 
       $.ajax({
@@ -100,11 +102,12 @@ function getDumpTruckList() {
      }
   });
 
-  function UpdateTruck(id, model, can_carry, driver_id){
+  function UpdateTruck(id, model, can_carry, driver_id, plate_num){
        setValue('updateModel', model);
        setValue('updateCanCarry', can_carry);
        setValue('updateDriver', driver_id);
        setValue('updateId', id);
+       setValue('updatePlateNum', plate_num)
   }
 
  function RemoveTruck(id){
@@ -129,12 +132,12 @@ function getDumpTruckList() {
     });
   }
 
-  
+
 async function ViewDumpTruck(id){
   isVisible('', 'closeView');
   isVisible('', 'truckView');
   window.location.href="#truckView";
-  
+
   const csrfToken = await getCSRF();
 
   $.ajax({
@@ -152,7 +155,7 @@ async function ViewDumpTruck(id){
         setText('dumpTruckModel', truck.model);
         setText('dumpTruckCanCarry', truck.can_carry);
         setText('dumpTruckDriver', driver.name);
-      
+
         const fallback_image = getAsset('assets/img/logo.png');
 
         setImage('dumpTruckProfile', truck.profile_pic == null ? fallback_image : getAsset(`assets/user/${truck.profile_pic}`));
@@ -176,8 +179,9 @@ function CloseView(){
     validity += isEmptyInput('updateModel', 'updateModel_e', 'updateModel_g');
     validity += isEmptyInput('updateCanCarry', 'updateCanCarry_e', 'updateCanCarry_g');
     validity += isEmptyInput('updateDriver', 'updateDriver_e', 'updateDriver_g');
+    validity += isEmptyInput('updatePlateNum', 'updatePlateNum_e', 'updatePlateNum_g');
 
-    if(validity == 3){
+    if(validity == 4){
       load.on();
 
       $.ajax({

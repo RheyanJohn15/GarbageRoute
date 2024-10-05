@@ -113,9 +113,9 @@ class ApiEntry{
             ],
        'dumptruck' =>
              [
-                'add' => ['model', 'can_carry', 'driver'],
+                'add' => ['model', 'can_carry', 'driver', 'plate_num'],
                 'delete'=> ['id'],
-                'update'=> ['model', 'can_carry', 'driver', 'id'],
+                'update'=> ['model', 'can_carry', 'driver', 'id', 'plate_num'],
                 'details'=> ['id'],
                 'list' => ['empty']
              ],
@@ -154,6 +154,14 @@ class ApiEntry{
             'getalladmin'=> ['type'],
             'details'=> ['id'],
             'dashboard'=>['empty']
+        ],
+        'brgy'=> [
+            'list'=> ['empty'],
+            'filterbyzone' => ['zone_id'],
+        ],
+        'zone'=> [
+            'list'=> ['empty'],
+            'addbrgy'=> ['brgy', 'zone']
         ]
     ];
 

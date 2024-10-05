@@ -7,6 +7,8 @@ use App\Services\V1\ComplaintsClass;
 use App\Services\ApiException;
 use App\Services\V1\Driver;
 use App\Services\V1\AdminAccount;
+use App\Services\V1\Baranggay;
+use App\Services\V1\Zone;
 class ApiRequest{
 
     private $RESPONSE;
@@ -22,7 +24,7 @@ class ApiRequest{
         case 'routes':
            $result = new Routes($method,$request);
            break;
-         
+
          case 'complaints':
             $result = new ComplaintsClass($method, $request);
             break;
@@ -31,6 +33,12 @@ class ApiRequest{
             break;
          case 'adminaccount':
             $result = new AdminAccount($method, $request);
+            break;
+        case 'brgy':
+            $result = new Baranggay($method, $request);
+            break;
+        case 'zone':
+            $result = new Zone($method, $request);
             break;
         default:
           throw new ApiException(ApiException::NOT_VALID_TYPE);
