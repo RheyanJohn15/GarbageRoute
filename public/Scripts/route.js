@@ -43,37 +43,93 @@ async function getGeoData(){
     return geoData;
 }
 
+async function getDumpSiteLocation(){
+    const response = await fetch('/api/get/settings/getval?context=dumpsite_location');
+
+    const result = await response.json();
+    const data = result.result.data.settings_value;
+
+    return data;
+}
+
 async function LoadMap(){
 
     const geoDataSilay = await getGeoData();
+    const dumpsiteLocation = await getDumpSiteLocation();
+    const dumpsiteCoord = dumpsiteLocation.split(',');
+    console.log(dumpsiteCoord); 
     const map = new mapboxgl.Map({
         container: 'map', // container ID
         style: 'mapbox://styles/mapbox/streets-v12', // style URL
         center: [123.0585, 10.8039], // center set to Silay City, Negros Occidental
         zoom: 11, // starting zoom
       });
+      
       const zones = {
-          type: 'FeatureCollection',
-          features: geoDataSilay
-        };
+        type: 'FeatureCollection',
+        features: geoDataSilay
+      };
       
       map.on('load', () => {
-          map.addSource('zones', {
-            type: 'geojson',
-            data: zones,
-          });
-      
-          map.addLayer({
-            id: 'zones',
-            type: 'fill',
-            source: 'zones',
-            layout: {},
-            paint: {
-              'fill-color': ['get', 'color'],
-              'fill-opacity': 0.5,
-            },
-          });
+        // Add the geojson source for zones
+        map.addSource('zones', {
+          type: 'geojson',
+          data: zones,
         });
+      
+        // Add fill layer for zones
+        map.addLayer({
+          id: 'zones',
+          type: 'fill',
+          source: 'zones',
+          layout: {},
+          paint: {
+            'fill-color': ['get', 'color'],
+            'fill-opacity': 0.5,
+          },
+        });
+      
+        // Custom marker for dumpsite
+        const markerEl = document.createElement('div');
+        markerEl.className = 'custom-marker';
+        markerEl.style.backgroundImage = 'url("/assets/img/dump.png")'; // Replace with actual URL of dumpsite image
+        markerEl.style.width = '50px'; // Custom width
+        markerEl.style.height = '50px'; // Custom height
+        markerEl.style.backgroundSize = 'cover'; // Ensure the image covers the entire marker
+        markerEl.style.borderRadius = '50%'; // Small radius to make it circular
+      
+        // Add Popup (label) to the marker
+        const popup = new mapboxgl.Popup({ offset: 25 }) // Adjust offset if needed
+          .setText('Dumpsite') // Set the label text here
+      
+        // Add marker to map with the popup
+        new mapboxgl.Marker(markerEl)
+          .setLngLat([parseFloat(dumpsiteCoord[1]), parseFloat(dumpsiteCoord[0])]) // Set to the desired coordinates
+          .setPopup(popup) // Attach the popup to the marker
+          .addTo(map);
+      
+        // Add small radius around the marker (as a circle)
+        map.addLayer({
+          id: 'marker-radius',
+          type: 'circle',
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [parseFloat(dumpsiteCoord[1]), parseFloat(dumpsiteCoord[0])], // Same coordinates as marker
+              },
+            },
+          },
+          paint: {
+            'circle-radius': 30, // Adjust radius size
+            'circle-color': '#ff0000', // Color of the circle (red, adjust as needed)
+            'circle-opacity': 0.3, // Adjust opacity of the circle
+          },
+        });
+      });
+      
       
 }
 
@@ -81,7 +137,7 @@ async function LoadMap(){
 let silayBrgyTable;
 document.getElementById('updateZonesBtn').addEventListener('click', ()=> {
     getAllBrgyList();
-    loadZones();
+    loadZones('update');
 })
 
 function getAllBrgyList() {
@@ -116,8 +172,11 @@ function loadBrgy(data){
 
 }
 
+document.getElementById('assignDriverBtn').addEventListener('click', () => {
+    loadZones('add');
+})
 
-function loadZones(){
+function loadZones(type){
     $.ajax({
         type: 'GET',
         url: "/api/get/zone/list",
@@ -128,9 +187,20 @@ function loadZones(){
             zones.innerHTML = `<option value="all">All Baranggays</option>`;
             addZones.innerHTML = '<option value="" disabled selected>------Select a Zone-------</option>';
 
+            const assignDriverZone = document.getElementById('addDriverZoneList');
+            assignDriverZone.innerHTML = '';
+
             res.result.data.forEach( z => {
-                zones.innerHTML += `<option value="${z.zone_id}">${z.zone_name}</option>`;
-                addZones.innerHTML += `<option value="${z.zone_id}">${z.zone_name}</option>`;
+                if(type == 'update'){
+                    zones.innerHTML += `<option value="${z.zone_id}">${z.zone_name}</option>`;
+                    addZones.innerHTML += `<option value="${z.zone_id}">${z.zone_name}</option>`;
+                }else{
+                    assignDriverZone.innerHTML += ` <label class="selectgroup-item">
+                        <input type="radio" name="zonelist" value="${z.zone_id}" class="selectgroup-input" checked="">
+                        <span class="selectgroup-button">${z.zone_name}</span>
+                        </label>`
+                }
+               
               });
         }, error: xhr=> console.log(xhr.responseText)
     })

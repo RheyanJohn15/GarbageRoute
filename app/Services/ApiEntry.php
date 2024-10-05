@@ -161,6 +161,9 @@ class ApiEntry{
             'list'=> ['empty'],
             'addbrgy'=> ['brgy', 'zone'],
             'getgeodata'=>['empty']
+        ],
+        'settings'=> [
+            'getval'=> ['context']
         ]
     ];
 

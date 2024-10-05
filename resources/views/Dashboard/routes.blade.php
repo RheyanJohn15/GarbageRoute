@@ -29,7 +29,8 @@
               </div>
 
               <div class="ms-md-auto py-2 py-md-0">
-                <button id="closeView" data-bs-toggle="modal" data-bs-target="#assignDriver" class="btn btn-label-info btn-round me-2">Assign Drivers</button>
+                <button id="assignDriverBtn"data-bs-toggle="modal" data-bs-target="#assignDriver"  class="btn btn-label-warning btn-round me-2"><i class="fas fa-warehouse"></i> Change Dumpsite Location </button>
+                <button id="assignDriverBtn"data-bs-toggle="modal" data-bs-target="#assignDriver"  class="btn btn-label-info btn-round me-2">Assign Drivers</button>
                 <button id="updateZonesBtn" data-bs-toggle="modal" data-bs-target="#updateZones" class="btn btn-primary btn-round">Update Zones</button>
               </div>
 
@@ -236,6 +237,13 @@ aria-hidden="true"
       Assign Driver to each zones
       </p>
       
+      <div class="form-group" >
+        <label class="form-label">Zone List</label>
+        <div class="selectgroup w-100" id="addDriverZoneList">
+         
+          
+        </div>
+      </div>
 
     </div>
     <div class="modal-footer border-0">
@@ -244,7 +252,7 @@ aria-hidden="true"
         id="addBrgyToZone"
         class="btn btn-primary"
         >
-        Save
+       Save
       </button>
       <button
       id="closeUpdateZoneModal";

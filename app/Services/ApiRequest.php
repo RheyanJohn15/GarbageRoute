@@ -9,6 +9,7 @@ use App\Services\V1\Driver;
 use App\Services\V1\AdminAccount;
 use App\Services\V1\Baranggay;
 use App\Services\V1\Zone;
+use App\Services\V1\SettingsClass;
 class ApiRequest{
 
     private $RESPONSE;
@@ -39,6 +40,9 @@ class ApiRequest{
             break;
         case 'zone':
             $result = new Zone($method, $request);
+            break;
+         case 'settings':
+            $result = new SettingsClass($method, $request);
             break;
         default:
           throw new ApiException(ApiException::NOT_VALID_TYPE);

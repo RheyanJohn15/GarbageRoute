@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TruckDriverSeeder::class);
         $this->call(DumpTruckSeeder::class);
         $this->call(GeoDataSeeder::class);
+        $this->call(SettingsSeeder::class);
     }
 }
