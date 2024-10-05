@@ -2,11 +2,13 @@ document.getElementById('contact').addEventListener('submit', (e) => {
     e.preventDefault();
 
     load.on();
-
+    const formData = new FormData($('form#contact')[0]);
     $.ajax({
         type: "POST",
         url: "/api/post/complaints/submit",
-        data: $('form#contact').serialize(),
+        data: formData,
+        processData: false,
+        contentType: false,
         success: res => {
             load.off();
             const form = document.getElementById('contact');

@@ -17,6 +17,7 @@ class Complaints extends Model
         'comp_email',
         'comp_nature',
         'comp_remarks',
-        'comp_status'
+        'comp_status',
+        'comp_image'
     ];
 }

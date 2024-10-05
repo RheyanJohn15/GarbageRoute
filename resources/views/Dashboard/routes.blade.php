@@ -29,7 +29,7 @@
               </div>
 
               <div class="ms-md-auto py-2 py-md-0">
-                <button id="closeView" onclick="CloseView()" class="btn btn-label-info btn-round me-2">Assign Drivers</button>
+                <button id="closeView" data-bs-toggle="modal" data-bs-target="#assignDriver" class="btn btn-label-info btn-round me-2">Assign Drivers</button>
                 <button id="updateZonesBtn" data-bs-toggle="modal" data-bs-target="#updateZones" class="btn btn-primary btn-round">Update Zones</button>
               </div>
 
@@ -168,7 +168,7 @@ aria-hidden="true"
     <div class="modal-header border-0">
       <h5 class="modal-title">
         <span class="fw-mediumbold">Assign</span>
-        <span class="fw-light"> Driver </span>
+        <span class="fw-light"> Baranggay to zones </span>
       </h5>
       <button
         type="button"
@@ -193,6 +193,58 @@ aria-hidden="true"
         class="btn btn-primary d-none"
         >
         Update Baranggays to the zone
+      </button>
+      <button
+      id="closeUpdateZoneModal";
+        type="button"
+        class="btn btn-danger"
+        data-bs-dismiss="modal"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div
+class="modal fade"
+id="assignDriver"
+tabindex="-1"
+role="dialog"
+aria-hidden="true"
+>
+<div class="modal-dialog modal-xl" role="document">
+  <div class="modal-content">
+    <div class="modal-header border-0">
+      <h5 class="modal-title">
+        <span class="fw-mediumbold">Assign</span>
+        <span class="fw-light"> Driver </span>
+      </h5>
+      <button
+        type="button"
+        class="close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p class="small">
+      Assign Driver to each zones
+      </p>
+      
+
+    </div>
+    <div class="modal-footer border-0">
+      <button
+        type="button"
+        id="addBrgyToZone"
+        class="btn btn-primary"
+        >
+        Save
       </button>
       <button
       id="closeUpdateZoneModal";

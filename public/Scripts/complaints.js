@@ -68,7 +68,8 @@ function  loadAllComplaints(){
                         '${data.comp_nature}',
                         '${data.comp_remarks}',
                         '${data.comp_status}',
-                        '${data.created_at}'
+                        '${data.created_at}',
+                        '${data.comp_image}'
                         )" data-bs-toggle="modal" data-bs-target="#viewComplaint" class="btn btn-icon btn-round btn-info"><i class="fa fa-eye"></i></button>
                         <button onclick="removeComplaint('${data.comp_id}')" class="btn btn-icon btn-round btn-danger"><i class="fa fa-trash"></i></button>
                         </div>`;
@@ -122,7 +123,7 @@ document.getElementById('updateComplaint').addEventListener('submit', (e)=> {
   })
 });
 
-function viewDetails(name, email, contact, nature, remarks, status, date){
+function viewDetails(name, email, contact, nature, remarks, status, date,image){
     setText('complainant_span', name);
     setText('email_span', email);
     setText('contact_span', contact);
@@ -130,5 +131,8 @@ function viewDetails(name, email, contact, nature, remarks, status, date){
     setText('date_span', date);
     setText('status_span', stats(+status)[1]);
     setText('remarks_content', remarks);
+    isShow('imgLoader', false);
+    isShow('complaintImage', true, 'block');
+    setImage('complaintImage', `/ComplaintAssets/${image}`);
 }
 

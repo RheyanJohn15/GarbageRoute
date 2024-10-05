@@ -191,6 +191,14 @@
   
           </p>
         </div>
+
+        <div class="w-100 d-flex justify-content-center flex-column gap-4 align-items-center" style="height: 30vh" id="imgLoader">
+          <div class="contentLoader"></div>
+          <p>Loading Image</p>
+        </div>
+
+        <img src="" alt="complaintImage" id="complaintImage" class="w-100 mt-3 rounded d-none">
+        
       </div>
       <div class="modal-footer border-0">
     

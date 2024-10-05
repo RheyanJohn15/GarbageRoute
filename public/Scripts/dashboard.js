@@ -22,15 +22,7 @@ window.onload = () => {
                                 "#ff4500", // orange-red
                                 "#1e90ff", // dodger blue
                                 "#32cd32", // lime green
-                                "#ff1493", // deep pink
-                                "#8a2be2", // blue violet
-                                "#ff6347", // tomato red
-                                "#00fa9a", // medium spring green
-                                "#dda0dd", // plum
-                                "#4682b4", // steel blue
-                                "#ffd700", // gold
-                                "#40e0d0", // turquoise
-                                "#ff69b4"  // hot pink
+                            
                             ],
                             borderWidth: 1,
                             borderColor: "#ffffff", // adds white border between segments for clarity
@@ -40,15 +32,7 @@ window.onload = () => {
                         "Missed Collection",
                         "Late Irregular Service",
                         "Improper Handling of Waste",
-                        "Overfilled Bins or Dumpsters",
-                        "Unclean Service",
-                        "Noise Complaints",
-                        "Missorted Waste",
-                        "Non-compliance with Special Waste Services",
-                        "Bin Request or Replacement Issue",
-                        "Unpleasant Odor",
-                        "Route Issue",
-                        "Poor Customer Service"
+                
                     ],
                 },
                 pieceLabel: {

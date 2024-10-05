@@ -61,7 +61,7 @@ class APIHandler extends Controller
     }
 
     private function isAuthenticated($check, $req, $data, $method, $reqType){
-        if($check->checkAuth($req)){
+        if($check->checkAuth($req) || ($data == "complaints" && $method == "submit")){
             $entry = new ApiEntry($data, $method, $req, $reqType);
             return $entry->getResponse();
         }else{
