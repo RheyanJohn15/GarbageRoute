@@ -15,7 +15,6 @@
                             <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
                             <li class="scroll-to-section"><a href="#services">Services</a></li>
                             <li class="scroll-to-section"><a href="#about">About</a></li>
-                            <li class="scroll-to-section"><a href="#portfolio">Eco Attractions</a></li>
                             <li class="scroll-to-section">
                                 <div class="main-red-button-hover"><a href="#contact">Contact Us Now</a></div>
                             </li>
