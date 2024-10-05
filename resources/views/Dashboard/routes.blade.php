@@ -43,6 +43,6 @@
 
 
     @include('Components.script', ['type'=> 'admin'])
-    <script src="{{asset('Scripts/route.js')}}"></script>
+    <script type="module" src="{{asset('Scripts/route.js')}}"></script>
   </body>
 </html>
