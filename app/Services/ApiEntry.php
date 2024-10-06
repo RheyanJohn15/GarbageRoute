@@ -156,7 +156,8 @@ class ApiEntry{
             'list'=> ['empty'],
             'addbrgy'=> ['brgy', 'zone'],
             'getgeodata'=>['empty'],
-            'changedumpsitelocation'=> ['context', 'longitude', 'latitude']
+            'changedumpsitelocation'=> ['context', 'longitude', 'latitude'],
+            'getdriverassignedzone'=> ['driver_id']
         ],
         'settings'=> [
             'getval'=> ['context']

@@ -36,8 +36,8 @@
           </li>
           <li class="nav-item  {{$active == 'dashboard' ? 'active' : ''}}">
             <a href="{{route('userDashboard')}}">
-              <i class="fas fa-route"></i>
-              <p>Routes & Schedule List</p>
+              <i class="fas fa-map"></i>
+              <p>Map & Assigned Zone</p>
             </a>
           </li>
 

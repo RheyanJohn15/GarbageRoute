@@ -3,6 +3,12 @@
   <head>
    @include('Components.header', ['title'=> 'Driver Dashboard'])
   </head>
+  <style>
+    #map {
+    width: 100%;
+    height: 70vh;
+}
+  </style>
   <body>
     @include('Components.dashload')
 
@@ -18,17 +24,13 @@
               class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
             >
               <div>
-                <h3 class="fw-bold mb-3">Routes & Schedule List</h3>
-                <h6 class="op-7 mb-2">List of all routes assigned to you</h6>
+                <h3 class="fw-bold mb-3">Map & Zone</h3>
+                <h6 class="op-7 mb-2">Current Assigned Zone</h6>
               </div>
             </div>
       
             <div class="list-group" id="routeList">
-              <div class="w-100 d-flex justify-content-center align-items-center flex-column gap-2" style="height: 50vh">
-                <div class="contentLoader"></div>
-                <p>Loading Routes please wait.....</p>
-              </div>
-            
+              <div id="map" style="border: 1px solid black"></div>
             </div>
 
           </div>

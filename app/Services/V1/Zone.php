@@ -5,6 +5,8 @@ use App\Models\BrgyList;
 use App\Models\GeoData;
 use App\Models\GeoDataCoordinates;
 use App\Models\Settings;
+use App\Services\ApiException;
+use App\Models\ZoneDrivers;
 
 class Zone{
     private $RESULT = null;
@@ -70,6 +72,28 @@ class Zone{
         ]);
 
         $this->RESULT = ['changedumpsitelocation', "Dumpsite Location Successfully Changed", 'null'];
+    }
+
+    private function getdriverassignedzone($req){
+        $zoneDriver = ZoneDrivers::where('td_id', $req->driver_id)->first();
+
+        if(!$zoneDriver){
+          throw new ApiException(ApiException::NO_DATA_FOUND);
+        }
+
+        $brgy = BrgyList::where('zone_id', $zoneDriver->zone_id)->join('geo_data', 'geo_data.brgy_id', '=', 'brgy_lists.brgy_id')->get();
+
+        foreach($brgy as $b){
+            $coordinates = GeoDataCoordinates::where('gd_id', $b->gd_id)->get();
+
+            $b->coordinates = $coordinates;
+        }
+        
+        $zone = Zones::where('zone_id', $zoneDriver->zone_id)->first();
+
+        $data = [$zone, $brgy];
+        
+        $this->RESULT = ['getdriverassignedzone', 'Fetch Zone Coordinates', $data];
     }
 
     public function getResult(){

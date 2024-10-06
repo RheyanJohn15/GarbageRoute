@@ -96,9 +96,9 @@
                     <a class="col-6 col-md-4 p-0" href="/user/driver/dashboard">
                       <div class="quick-actions-item">
                         <div class="avatar-item bg-danger rounded-circle">
-                          <i class="fas fa-route"></i>
+                          <i class="fas fa-map"></i>
                         </div>
-                        <span class="text">Routes & Schedule</span>
+                        <span class="text">Map & Assigned Zone</span>
                       </div>
                     </a>
                     <a class="col-6 col-md-4 p-0" href="/user/driver/history">

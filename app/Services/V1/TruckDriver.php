@@ -37,7 +37,7 @@ class TruckDriver {
        $truck = DumpTruckModel::where('td_id', $req->id)->get();
        if($truck->count() > 0){
          foreach($truck as $t){
-            $t->update(['td_id' => '0']);
+            $t->update(['td_id' => null]);
          }
        }
 
