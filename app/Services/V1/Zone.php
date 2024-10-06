@@ -90,9 +90,10 @@ class Zone{
         }
         
         $zone = Zones::where('zone_id', $zoneDriver->zone_id)->first();
-
-        $data = [$zone, $brgy];
         
+        $dumpsite = Settings::where('settings_context', 'dumpsite_location')->first();
+        $data = [$zone, $brgy, $dumpsite];
+
         $this->RESULT = ['getdriverassignedzone', 'Fetch Zone Coordinates', $data];
     }
 

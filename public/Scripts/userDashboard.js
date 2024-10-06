@@ -47,6 +47,8 @@ function loadMap(){
 
       const data = res.result.data[1];
 
+   
+
       data.forEach( feat => {
       
           const geodata = {};
@@ -83,7 +85,8 @@ function loadMap(){
         features: assignedZone,
       };
       
-      
+      const dumpsite = res.result.data[2];
+      const dumpsiteLocation = dumpsite.settings_value.split(',');
        
       map.on('load', () => {
         // Add zones
@@ -117,6 +120,45 @@ function loadMap(){
           const currentLocationPoint = turf.point([e.coords.longitude, e.coords.latitude]);
           console.log(currentLocationPoint);
         });
+
+
+           // Add the initial marker for the dumpsite
+      const markerEl = document.createElement('div');
+      markerEl.className = 'custom-marker';
+      markerEl.style.backgroundImage = 'url("/assets/img/dump.png")'; // Replace with actual URL
+      markerEl.style.width = '50px';
+      markerEl.style.height = '50px';
+      markerEl.style.backgroundSize = 'cover';
+      markerEl.style.borderRadius = '50%';
+    
+      const popup = new mapboxgl.Popup({ offset: 25 }).setText('Dumpsite');
+    
+      marker = new mapboxgl.Marker(markerEl)
+        .setLngLat([parseFloat(dumpsiteLocation[0]), parseFloat(dumpsiteLocation[1])])
+        .setPopup(popup)
+        .addTo(map);
+    
+      // Add the circle radius around the marker
+      map.addLayer({
+        id: "dumpsite-location",
+        type: 'circle',
+        source: {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [parseFloat(dumpsiteLocation[0]), parseFloat(dumpsiteLocation[1])],
+            },
+          },
+        },
+        paint: {
+          'circle-radius': 30,
+          'circle-color': '#ff0000',
+          'circle-opacity': 0.3,
+        },
+      });
+
       });
 
     }, error: xhr=> console.log(xhr.responseText)
