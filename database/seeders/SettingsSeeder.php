@@ -17,7 +17,7 @@ class SettingsSeeder extends Seeder
 
         $dumpLocation = new Settings();
         $dumpLocation->settings_context = "dumpsite_location";
-        $dumpLocation->settings_value = "10.775059,122.974123";
+        $dumpLocation->settings_value = "122.974123,10.775059";
         $dumpLocation->save();
     }
 }

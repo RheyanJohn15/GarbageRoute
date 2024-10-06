@@ -29,7 +29,7 @@
               </div>
 
               <div class="ms-md-auto py-2 py-md-0">
-                <button id="assignDriverBtn"data-bs-toggle="modal" data-bs-target="#assignDriver"  class="btn btn-label-warning btn-round me-2"><i class="fas fa-warehouse"></i> Change Dumpsite Location </button>
+                <button id="changeDumpsiteLocation" class="btn btn-label-warning btn-round me-2"><i class="fas fa-warehouse"></i> Change Dumpsite Location </button>
                 <button id="assignDriverBtn"data-bs-toggle="modal" data-bs-target="#assignDriver"  class="btn btn-label-info btn-round me-2">Assign Drivers</button>
                 <button id="updateZonesBtn" data-bs-toggle="modal" data-bs-target="#updateZones" class="btn btn-primary btn-round">Update Zones</button>
               </div>
@@ -239,23 +239,45 @@ aria-hidden="true"
       
       <div class="form-group" >
         <label class="form-label">Zone List</label>
-        <div class="selectgroup w-100" id="addDriverZoneList">
+        <div class="selectgroup w-100 " id="addDriverZoneList">
          
           
         </div>
+        <small id="noZoneSelected" class="text-danger d-none">You did not select any zone (Operation is invalid)</small>
       </div>
+
+        <div class="row d-none" id="selectDriver">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="driverListMain">Assign a driver to this zone</label>
+              <select class="form-select" name="" id="driverListMain">
+             
+              </select>
+              <small id="noMainDriverSelected" class="text-danger d-none">Please Select a main driver (Operation Invalid)</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="driverListStandby">Assign a standby driver to this zone</label>
+              <select class="form-select" name="" id="driverListStandby">
+              
+              </select>
+              <small id="noStandbyDriverSelected" class="text-danger d-none">Please Select a standby driver (Operation Invalid)</small>
+            </div>
+          </div>
+        </div>
 
     </div>
     <div class="modal-footer border-0">
       <button
         type="button"
-        id="addBrgyToZone"
+        id="saveDriverToZone"
         class="btn btn-primary"
         >
        Save
       </button>
       <button
-      id="closeUpdateZoneModal";
+      id="closeAssignDriver";
         type="button"
         class="btn btn-danger"
         data-bs-dismiss="modal"

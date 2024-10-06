@@ -108,6 +108,8 @@ class ApiEntry{
              'changepass'=> ['currentpass', 'newpass', 'id'],
              'details' => ['id'],
              'list'=> ['empty'],
+             'getdriverbyzone' => ['empty'],
+             'driverassignedzone'=> ['zone', 'maindriver', 'standbydriver']
             ],
        'dumptruck' =>
              [
@@ -117,13 +119,6 @@ class ApiEntry{
                 'details'=> ['id'],
                 'list' => ['empty']
              ],
-        'routes' => [
-            'add' => ['route_name', 'coordinates', 'assigned_driver','schedule'],
-            'delete'=> ['id'],
-            'update' =>  ['id','name', 'start_longitude', 'start_latitude','start_location', 'end_longitude', 'end_latitude', 'end_location', 'assigned_truck'],
-            'details'=> ['id'],
-            'list'=> ['empty']
-        ],
         'complaints' => [
             'submit' => ['comp_name', 'email', 'contact', 'nature', 'remarks'],
             'list'=> ['empty'],
@@ -160,7 +155,8 @@ class ApiEntry{
         'zone'=> [
             'list'=> ['empty'],
             'addbrgy'=> ['brgy', 'zone'],
-            'getgeodata'=>['empty']
+            'getgeodata'=>['empty'],
+            'changedumpsitelocation'=> ['context', 'longitude', 'latitude']
         ],
         'settings'=> [
             'getval'=> ['context']

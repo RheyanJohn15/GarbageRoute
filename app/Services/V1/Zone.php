@@ -4,6 +4,7 @@ use App\Models\Zones;
 use App\Models\BrgyList;
 use App\Models\GeoData;
 use App\Models\GeoDataCoordinates;
+use App\Models\Settings;
 
 class Zone{
     private $RESULT = null;
@@ -57,6 +58,18 @@ class Zone{
         }
 
         $this->RESULT = ['getgeodata', "Successfully get all geodata", $geoData];
+    }
+
+    private function changedumpsitelocation($req){
+        $sett = Settings::where('settings_context', $req->context)->first();
+
+        $coordinates = "$req->longitude,$req->latitude";
+        
+        $sett->update([
+            'settings_value'=> $coordinates
+        ]);
+
+        $this->RESULT = ['changedumpsitelocation', "Dumpsite Location Successfully Changed", 'null'];
     }
 
     public function getResult(){

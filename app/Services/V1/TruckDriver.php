@@ -4,6 +4,7 @@ use App\Models\TruckDriverModel;
 use Illuminate\Support\Facades\Hash;
 use App\Services\ApiException;
 use App\Models\DumpTruckModel;
+use App\Models\ZoneDrivers;
 class TruckDriver {
     
     private $RESULT = null;
@@ -85,6 +86,58 @@ class TruckDriver {
       $check->truck = $truck;
 
       $this->RESULT = ['details', 'Show truck details', $check];
+    }
+
+    private function getdriverbyzone($req){
+      $drivers = TruckDriverModel::all();
+      
+      foreach($drivers as $drive){
+        $zone = ZoneDrivers::where('td_id', $drive->td_id)->join('zones', 'zones.zone_id', '=', 'zone_drivers.zone_id')->first();
+        if($zone){
+          $drive->zone = $zone;
+        }
+      }
+
+      $this->RESULT = ['getdriverbyzone', "Fetch Driver By Zone", $drivers];
+    }
+
+    private function driverassignedzone($req){
+      $zone = ZoneDrivers::where('zone_id', $req->zone)->get();
+      $mainDriver = explode('-', $req->maindriver);
+      $standbyDriver = explode('-', $req->standbydriver);
+      
+      if(count($zone) == 2){
+        foreach($zone as $z){
+          switch($z->type){
+            case "Main Driver":
+              $updateMain = ZoneDrivers::where('zone_id', $req->zone)->where('type', 'Main Driver')->first();
+              $updateMain->update([
+                'td_id'=> $mainDriver[0]
+              ]);
+              break;
+            default:
+              $updateStandBy = ZoneDrivers::where('zone_id', $req->zone)->where('type', "Standby Driver")->first();
+              $updateStandBy->update([
+                'td_id'=> $standbyDriver[0]
+              ]);
+              break;
+          }
+        }
+      }else{
+        $addMain = new ZoneDrivers();
+        $addMain->zone_id = $req->zone;
+        $addMain->td_id = $mainDriver[0];
+        $addMain->type = "Main Driver";
+        $addMain->save();
+
+        $addStandBy = new ZoneDrivers();
+        $addStandBy->zone_id = $req->zone;
+        $addStandBy->td_id = $standbyDriver[0];
+        $addStandBy->type = "Standby Driver";
+        $addStandBy->save();
+      }
+
+      $this->RESULT = ['driverassignedzone', "Driver Assigned to Zone $req->zone Successfully", "null"];
     }
 
     public function getResult(){
