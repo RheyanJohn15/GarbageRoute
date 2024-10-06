@@ -8,16 +8,16 @@ window.onload = () => {
 
             setText('truckNum', data[0].length);
             setText('driverNum', data[1].length);
-            setText('routeNum', data[2].length);
-            setText('complaintNum', data[3].length);
-            console.log(data[4]);
+            setText('complaintNum', data[2].length);
+            setText('resolvedComplaintNum', data[4].length);
+            console.log(data[5]);
             const complaintChart = document.getElementById('complaintChart').getContext('2d');
             var myPieChart = new Chart(complaintChart, {
                 type: "pie",
                 data: {
                     datasets: [
                         {
-                            data: data[4],
+                            data: data[3],
                             backgroundColor: [
                                 "#ff4500", // orange-red
                                 "#1e90ff", // dodger blue
@@ -74,6 +74,44 @@ window.onload = () => {
                 },
             });
             
+            complaintStatusBarchart = document.getElementById("complaintStatusBarchart").getContext("2d");
+            const complaintStatusNumber = data[5];
+            var myBarChart = new Chart(complaintStatusBarchart, {
+                type: "bar",
+                data: {
+                  labels: [
+                    "New",
+                    "In Progress",
+                    "Resolved",
+                    "Closed",
+                    "Cancelled",
+                    "Pending",
+                  ],
+                  datasets: [
+                    {
+                      label: "No./Status",
+                      backgroundColor: "rgb(23, 125, 255)",
+                      borderColor: "rgb(23, 125, 255)",
+                      data: complaintStatusNumber,
+                    },
+                  ],
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  scales: {
+                    yAxes: [
+                      {
+                        ticks: {
+                          beginAtZero: true,
+                        },
+                      },
+                    ],
+                  },
+                },
+              });
+
+
         }, error: xhr => console.log(xhr.responseText)
     })
 }

@@ -67,13 +67,13 @@
                     <div class="row">
                       <div class="col-5">
                         <div class="icon-big text-center">
-                          <i class="fas fa-map"></i>
+                          <i class="far fa-check-circle"></i>
                         </div>
                       </div>
                       <div class="col-7 col-stats">
                         <div class="numbers">
-                          <p class="card-category">Routes</p>
-                          <h4 id="routeNum" class="card-title">Loading.....</h4>
+                          <p class="card-category">Resolved Complaint</p>
+                          <h4 id="resolvedComplaintNum" class="card-title">Loading.....</h4>
                         </div>
                       </div>
                     </div>
@@ -105,9 +105,12 @@
               <div class="card-header">
                 <div class="card-title">Complaint Chart <small class="text-muted">(Shows how often a specific nature of complaint happens)</small></div>
               </div>
-              <div class="card-body">
-                <div class="chart-container"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+              <div class="card-body row">
+                <div class="chart-container col-6"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
                   <canvas id="complaintChart" style="width: 429px; height: 300px; display: block;" width="858" height="600" class="chartjs-render-monitor"></canvas>
+                </div>
+                <div class="chart-container col-6">
+                  <canvas id="complaintStatusBarchart"></canvas>
                 </div>
               </div>
             </div>

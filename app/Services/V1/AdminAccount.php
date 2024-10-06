@@ -114,22 +114,13 @@ class AdminAccount{
     private function dashboard($request){
         $driver = TruckDriverModel::all();
         $truck = DumpTruckModel::all();
-        $route = RoutesModel::all();
         $complaint = Complaints::all();
         
+        $resolvedComplaint = Complaints::where('comp_status', 2)->get();
         $comp = [
             "Missed Collection", 
             "Late Irregular Service", 
             "Improper Handling of Waste",
-            "Overfilled Bins or Dumpsters",
-            "Unclean Service",
-            "Noise Complaints",
-            "Missorted Waste",
-            "Non-compliance with Special Waste Services",
-            "Bin Request or Replacement Issue",
-            "Unpleasant Odor",
-            "Route Issue",
-            "Poor Customer Service"
         ];
 
         $complaintData = [];
@@ -138,7 +129,16 @@ class AdminAccount{
             $percentage = ($count / $complaint->count()) * 100;
             array_push($complaintData, $percentage);
         }
-        $dashboard = [$driver, $truck, $route, $complaint, $complaintData];
+
+        $complaintStatus = [];
+
+        for($i = 0; $i <= 5; $i++){
+            $count = Complaints::where('comp_status', $i)->count();
+
+            $complaintStatus[] = $count;
+        }
+
+        $dashboard = [$driver, $truck, $complaint, $complaintData, $resolvedComplaint, $complaintStatus];
 
         $this->RESULT = ['dashboard', 'Succesfully fetch all dashboard data', $dashboard];
     }
