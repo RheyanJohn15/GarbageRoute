@@ -95,9 +95,9 @@
                     <a class="col-6 col-md-4 p-0" href="/routes">
                       <div class="quick-actions-item">
                         <div class="avatar-item bg-danger rounded-circle">
-                          <i class="fa fa-route"></i>
+                          <i class="fa fa-map"></i>
                         </div>
-                        <span class="text">Route & Schedule</span>
+                        <span class="text">Map & Zones</span>
                       </div>
                     </a>
                     <a class="col-6 col-md-4 p-0" href="/truckregister">
@@ -128,16 +128,7 @@
                         <span class="text">Complaints</span>
                       </div>
                     </a>
-                    <a class="col-6 col-md-4 p-0" href="/mapnavigator">
-                      <div class="quick-actions-item">
-                        <div
-                          class="avatar-item bg-primary rounded-circle"
-                        >
-                          <i class="fas fa-map"></i>
-                        </div>
-                        <span class="text">Map Navigator</span>
-                      </div>
-                    </a>
+                 
                    
                   </div>
                 </div>

@@ -6,7 +6,7 @@
   <body>
     @include('Components.dashload')
     <div class="wrapper">
-        @include('Components.nav', ['active'=>'truck'])
+        @include('Components.nav', ['active'=>'driver'])
 
       <div class="main-panel">
         @include('Components.headernav')

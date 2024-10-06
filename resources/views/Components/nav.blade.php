@@ -42,42 +42,30 @@
           </li>
           <li class="nav-item  {{$active == 'routes' ? 'active' : ''}}">
             <a href="{{route('routes')}}">
-              <i class="fas fa-route"></i>
-              <p>Routes & Schedule</p>
+              <i class="fas fa-map"></i>
+              <p>Map & Zones</p>
             </a>
           </li>
+
           <li class="nav-item  {{$active == 'truck' ? 'active' : ''}}">
-            <a data-bs-toggle="collapse" href="#sidebarLayouts">
+            <a href="{{route('truckregister')}}">
               <i class="fas fa-truck-moving "></i>
-              <p>Truck & Driver</p>
-              <span class="caret"></span>
+              <p>Dump Trucks</p>
             </a>
-            <div class="collapse" id="sidebarLayouts">
-              <ul class="nav nav-collapse">
-                <li>
-                  <a href="{{route('truckregister')}}">
-                    <span class="sub-item">Trucks</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="{{route('truckdriver')}}">
-                    <span class="sub-item">Drivers</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
           </li>
+
+          <li class="nav-item  {{$active == 'driver' ? 'active' : ''}}">
+            <a href="{{route('truckdriver')}}">
+              <i class="fas fa-user "></i>
+              <p>Drivers</p>
+            </a>
+          </li>
+
 
           <li class="nav-item  {{$active == 'complaints' ? 'active' : ''}}">
             <a href="{{route('complaints')}}">
               <i class="fas fa-paper-plane"></i>
               <p>Complaints</p>
-            </a>
-          </li>
-          <li class="nav-item  {{$active == 'mapnavigator' ? 'active' : ''}}">
-            <a href="{{route('mapnavigator')}}">
-              <i class="fas fa-map-marked-alt"></i>
-              <p>Map Navigator</p>
             </a>
           </li>
          
