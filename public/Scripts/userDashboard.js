@@ -31,6 +31,7 @@ window.onload = async ()=> {
    driverId = userInfo.data.td_id;
 
    loadMap();
+   loadZoneInfo();
 }
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicmhleWFuIiwiYSI6ImNsenpydzA4eDFnajUyanB4M2V3NjZjdDUifQ.7cXuHyW86hXStq6Mh2kF8Q';
@@ -166,5 +167,57 @@ function loadMap(){
 }
 
 
+function loadZoneInfo(){
+  const header = document.getElementById('infoAssignedZone');
+  const table = document.getElementById('infoTable');
+  const tableBody = document.getElementById('infoTableBody');
 
+  $.ajax({
+    type: "GET",
+    url: `/api/get/drivers/getzoneinfo?driverid=${driverId}`,
+    dataType:"json",
+    success: res=> {
+      console.log(res); 
+      const data = res.result.data;
 
+      header.textContent = data[0].zone_name;
+
+      let rows = ''
+
+      tableBody.innerHTML = '';
+
+      const processRows = (context, value) => {
+        rows += `<tr><td>${context}</td><td>${value}</tr>`;
+      }
+
+      const bullitized = (array, attrib, single = true) => {
+        let bullet = '';
+        if(single){
+          array.forEach(data=> {
+            bullet += `<li>${data[attrib]}</li>`
+          });
+  
+        }else{
+          attrib.forEach(att=> {
+             bullet += `<li>${att == 'can_carry' ? 'Capacity': att.toUpperCase()}: ${array[att]== 'can_carry' ? array[att] + 'Tons' : array[att]}</li>`
+          })
+        }
+        return `<ul>${bullet}</ul>`;
+      }
+
+      processRows('Baranggay List', bullitized(data[4], 'brgy_name'));
+      processRows('Truck Details', bullitized(data[1], ['model', 'plate_num', 'can_carry'], false));
+      processRows('Standby Driver', bullitized(data[2], ['name', 'address', 'contact', 'license'], false));
+      processRows('Standby Truck Info', bullitized(data[3], ['model', 'plate_num', 'can_carry'], false));
+
+      
+      tableBody.innerHTML = rows;
+
+    }, error: xhr=> {
+      console.log(xhr.responseText);
+      const data = JSON.parse(xhr.responseText);
+      header.textContent = data.message;
+      table.classList.add('d-none');
+    }
+  });
+}

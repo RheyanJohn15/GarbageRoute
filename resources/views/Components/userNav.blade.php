@@ -40,14 +40,6 @@
               <p>Map & Assigned Zone</p>
             </a>
           </li>
-
-          <li class="nav-item  {{$active == 'history' ? 'active' : ''}}">
-            <a href="{{route('userHistory')}}">
-              <i class="fas fa-book"></i>
-              <p>History</p>
-            </a>
-          </li>
-    
           
         </ul>
       </div>

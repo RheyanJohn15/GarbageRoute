@@ -33,8 +33,10 @@ class DumpTruck{
       foreach($dumpTruck as $truck){
         $driver = TruckDriverModel::where('td_id', $truck->td_id)->first();
 
+       if($driver){
         $truck->driver = $driver->name == 'null' ? 'N/A' : $driver->name;
         $truck->driver_id = $driver->td_id;
+       }
       }
 
       $this->RESULT = ['list', 'List of all dumptruck', $dumpTruck];

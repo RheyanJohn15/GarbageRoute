@@ -101,16 +101,7 @@
                         <span class="text">Map & Assigned Zone</span>
                       </div>
                     </a>
-                    <a class="col-6 col-md-4 p-0" href="/user/driver/history">
-                      <div class="quick-actions-item">
-                        <div
-                          class="avatar-item bg-warning rounded-circle"
-                        >
-                          <i class="fa fa-book"></i>
-                        </div>
-                        <span class="text">History</span>
-                      </div>
-                    </a>
+                 
 
                   </div>
                 </div>

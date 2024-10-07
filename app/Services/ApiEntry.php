@@ -127,10 +127,7 @@ class ApiEntry{
             'update'=> ['comp_id', 'status']
         ],
         'drivers' => [
-            'getroute'=> ['driverid'],
-            'routedetails'=> ['routeid'],
-            'updatelocation'=> ['coordinates', 'waypointTime', 'routeId'],
-            'startcollection'=> ['route_id'],
+            'getzoneinfo'=> ['driverid'],
             'update'=> ['id', 'name', 'license', 'address', 'contact', 'username'],
             'changepass'=>['id', 'currentpass', 'newpass'],
             'changeprofilepic'=>['id', 'pic'],

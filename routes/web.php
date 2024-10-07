@@ -19,7 +19,6 @@ Route::get('/user/complaint', function () {return view('User.complaint');})->nam
 
 Route::middleware([DriverAuth::class])->group( function () {
     Route::get('/user/driver/dashboard', function () {return view('User.dashboard');})->name('userDashboard');
-    Route::get('/user/driver/history', function () {return view('User.history');})->name('userHistory');
     Route::get('/user/driver/profile', function () {return view('User.profile');});
     Route::get('/user/driver/settings', function () {return view('User.settings');});
 });
