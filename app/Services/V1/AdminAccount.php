@@ -44,7 +44,7 @@ class AdminAccount{
         }else{
             $this->RESULT = ['changepass', 'Fail: Entered Current Password is invalid', 'none'];
         }
-    }   
+    }
 
     private function changeavatar($request){
         $account = Accounts::where('acc_id', $request->id)->first();
@@ -62,7 +62,7 @@ class AdminAccount{
             throw new ApiException(ApiException::USERNAME_EXIST);
         }
         $admin= new Accounts();
-        
+
         $admin->acc_type = 'Admin';
         $admin->acc_name = $request->name;
         $admin->acc_username = $request->username;
@@ -75,7 +75,7 @@ class AdminAccount{
     }
     private function delete($request){
         $admin = Accounts::where('acc_id', $request->id)->first();
-    
+
         $admin->update([
             'acc_status'=> 0
         ]);
@@ -87,7 +87,7 @@ class AdminAccount{
         if(Hash::check($request->newpass, $admin->acc_pass)){
             throw new ApiException(ApiException::SAME_PASS);
         }
-        
+
         $admin->update([
             'admin_password'=> Hash::make($request->newpass)
         ]);
@@ -104,7 +104,7 @@ class AdminAccount{
             $this->RESULT = ['getalladmin', 'Successfully Fetch all admins', $account];
         }
     }
-    
+
     private function details($request){
         $account = Accounts::where('acc_id', $request->id)->first();
 
@@ -115,18 +115,21 @@ class AdminAccount{
         $driver = TruckDriverModel::all();
         $truck = DumpTruckModel::all();
         $complaint = Complaints::all();
-        
+
         $resolvedComplaint = Complaints::where('comp_status', 2)->get();
         $comp = [
-            "Missed Collection", 
-            "Late Irregular Service", 
+            "Missed Collection",
+            "Late Irregular Service",
             "Improper Handling of Waste",
         ];
 
         $complaintData = [];
         foreach ($comp as $c){
             $count = Complaints::where('comp_nature', $c)->count();
-            $percentage = ($count / $complaint->count()) * 100;
+            $percentage = 0;
+            if($count > 0){
+                $percentage = ($count / $complaint->count()) * 100;
+            }
             array_push($complaintData, $percentage);
         }
 

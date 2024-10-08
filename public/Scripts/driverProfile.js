@@ -42,9 +42,10 @@ let globalUserPromise = new Promise(async (resolve, reject) => {
         setText('')
 
     } catch (error) {
-        reject(error); 
+        reject(error);
     }
 });
+
 
 // Function to access globalUser when ready
 async function getGlobalUser() {
@@ -69,3 +70,9 @@ const profileBackgrounds = [
     "f0e68c", // Khaki
 ];
 
+// window.addEventListener('beforeunload', (event) => {
+
+//     navigator.sendBeacon('/api/post/drivers/inactive', JSON.stringify({'driver_id': 11}));
+//     event.preventDefault(); // This is required to trigger the dialog
+//     event.returnValue = ''; // This will show a generic confirmation message
+// });

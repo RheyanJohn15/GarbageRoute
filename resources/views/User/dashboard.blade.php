@@ -42,7 +42,7 @@
               <div class="tab-content mt-3 mb-3" id="line-tabContent">
                 <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info">
                   <h1 id="infoAssignedZone" class="text-center">Loading...</h1>
-        
+
                   <table id="infoTable" class="table table-hover">
                     <thead>
                       <tr>
@@ -56,10 +56,18 @@
                       </tr>
                     </tbody>
                   </table>
-                      
+
                   </div>
                 <div class="tab-pane fade active show" id="mapTab" role="tabpanel" aria-labelledby="map">
-                  <button class="btn btn-success w-100 mb-3">Complete Collection</button>
+                  <button id="cpmpleteCollectionBtn" class="btn btn-success w-100 mb-3 disabled">Complete Collection</button>
+                    <div id="currentLocationDiv" class="d-none">
+                        <h5>Current Location</h5>
+                        <ul>
+                            <li>Location: <span id="currentLocationName">Loading...</span></li>
+                            <li>Longitude: <span id="currentLocationLong"></span> </li>
+                            <li>Latitude: <span id="currentLocationLat"></span></li>
+                        </ul>
+                    </div>
                   <div id="map" style="border: 1px solid black"></div>
                 </div>
                 <div class="tab-pane fade" id="records" role="tabpanel" aria-labelledby="records">
@@ -68,7 +76,7 @@
                   <p> But nothing the copy said could convince her and so it didnâ€™t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their</p>
                 </div>
               </div>
-            
+
           </div>
         </div>
 
@@ -76,7 +84,7 @@
 
     </div>
     <!--   Core JS Files   -->
-  
+
     @include('Components.script', ['type'=> 'driver'])
     <script src="{{asset('Scripts/userDashboard.js')}}"></script>
   </body>

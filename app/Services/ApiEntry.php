@@ -133,6 +133,9 @@ class ApiEntry{
             'changeprofilepic'=>['id', 'pic'],
             'updatetruck'=> ['id', 'model', 'capacity'],
             'changetruckimage'=> ['id', 'pic'],
+            'inactive'=> ['driver_id'],
+            'active'=> ['driver_id'],
+            'updatelocation'=> ['driver_id', 'longitude', 'latitude']
         ],
         'adminaccount'=> [
             'update'=> ['id', 'name', 'username'],

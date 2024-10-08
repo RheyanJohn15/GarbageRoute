@@ -8,15 +8,15 @@ async function getGeoData(){
 
     const result = await response.json();
     const data = result.result.data;
-    
+
     let geoData = [];
-    
+
     data.forEach(d => {
         let mainData = {};
         let geometry = {};
         mainData.type = d.type;
         geometry.type = d.geometry_type;
-        
+
         let coordinates = [];
         d.coordinates.forEach(c => {
             coordinates.push([parseFloat(c.gd_longitude), parseFloat(c.gd_latitude)]);
@@ -31,8 +31,8 @@ async function getGeoData(){
         }else{
             properties.color = d.property_color;
         }
-  
-        
+
+
         geometry.coordinates = [[coordinates]];
         mainData.geometry = geometry;
         mainData.properties = properties;
@@ -69,20 +69,20 @@ async function LoadMap(){
       center: [123.0585, 10.8039], // Center set to Silay City, Negros Occidental
       zoom: 11, // Starting zoom
     });
-    
+
     // GeoJSON zones
     const zones = {
       type: 'FeatureCollection',
       features: geoDataSilay,
     };
-    
+
     map.on('load', () => {
       // Add zones
       map.addSource('zones', {
         type: 'geojson',
         data: zones,
       });
-    
+
       map.addLayer({
         id: 'zones',
         type: 'fill',
@@ -93,7 +93,7 @@ async function LoadMap(){
           'fill-opacity': 0.5,
         },
       });
-    
+
       // Add the initial marker for the dumpsite
       const markerEl = document.createElement('div');
       markerEl.className = 'custom-marker';
@@ -102,14 +102,14 @@ async function LoadMap(){
       markerEl.style.height = '50px';
       markerEl.style.backgroundSize = 'cover';
       markerEl.style.borderRadius = '50%';
-    
+
       const popup = new mapboxgl.Popup({ offset: 25 }).setText('Dumpsite');
-    
+
       marker = new mapboxgl.Marker(markerEl)
         .setLngLat([parseFloat(dumpsiteCoord[0]), parseFloat(dumpsiteCoord[1])])
         .setPopup(popup)
         .addTo(map);
-    
+
       // Add the circle radius around the marker
       map.addLayer({
         id: circleLayerId,
@@ -131,16 +131,16 @@ async function LoadMap(){
         },
       });
     });
-      
+
 
 
 map.on('click', async (e) => {
     if (isSelecting) {
       const lngLat = e.lngLat; // Get the coordinates of the click
-  
+
       // Update the marker position
       marker.setLngLat([lngLat.lng, lngLat.lat]);
-  
+
       // Update the circle layer with new coordinates
       map.getSource(circleLayerId).setData({
         type: 'Feature',
@@ -149,7 +149,7 @@ map.on('click', async (e) => {
           coordinates: [lngLat.lng, lngLat.lat],
         },
       });
-  
+
       // Disable the selection mode after the new location is set
       isSelecting = false;
       document.getElementById('changeDumpsiteLocation').innerHTML = '<i class="fas fa-warehouse"></i> Change Dumpsite Location';
@@ -189,9 +189,9 @@ document.getElementById('changeDumpsiteLocation').addEventListener('click', e =>
             time: 1000,
             delay: 2000,
             });
-            
+
         e.target.innerHTML = `<i class="fa fa-edit"></i> Editing.... Click Again to cancel`
-    
+
     }else{
         $.notify({'message':'Editing Cancelled','icon': 'icon-check' }, {
             type: 'danger',
@@ -206,7 +206,7 @@ document.getElementById('changeDumpsiteLocation').addEventListener('click', e =>
     }
 
 
-}); 
+});
 
 
 
@@ -278,7 +278,7 @@ function loadZones(type){
                         <span class="selectgroup-button">${z.zone_name}</span>
                         </label>`
                 }
-               
+
               });
 
 
@@ -476,7 +476,7 @@ function disableSelectDriverCounterPart(id, value, type){
 
 document.getElementById('saveDriverToZone').addEventListener('click', async ()=> {
     const zoneSelect = document.querySelector('input[name="zonelist"]:checked');
-    
+
     const mainDriver = document.getElementById('driverListMain').value;
     const standByDriver = document.getElementById('driverListStandby').value;
 
@@ -513,9 +513,9 @@ document.getElementById('saveDriverToZone').addEventListener('click', async ()=>
             type: "POST",
             url: "/api/post/truckdriver/driverassignedzone",
             data: {
-                    "_token": csrf, 
-                    "zone": selectedZone, 
-                    "maindriver": `${mainDriver}-Main Driver`, 
+                    "_token": csrf,
+                    "zone": selectedZone,
+                    "maindriver": `${mainDriver}-Main Driver`,
                     "standbydriver": `${standByDriver}-Standby Driver`
                 },
             success: res=> {
@@ -531,3 +531,26 @@ document.getElementById('saveDriverToZone').addEventListener('click', async ()=>
         })
     }
 });
+
+
+function updateRouteStatus(route) {
+    console.log(route);
+    const data = route.data;
+
+    data.forEach(e => {
+        const splitCoord = e.ad_coordinates.split(',');
+        const markerEl = document.createElement('div');
+        markerEl.className = 'custom-marker';
+
+        // Add Font Awesome icon to the custom marker
+        markerEl.innerHTML = `<div style="text-align: center;">
+        <i class="fas fa-truck-moving" style="font-size: 24px; color: #6610f2;"></i>
+        <p style="margin: 0; font-size: 14px; color: black;">${e.driver.name}</p>
+        </div>`;
+        const coord = [splitCoord[0], splitCoord[1]];
+
+        new mapboxgl.Marker(markerEl)
+            .setLngLat(coord) // Set marker coordinates
+            .addTo(map); // Add marker to the map
+    });
+}
