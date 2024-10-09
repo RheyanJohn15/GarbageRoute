@@ -59,7 +59,7 @@
 
                   </div>
                 <div class="tab-pane fade active show" id="mapTab" role="tabpanel" aria-labelledby="map">
-                  <button id="cpmpleteCollectionBtn" class="btn btn-success w-100 mb-3 disabled">Complete Collection</button>
+                  <button id="cpmpleteCollectionBtn" class="btn btn-success w-100 mb-3 disabled">Complete Collection </span></button>
                     <div id="currentLocationDiv" class="d-none">
                         <h5>Current Location</h5>
                         <ul>

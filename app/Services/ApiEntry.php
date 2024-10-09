@@ -135,7 +135,9 @@ class ApiEntry{
             'changetruckimage'=> ['id', 'pic'],
             'inactive'=> ['driver_id'],
             'active'=> ['driver_id'],
-            'updatelocation'=> ['driver_id', 'longitude', 'latitude']
+            'updatelocation'=> ['driver_id', 'longitude', 'latitude'],
+            'addcollection' => ['driver_id', 'brgy_id', 'time_entered'],
+            'completecollection' => ['collection_id', 'time_out']
         ],
         'adminaccount'=> [
             'update'=> ['id', 'name', 'username'],

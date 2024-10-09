@@ -6,6 +6,7 @@ use App\Models\BrgyList;
 use App\Events\GpsUpdate;
 use App\Models\ActiveDrivers;
 use App\Models\TruckDriverModel;
+use App\Models\CollectionProgress;
 use App\Models\DumpTruckModel;
 use Illuminate\Support\Facades\Hash;
 use App\Services\ApiException;
@@ -164,6 +165,27 @@ class Driver{
         $this->RESULT = ['updatelocation', 'Updated driver Location', 'null'];
     }
 
+    private function addcollection($req){
+        $progress = new CollectionProgress();
+        $progress->td_id = $req->driver_id;
+        $progress->brgy_id = $req->brgy_id;
+        $progress->status = "0";
+        $progress->time_entered = $req->time_entered;
+        $progress->save();
+
+        $this->RESULT = ['addcollection', "Added Collection", $progress->cp_id];
+    }
+
+    private function completecollection($req){
+        $collection = CollectionProgress::where('cp_id', $req->collection_id)->first();
+
+        $collection->update([
+            'status' => "1",
+            'time_out' => $req->time_out
+        ]);
+
+        $this->RESULT = ['completecollection', "Collection Complete in this Location", 'null'];
+    }
     public function getResult(){
         return $this->RESULT;
     }

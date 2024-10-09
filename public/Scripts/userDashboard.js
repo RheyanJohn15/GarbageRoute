@@ -1,39 +1,39 @@
 let accesstoken;
 let driverId;
 
-let getDriverData = new Promise(async(resolve, reject)=> {
-  try{
-    const token = localStorage.getItem('access_token');
+let getDriverData = new Promise(async (resolve, reject) => {
+    try {
+        const token = localStorage.getItem('access_token');
 
-    const response = await fetch(`/api/get/auth/info?token=${token}&type=driver`, {
-      method: 'GET',
-      headers: {"Content-Type": "application/json"}
-    });
+        const response = await fetch(`/api/get/auth/info?token=${token}&type=driver`, {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        });
 
-    const result = response.json();
+        const result = response.json();
 
-    resolve(result);
-  }catch(error){
-    reject(error);
-  }
+        resolve(result);
+    } catch (error) {
+        reject(error);
+    }
 });
 
-async function getDriverDataInfo(){
-  return await getDriverData;
+async function getDriverDataInfo() {
+    return await getDriverData;
 }
 
-window.onload = async ()=> {
-   const token = localStorage.getItem('access_token');
-   accesstoken = token;
+window.onload = async () => {
+    const token = localStorage.getItem('access_token');
+    accesstoken = token;
 
 
-   const userInfo = await getDriverDataInfo();
-   driverId = userInfo.data.td_id;
+    const userInfo = await getDriverDataInfo();
+    driverId = userInfo.data.td_id;
 
-   loadMap();
-   loadZoneInfo();
+    loadMap();
+    loadZoneInfo();
 
-   activateUser();
+    activateUser();
 }
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicmhleWFuIiwiYSI6ImNsenpydzA4eDFnajUyanB4M2V3NjZjdDUifQ.7cXuHyW86hXStq6Mh2kF8Q';
@@ -59,223 +59,311 @@ async function getPlaceName(longitude, latitude) {
         return 'Error fetching place name';
     }
 }
+let enterZoneTimeStamp = [];
+let addCollectionId;
+function loadMap() {
+    $.ajax({
+        type: "GET",
+        url: `/api/get/zone/getdriverassignedzone?driver_id=${driverId}`,
+        dataType: "json",
+        success: res => {
+            const assignedZone = [];
 
-function loadMap(){
-  $.ajax({
-    type: "GET",
-    url: `/api/get/zone/getdriverassignedzone?driver_id=${driverId}`,
-    dataType: "json",
-    success: res=> {
-      const assignedZone = [];
-
-      const data = res.result.data[1];
-
-
-
-      data.forEach( feat => {
-
-          const geodata = {};
-
-          geodata.type = feat.type;
-          const geometry = {};
-
-          geometry.type = feat.geometry_type;
-          const coordinates = [];
-          feat.coordinates.forEach(coo=> {
-            coordinates.push([parseFloat(coo.gd_longitude), parseFloat(coo.gd_latitude)]);
-          });
-          geometry.coordinates = [[coordinates]];
-
-          geodata.geometry = geometry;
-
-          const properties = {};
-          properties.name = feat.brgy_name;
-          properties.color = res.result.data[0].zone_color;
-          geodata.properties = properties;
-          assignedZone.push(geodata);
-      });
-
-    map = new mapboxgl.Map({
-        container: 'map', // container ID
-        style: 'mapbox://styles/mapbox/streets-v12', // style URL
-        center: [123.0585, 10.8039], // Center set to Silay City, Negros Occidental
-        zoom: 11, // Starting zoom
-      });
-
-       // GeoJSON zones
-      const zones = {
-        type: 'FeatureCollection',
-        features: assignedZone,
-      };
-
-      const dumpsite = res.result.data[2];
-      const dumpsiteLocation = dumpsite.settings_value.split(',');
-
-      map.on('load', () => {
-        // Add zones
-        map.addSource('zones', {
-          type: 'geojson',
-          data: zones,
-        });
-
-        map.addLayer({
-          id: 'zones',
-          type: 'fill',
-          source: 'zones',
-          layout: {},
-          paint: {
-            'fill-color': ['get', 'color'],
-            'fill-opacity': 0.5,
-          },
-        });
+            const data = res.result.data[1];
 
 
-        // Add geolocation control after the map is loaded
-        const geolocate = new mapboxgl.GeolocateControl({
-          positionOptions: {
-            enableHighAccuracy: true
-          },
-          trackUserLocation: true
-        });
 
-        map.addControl(geolocate, 'top-right');
+            data.forEach(feat => {
+                const geodata = {};
 
-        geolocate.on('geolocate', async (e) => {
-            isShow('currentLocationDiv', true, 'block');
-            const currentLocationPoint = turf.point([e.coords.longitude, e.coords.latitude]);
-            console.log(currentLocationPoint);
+                geodata.type = feat.type;
+                const geometry = {};
 
-            setText('currentLocationLong', e.coords.longitude);
-            setText('currentLocationLat', e.coords.latitude);
+                geometry.type = feat.geometry_type;
+                const coordinates = [];
+                feat.coordinates.forEach(coo => {
+                    coordinates.push([parseFloat(coo.gd_longitude), parseFloat(coo.gd_latitude)]);
+                });
+                geometry.coordinates = [[coordinates]];
 
-            const placeName = await getPlaceName(e.coords.longitude, e.coords.latitude);
+                geodata.geometry = geometry;
 
-            setText('currentLocationName', placeName);
-            const csrf = await getCSRF();
-            $.ajax({
-                type: "POST",
-                url: "/api/post/drivers/updatelocation",
-                data: {"_token": csrf, driver_id: driverId, longitude: e.coords.longitude, latitude: e.coords.latitude},
-                success: res=> {
-                    //
-                }, error: xhr=> console.log(xhr.responseText)
-            })
-        });
+                const properties = {};
+                properties.name = feat.brgy_name;
+                properties.color = res.result.data[0].zone_color;
+                properties.brgy_id = feat.brgy_id;
+                geodata.properties = properties;
+                assignedZone.push(geodata);
+            });
 
-        geolocate.on('trackuserlocationend', () => {
-            isShow('currentLocationDiv', false, 'block');
-          });
+            console.log(assignedZone);
 
-           // Add the initial marker for the dumpsite
-      const markerEl = document.createElement('div');
-      markerEl.className = 'custom-marker';
-      markerEl.style.backgroundImage = 'url("/assets/img/dump.png")'; // Replace with actual URL
-      markerEl.style.width = '50px';
-      markerEl.style.height = '50px';
-      markerEl.style.backgroundSize = 'cover';
-      markerEl.style.borderRadius = '50%';
+            map = new mapboxgl.Map({
+                container: 'map', // container ID
+                style: 'mapbox://styles/mapbox/streets-v12', // style URL
+                center: [123.0585, 10.8039], // Center set to Silay City, Negros Occidental
+                zoom: 11, // Starting zoom
+            });
 
-      const popup = new mapboxgl.Popup({ offset: 25 }).setText('Dumpsite');
+            // GeoJSON zones
+            const zones = {
+                type: 'FeatureCollection',
+                features: assignedZone,
+            };
 
-      marker = new mapboxgl.Marker(markerEl)
-        .setLngLat([parseFloat(dumpsiteLocation[0]), parseFloat(dumpsiteLocation[1])])
-        .setPopup(popup)
-        .addTo(map);
+            const dumpsite = res.result.data[2];
+            const dumpsiteLocation = dumpsite.settings_value.split(',');
 
-      // Add the circle radius around the marker
-      map.addLayer({
-        id: "dumpsite-location",
-        type: 'circle',
-        source: {
-          type: 'geojson',
-          data: {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [parseFloat(dumpsiteLocation[0]), parseFloat(dumpsiteLocation[1])],
-            },
-          },
-        },
-        paint: {
-          'circle-radius': 30,
-          'circle-color': '#ff0000',
-          'circle-opacity': 0.3,
-        },
-      });
+            map.on('load', () => {
+                // Add zones
+                map.addSource('zones', {
+                    type: 'geojson',
+                    data: zones,
+                });
 
-      });
+                map.addLayer({
+                    id: 'zones',
+                    type: 'fill',
+                    source: 'zones',
+                    layout: {},
+                    paint: {
+                        'fill-color': ['get', 'color'],
+                        'fill-opacity': 0.5,
+                    },
+                });
 
-    }, error: xhr=> console.log(xhr.responseText)
-  });
+
+                // Add geolocation control after the map is loaded
+                const geolocate = new mapboxgl.GeolocateControl({
+                    positionOptions: {
+                        enableHighAccuracy: true
+                    },
+                    trackUserLocation: true
+                });
+
+                map.addControl(geolocate, 'top-right');
+
+                geolocate.on('geolocate', async (e) => {
+                    isShow('currentLocationDiv', true, 'block');
+
+
+
+                    const currentLocationPoint = turf.point([e.coords.longitude, e.coords.latitude]);
+
+                    setText('currentLocationLong', e.coords.longitude);
+                    setText('currentLocationLat', e.coords.latitude);
+
+                    const placeName = await getPlaceName(e.coords.longitude, e.coords.latitude);
+
+                    setText('currentLocationName', placeName);
+
+                    //Check if driver is inside a zone
+
+                    let isInsideZone = false;
+                    let brgy_id;
+                    assignedZone.forEach( async (zone) => {
+                        const zonePolygon = turf.multiPolygon(zone.geometry.coordinates);
+                        if (turf.booleanPointInPolygon(currentLocationPoint, zonePolygon)) {
+                            isInsideZone = true;
+                            brgy_id = zone.properties.brgy_id;
+                            console.log(`Current location is inside zone: ${zone.properties.name}`);
+                        }
+                    });
+
+                    if (!isInsideZone) {
+                        isInsideZone = false;
+                        enterZoneTimeStamp.length = 0;
+                        console.log("Current location is outside all zones.");
+                    }
+                    const  getTimeDifferenceInMinutes = (startTime, endTime) => {
+                        // Split the time strings into hours and minutes
+                        const [startHours, startMinutes] = startTime.split(':').map(Number);
+                        const [endHours, endMinutes] = endTime.split(':').map(Number);
+
+                        // Convert start and end times into total minutes from midnight
+                        const startTotalMinutes = startHours * 60 + startMinutes;
+                        const endTotalMinutes = endHours * 60 + endMinutes;
+
+                        // Calculate the difference in minutes
+                        const difference = endTotalMinutes - startTotalMinutes;
+
+                        return difference;
+                    }
+
+                    const csrf = await getCSRF();
+                    if (isInsideZone) {
+                        const now = new Date();
+                        // Extract hours and minutes in military format (24-hour)
+                        const hours = String(now.getHours()).padStart(2, '0');
+                        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+                        // Create the time string in HH:mm format
+                        const timeString = `${hours}:${minutes}`;
+
+                        enterZoneTimeStamp.push(timeString);
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/api/post/drivers/addcollection",
+                            data: {"_token": csrf, "driver_id": driverId, "brgy_id": brgy_id, "time_entered": enterZoneTimeStamp[0] },
+                            success: res=> {
+                                addCollectionId = res.result.data;
+                            }, error: xhr=> console.log(xhr.responseText)
+                        });
+                        const difference = getTimeDifferenceInMinutes(enterZoneTimeStamp[0], timeString);
+
+                        if(difference > 30){
+                            document.getElementById('cpmpleteCollectionBtn').disabled = false;
+                        }
+                    }
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/post/drivers/updatelocation",
+                        data: { "_token": csrf, driver_id: driverId, longitude: e.coords.longitude, latitude: e.coords.latitude },
+                        success: res => {
+                            //
+                        }, error: xhr => console.log(xhr.responseText)
+                    });
+
+
+
+                });
+
+                geolocate.on('trackuserlocationend', () => {
+                    isShow('currentLocationDiv', false, 'block');
+                });
+
+                // Add the initial marker for the dumpsite
+                const markerEl = document.createElement('div');
+                markerEl.className = 'custom-marker';
+                markerEl.style.backgroundImage = 'url("/assets/img/dump.png")'; // Replace with actual URL
+                markerEl.style.width = '50px';
+                markerEl.style.height = '50px';
+                markerEl.style.backgroundSize = 'cover';
+                markerEl.style.borderRadius = '50%';
+
+                const popup = new mapboxgl.Popup({ offset: 25 }).setText('Dumpsite');
+
+                marker = new mapboxgl.Marker(markerEl)
+                    .setLngLat([parseFloat(dumpsiteLocation[0]), parseFloat(dumpsiteLocation[1])])
+                    .setPopup(popup)
+                    .addTo(map);
+
+                // Add the circle radius around the marker
+                map.addLayer({
+                    id: "dumpsite-location",
+                    type: 'circle',
+                    source: {
+                        type: 'geojson',
+                        data: {
+                            type: 'Feature',
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [parseFloat(dumpsiteLocation[0]), parseFloat(dumpsiteLocation[1])],
+                            },
+                        },
+                    },
+                    paint: {
+                        'circle-radius': 30,
+                        'circle-color': '#ff0000',
+                        'circle-opacity': 0.3,
+                    },
+                });
+
+            });
+
+        }, error: xhr => console.log(xhr.responseText)
+    });
 }
 
 
-function loadZoneInfo(){
-  const header = document.getElementById('infoAssignedZone');
-  const table = document.getElementById('infoTable');
-  const tableBody = document.getElementById('infoTableBody');
+function loadZoneInfo() {
+    const header = document.getElementById('infoAssignedZone');
+    const table = document.getElementById('infoTable');
+    const tableBody = document.getElementById('infoTableBody');
 
-  $.ajax({
-    type: "GET",
-    url: `/api/get/drivers/getzoneinfo?driverid=${driverId}`,
-    dataType:"json",
-    success: res=> {
-      const data = res.result.data;
+    $.ajax({
+        type: "GET",
+        url: `/api/get/drivers/getzoneinfo?driverid=${driverId}`,
+        dataType: "json",
+        success: res => {
+            const data = res.result.data;
 
-      header.textContent = data[0].zone_name;
+            header.textContent = data[0].zone_name;
 
-      let rows = ''
+            let rows = ''
 
-      tableBody.innerHTML = '';
+            tableBody.innerHTML = '';
 
-      const processRows = (context, value) => {
-        rows += `<tr><td>${context}</td><td>${value}</tr>`;
-      }
+            const processRows = (context, value) => {
+                rows += `<tr><td>${context}</td><td>${value}</tr>`;
+            }
 
-      const bullitized = (array, attrib, single = true) => {
-        let bullet = '';
-        if(single){
-          array.forEach(data=> {
-            bullet += `<li>${data[attrib]}</li>`
-          });
+            const bullitized = (array, attrib, single = true) => {
+                let bullet = '';
+                if (single) {
+                    array.forEach(data => {
+                        bullet += `<li>${data[attrib]}</li>`
+                    });
 
-        }else{
-          attrib.forEach(att=> {
-             bullet += `<li>${att == 'can_carry' ? 'Capacity': att.toUpperCase()}: ${array[att] == 'can_carry' ? array[att] + 'Tons' : array[att]}</li>`
-          })
+                } else {
+                    attrib.forEach(att => {
+                        bullet += `<li>${att == 'can_carry' ? 'Capacity' : att.toUpperCase()}: ${array[att] == 'can_carry' ? array[att] + 'Tons' : array[att]}</li>`
+                    })
+                }
+                return `<ul>${bullet}</ul>`;
+            }
+
+            processRows('Baranggay List', bullitized(data[4], 'brgy_name'));
+            processRows('Truck Details', bullitized(data[1], ['model', 'plate_num', 'can_carry'], false));
+            processRows('Standby Driver', bullitized(data[2], ['name', 'address', 'contact', 'license'], false));
+            processRows('Standby Truck Info', bullitized(data[3], ['model', 'plate_num', 'can_carry'], false));
+
+
+            tableBody.innerHTML = rows;
+
+        }, error: xhr => {
+            console.log(xhr.responseText);
+            const data = JSON.parse(xhr.responseText);
+            header.textContent = data.message;
+            table.classList.add('d-none');
         }
-        return `<ul>${bullet}</ul>`;
-      }
-
-      processRows('Baranggay List', bullitized(data[4], 'brgy_name'));
-      processRows('Truck Details', bullitized(data[1], ['model', 'plate_num', 'can_carry'], false));
-      processRows('Standby Driver', bullitized(data[2], ['name', 'address', 'contact', 'license'], false));
-      processRows('Standby Truck Info', bullitized(data[3], ['model', 'plate_num', 'can_carry'], false));
-
-
-      tableBody.innerHTML = rows;
-
-    }, error: xhr=> {
-      console.log(xhr.responseText);
-      const data = JSON.parse(xhr.responseText);
-      header.textContent = data.message;
-      table.classList.add('d-none');
-    }
-  });
+    });
 }
 
-async function activateUser(){
+async function activateUser() {
     const csrf = await getCSRF();
     $.ajax({
         type: "POST",
         url: "/api/post/drivers/active",
-        data: {"_token": csrf, "driver_id": driverId},
-        success: res=> {
+        data: { "_token": csrf, "driver_id": driverId },
+        success: res => {
             parseResult(res);
-        }, error: xhr=> {
+        }, error: xhr => {
             console.log(xhr.responseText);
             parseResult(JSON.parse(xhr.responseText))
         }
     })
 }
 
+document.getElementById('cpmpleteCollectionBtn').addEventListener('click', async ()=>{
+    load.on();
+    const csrf = await getCSRF();
+    const timeOut = enterZoneTimeStamp[enterZoneTimeStamp.length - 1];
+    $.ajax({
+        type: "POST",
+        url: "/api/post/drivers/completecollection",
+        data: {"_token": csrf, "collection_id": addCollectionId, "time_out": timeOut},
+        success: res=> {
+            load.off();
+
+            parseResult(res);
+        }, error: xhr=> {
+            load.off();
+            console.log(xhr.responseText)
+            parseResult(JSON.parse(xhr.responseText))
+        }
+    });
+});
