@@ -1,5 +1,6 @@
 let accesstoken;
 let driverId;
+let dumpsiteLoc;
 
 let getDriverData = new Promise(async (resolve, reject) => {
     try {
@@ -60,7 +61,9 @@ async function getPlaceName(longitude, latitude) {
     }
 }
 let enterZoneTimeStamp = [];
-let addCollectionId;
+let brgy_id;
+let dumpsiteEnterStatus = false;
+let zoneCompleteStatus = false;
 function loadMap() {
     $.ajax({
         type: "GET",
@@ -70,8 +73,6 @@ function loadMap() {
             const assignedZone = [];
 
             const data = res.result.data[1];
-
-
 
             data.forEach(feat => {
                 const geodata = {};
@@ -96,7 +97,6 @@ function loadMap() {
                 assignedZone.push(geodata);
             });
 
-            console.log(assignedZone);
 
             map = new mapboxgl.Map({
                 container: 'map', // container ID
@@ -113,7 +113,7 @@ function loadMap() {
 
             const dumpsite = res.result.data[2];
             const dumpsiteLocation = dumpsite.settings_value.split(',');
-
+            dumpsiteLoc = dumpsite.settings_value;
             map.on('load', () => {
                 // Add zones
                 map.addSource('zones', {
@@ -145,10 +145,14 @@ function loadMap() {
 
                 geolocate.on('geolocate', async (e) => {
                     isShow('currentLocationDiv', true, 'block');
-
-
-
-                    const currentLocationPoint = turf.point([e.coords.longitude, e.coords.latitude]);
+                    console.log(dumpsiteLoc)
+                    const dumpSiteLocation = dumpsiteLoc.split(',');
+             
+                    const dumpSiteLong = parseFloat(dumpSiteLocation[0]);
+                    const dumpSiteLat = parseFloat(dumpSiteLocation[1]);
+                    console.log(dumpSiteLocation);
+                    const currentLocationPoint = turf.point([122.974124, 10.775059]);
+                    const dumpSitePoint = turf.point([dumpSiteLong, dumpSiteLat]);
 
                     setText('currentLocationLong', e.coords.longitude);
                     setText('currentLocationLat', e.coords.latitude);
@@ -160,12 +164,12 @@ function loadMap() {
                     //Check if driver is inside a zone
 
                     let isInsideZone = false;
-                    let brgy_id;
                     assignedZone.forEach( async (zone) => {
                         const zonePolygon = turf.multiPolygon(zone.geometry.coordinates);
                         if (turf.booleanPointInPolygon(currentLocationPoint, zonePolygon)) {
                             isInsideZone = true;
                             brgy_id = zone.properties.brgy_id;
+                       
                             console.log(`Current location is inside zone: ${zone.properties.name}`);
                         }
                     });
@@ -173,6 +177,8 @@ function loadMap() {
                     if (!isInsideZone) {
                         isInsideZone = false;
                         enterZoneTimeStamp.length = 0;
+                        reactive('cpmpleteCollectionBtn', true);
+                        zoneCompleteStatus = false;
                         console.log("Current location is outside all zones.");
                     }
                     const  getTimeDifferenceInMinutes = (startTime, endTime) => {
@@ -201,22 +207,16 @@ function loadMap() {
                         const timeString = `${hours}:${minutes}`;
 
                         enterZoneTimeStamp.push(timeString);
-
-                        $.ajax({
-                            type: "POST",
-                            url: "/api/post/drivers/addcollection",
-                            data: {"_token": csrf, "driver_id": driverId, "brgy_id": brgy_id, "time_entered": enterZoneTimeStamp[0] },
-                            success: res=> {
-                                addCollectionId = res.result.data;
-                            }, error: xhr=> console.log(xhr.responseText)
-                        });
+                        console.log(enterZoneTimeStamp);
                         const difference = getTimeDifferenceInMinutes(enterZoneTimeStamp[0], timeString);
 
-                        if(difference > 30){
-                            document.getElementById('cpmpleteCollectionBtn').disabled = false;
+                        if(difference > 2){
+                         if(!zoneCompleteStatus){
+                          reactive('cpmpleteCollectionBtn', false);
+                          }
                         }
-                    }
-
+                    } 
+                   
 
                     $.ajax({
                         type: "POST",
@@ -228,7 +228,24 @@ function loadMap() {
                     });
 
 
-
+                    const distanceToDumpSite = turf.distance(currentLocationPoint, dumpSitePoint, { units: 'meters' });
+                    const proximityThreshold = 100; // Set your threshold distance (in meters)
+                    if (distanceToDumpSite <= proximityThreshold) {
+                      isShow('turnOverToDumpsite', true, 'block');  
+                      isShow('cpmpleteCollectionBtn', false, 'block');
+                      setText('turnOverToDumpsite', "Dumpsite Turn Over(Nearby! Get closer to turn over)")
+                      if(distanceToDumpSite < 20){
+                        setText('turnOverToDumpsite', "Dumpsite Turn Over")
+                        if(!dumpsiteEnterStatus){
+                          reactive('turnOverToDumpsite', false);
+                        }
+                      }
+                  } else {
+                    isShow('turnOverToDumpsite', false, 'block');
+                    isShow('cpmpleteCollectionBtn', true, 'block');
+                    reactive('turnOverToDumpsite', true);
+                    dumpsiteEnterStatus = false;
+                  }
                 });
 
                 geolocate.on('trackuserlocationend', () => {
@@ -351,14 +368,15 @@ async function activateUser() {
 document.getElementById('cpmpleteCollectionBtn').addEventListener('click', async ()=>{
     load.on();
     const csrf = await getCSRF();
+    const timeIn = enterZoneTimeStamp[0];
     const timeOut = enterZoneTimeStamp[enterZoneTimeStamp.length - 1];
     $.ajax({
         type: "POST",
         url: "/api/post/drivers/completecollection",
-        data: {"_token": csrf, "collection_id": addCollectionId, "time_out": timeOut},
+        data: {"_token": csrf,"driver_id":driverId, "time_in": timeIn, "time_out": timeOut, "brgy_id": brgy_id},
         success: res=> {
             load.off();
-
+            zoneCompleteStatus = true;
             parseResult(res);
         }, error: xhr=> {
             load.off();
@@ -366,4 +384,26 @@ document.getElementById('cpmpleteCollectionBtn').addEventListener('click', async
             parseResult(JSON.parse(xhr.responseText))
         }
     });
+});
+
+
+document.getElementById('turnOverToDumpsite').addEventListener('click', async ()=> {
+  load.on();
+  const csrf = await getCSRF();
+  $.ajax({
+    type:"POST",
+    url: "/api/post/drivers/dumpsiteturnover",
+    data: {"_token":csrf, "td_id": driverId},
+    success: res=> {
+      parseResult(res);
+      load.off();
+      reactive('turnOverToDumpsite', false);
+      setText('turnOverToDumpsite', "Done! Collect More Garbage");
+      dumpsiteEnterStatus = true;
+    },error: xhr=> {
+      console.log(xhr.responseText);
+      load.off();
+      parseResult(JSON.parse(xhr.responseText));
+    }
+  })
 });

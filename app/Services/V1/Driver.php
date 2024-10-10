@@ -10,6 +10,7 @@ use App\Models\CollectionProgress;
 use App\Models\DumpTruckModel;
 use Illuminate\Support\Facades\Hash;
 use App\Services\ApiException;
+use App\Models\DumpsiteTurnovers;
 
 class Driver{
 
@@ -165,27 +166,30 @@ class Driver{
         $this->RESULT = ['updatelocation', 'Updated driver Location', 'null'];
     }
 
-    private function addcollection($req){
-        $progress = new CollectionProgress();
-        $progress->td_id = $req->driver_id;
-        $progress->brgy_id = $req->brgy_id;
-        $progress->status = "0";
-        $progress->time_entered = $req->time_entered;
-        $progress->save();
-
-        $this->RESULT = ['addcollection', "Added Collection", $progress->cp_id];
-    }
 
     private function completecollection($req){
-        $collection = CollectionProgress::where('cp_id', $req->collection_id)->first();
-
-        $collection->update([
-            'status' => "1",
-            'time_out' => $req->time_out
-        ]);
+        $collection = new CollectionProgress();
+        $collection->td_id = $req->driver_id;
+        $collection->brgy_id = $req->brgy_id;
+        $collection->status = 1;
+        $collection->time_entered = $req->time_in;
+        $collection->time_out = $req->time_out;
+        $collection->save();
 
         $this->RESULT = ['completecollection', "Collection Complete in this Location", 'null'];
     }
+
+    private function dumpsiteturnover($req){
+        $turnover = new DumpsiteTurnovers();
+
+        $truck = DumpTruckModel::where('td_id', $req->td_id)->first();
+        $turnover->td_id = $req->td_id;
+        $turnover->dt_id = $truck->dt_id;
+        $turnover->save();
+
+        $this->RESULT = ['dumpsiteturnover', "Garbage is successfully dump in the dumpsite", 'null'];
+    }
+
     public function getResult(){
         return $this->RESULT;
     }
