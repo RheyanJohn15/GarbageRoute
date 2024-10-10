@@ -146,12 +146,12 @@ body {
 }
 
 ::selection {
-  background: #03a4ed;
+  background: #069201;
   color: #fff;
 }
 
 ::-moz-selection {
-  background: #03a4ed;
+  background: #069201;
   color: #fff;
 }
 
@@ -189,7 +189,7 @@ body {
 
 .section-heading h2 em {
   font-style: normal;
-  color: #03a4ed;
+  color: #069201;
 }
 
 .section-heading h2 span {
@@ -209,7 +209,7 @@ body {
 
 .main-blue-button a {
   display: inline-block;
-  background-color: #03a4ed;
+  background-color: #069201;
   font-size: 15px;
   font-weight: 400;
   color: #fff;
@@ -221,7 +221,7 @@ body {
 
 .main-blue-button-hover a {
   display: inline-block;
-  background-color: #03a4ed;
+  background-color: #069201;
   font-size: 15px;
   font-weight: 400;
   color: #fff;
@@ -262,7 +262,7 @@ body {
 }
 
 .main-red-button-hover a:hover {
-  background-color: #03a4ed;
+  background-color: #069201;
 }
 
 .main-white-button a {
@@ -384,7 +384,7 @@ header
 
 .header-area .main-nav .nav li:last-child .main-red-button-hover a:hover,
 .background-header .main-nav .nav li:last-child .main-red-button-hover a:hover {
-  background-color: #03a4ed !important;
+  background-color: #069201 !important;
 }
 
 .header-area .main-nav .nav li a {
@@ -909,7 +909,7 @@ Banner Style
 }
 
 .main-banner .item h2 em {
-  color: #03a4ed;
+  color: #069201;
   font-style: normal;
 }
 
@@ -1460,7 +1460,7 @@ Subscribe
 
 .subscribe .inner-content form button {
   display: inline-block;
-  background-color: #03a4ed;
+  background-color: #069201;
   font-size: 15px;
   font-weight: 400;
   color: #fff;
@@ -1771,7 +1771,7 @@ form#contact button {
 }
 
 form#contact button:hover {
-  background-color: #03a4ed;
+  background-color: #069201;
 }
 
 
@@ -1821,7 +1821,7 @@ footer .about ul li {
 footer .about ul li a {
   width: 32px;
   height: 32px;
-  background-color: #03a4ed;
+  background-color: #069201;
   color: #fff !important;
   border-radius: 50%;
   text-align: center;
@@ -1860,7 +1860,7 @@ footer .footer-item p {
 }
 
 footer .footer-item form {
-  background-color: #03a4ed;
+  background-color: #069201;
   height: 46px;
   border-radius: 23px;
   position: relative;

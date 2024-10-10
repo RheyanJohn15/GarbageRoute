@@ -103,12 +103,12 @@
         </div>
     </div>
 
-    <div id="services" class="our-services section" style="margin-top: -10%">
+    <div id="services" class="our-services section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 offset-lg-3">
+                <div class="col-lg-12 text-center">
                     <div class="section-heading">
-                        <h2 style="font-size: 40px">Sustainable <em> Waste </em> Management <em> Solutions</em></h2>
+                        <h2 style="font-size: 40px"> Community <em> Complaints </em> Overview </h2>
                     </div>
                 </div>
             </div>
@@ -117,21 +117,21 @@
                     <div class="owl-carousel owl-services">
 
                         <div class="item">
-                            <h4>Complaint ID: 1</h4>
+                            <h4>Complaint #1</h4>
                             <img src="ComplaintAssets/Complaint3.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 300px; object-fit: cover;">
-                            <p class="text-start m-4">
+                                style="width: 350px; height: 250px; ">
+                            <p class="text-start m-0">
                                 <strong>Name:</strong> John Doe<br>
-                                <strong>Nature:</strong> Waste Collection Delay<br>
+                                <strong>Nature:</strong> Collection Delay<br>
                                 <strong>Status:</strong> Resolved<br>
                             </p>
                         </div>
 
                         <div class="item">
-                            <h4>Complaint ID: 2</h4>
+                            <h4>Complaint #2</h4>
                             <img src="ComplaintAssets/Complaint4.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 300px; object-fit: cover;">
-                            <p class="text-start m-4">
+                                style="width: 350px; height: 250px; ">
+                            <p class="text-start m-0">
                                 <strong>Name:</strong> Jane Smith<br>
                                 <strong>Nature:</strong> Noise Complaint<br>
                                 <strong>Status:</strong> In Progress<br>
@@ -139,10 +139,10 @@
                         </div>
 
                         <div class="item">
-                            <h4>Complaint ID: 3</h4>
+                            <h4>Complaint #3</h4>
                             <img src="ComplaintAssets/Complaint3.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 300px; object-fit: cover;">
-                            <p class="text-start m-4">
+                                style="width: 350px; height: 250px; ">
+                            <p class="text-start m-0">
                                 <strong>Name:</strong> Alex Johnson<br>
                                 <strong>Nature:</strong> Pothole Issue<br>
                                 <strong>Status:</strong> Not Resolved<br>
@@ -150,10 +150,10 @@
                         </div>
 
                         <div class="item">
-                            <h4>Complaint ID: 4</h4>
+                            <h4>Complaint #4</h4>
                             <img src="ComplaintAssets/Complaint4.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 300px; object-fit: cover;">
-                            <p class="text-start m-4">
+                                style="width: 350px; height: 250px; ">
+                            <p class="text-start m-0">
                                 <strong>Name:</strong> Emily Davis<br>
                                 <strong>Nature:</strong> Street Light Outage<br>
                                 <strong>Status:</strong> Resolved<br>
@@ -161,10 +161,10 @@
                         </div>
 
                         <div class="item">
-                            <h4>Complaint ID: 5</h4>
-                            <img src="ComplaintAssets/Complaint5.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 300px; object-fit: cover;">
-                            <p class="text-start m-4">
+                            <h4>Complaint #5</h4>
+                            <img src="ComplaintAssets/Complaint3.jpg" alt="Complaint Image" class="img-fluid"
+                                style="width: 350px; height: 250px; ">
+                            <p class="text-start m-0">
                                 <strong>Name:</strong> Michael Brown<br>
                                 <strong>Nature:</strong> Graffiti Removal<br>
                                 <strong>Status:</strong> In Progress<br>
@@ -172,10 +172,10 @@
                         </div>
 
                         <div class="item">
-                            <h4>Complaint ID: 6</h4>
-                            <img src="ComplaintAssets/Complaint6.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 300px; object-fit: cover;">
-                            <p class="text-start m-4">
+                            <h4>Complaint #6</h4>
+                            <img src="ComplaintAssets/Complaint4.jpg" alt="Complaint Image" class="img-fluid"
+                                style="width: 350px; height: 250px; ">
+                            <p class="text-start m-0">
                                 <strong>Name:</strong> Sarah Wilson<br>
                                 <strong>Nature:</strong> Fallen Tree Branch<br>
                                 <strong>Status:</strong> Not Resolved<br>
@@ -183,10 +183,10 @@
                         </div>
 
                         <div class="item">
-                            <h4>Complaint ID: 7</h4>
-                            <img src="ComplaintAssets/Complaint7.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 300px; object-fit: cover;">
-                            <p class="text-start m-4">
+                            <h4>Complaint #7</h4>
+                            <img src="ComplaintAssets/Complaint3.jpg" alt="Complaint Image" class="img-fluid"
+                                style="width: 350px; height: 250px; ">
+                            <p class="text-start m-0" style="font-size: 18px">
                                 <strong>Name:</strong> David Lee<br>
                                 <strong>Nature:</strong> Water Leak<br>
                                 <strong>Status:</strong> Resolved<br>
@@ -194,10 +194,10 @@
                         </div>
 
                         <div class="item">
-                            <h4>Complaint ID: 8</h4>
-                            <img src="ComplaintAssets/Complaint8.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 300px; object-fit: cover;">
-                            <p class="text-start m-4">
+                            <h4>Complaint #8</h4>
+                            <img src="ComplaintAssets/Complaint4.jpg" alt="Complaint Image" class="img-fluid"
+                                style="width: 350px; height: 250px; ">
+                            <p class="text-start m-0">
                                 <strong>Name:</strong> Jessica Taylor<br>
                                 <strong>Nature:</strong> Abandoned Vehicle<br>
                                 <strong>Status:</strong> In Progress<br>
@@ -210,6 +210,9 @@
             </div>
         </div>
     </div>
+    <div class="footer-dec" style="margin-top: -5%">
+        <img src="assets/images/footer-dec.png" alt="">
+    </div>
 
     <div id="about" class="about-us section">
         <div class="container">
@@ -221,9 +224,10 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="section-heading">
-                        <h2>Grow Your Community with Our <em>Waste</em> &amp; <span>Management</span> Solutions</h2>
-                        <p>Explore effective waste management services designed to promote sustainability and protect
-                            the environment in Silay City.</p>
+                        <h2>Track Your Community's <em>Complaints</em> &amp; <span>Resolutions</span> Efficiently</h2>
+                        <p>Monitor complaint trends and actions taken to ensure timely resolution and improve community
+                            services in Silay City.</p>
+
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="fact-item">
@@ -269,9 +273,7 @@
     </div>
 
 
-
-
-    <div id="contact" class="contact-us section">
+    <div id="mapview" class="contact-us section">
         <div class="container" style="padding-left: 15px; padding-right: 15px;">
             <div class="section-heading text-center">
                 <h2 style="font-size: 40px !important">Sector Map of
@@ -283,9 +285,10 @@
                 <div class="col-lg-12">
                     <div id="map">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d250862.38945540946!2d122.92553509623687!3d10.755677339277627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33aed61aecc67287%3A0x420b7cea0efc5e27!2sSilay%20City%2C%20Negros%20Occidental!5e0!3m2!1sen!2sph!4v1727185458669!5m2!1sen!2sph"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d105474.0540206068!2d123.0259006472008!3d10.757358656807547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33aed61aecc67287%3A0x420b7cea0efc5e27!2sSilay%20City%2C%20Negros%20Occidental!5e0!3m2!1sen!2sph!4v1728598263084!5m2!1sen!2sph"
                             width="100%" height="500px" frameborder="0" style="border:0"
                             allowfullscreen=""></iframe>
+
                     </div>
                 </div>
             </div>
@@ -362,7 +365,7 @@
         </div>
     </div>
 
-    <div class="footer-dec">
+    <div class="footer-dec" style="margin-top: -5%">
         <img src="assets/images/footer-dec.png" alt="">
     </div>
 
