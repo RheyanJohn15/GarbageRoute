@@ -42,7 +42,7 @@
                                         <div class="col-lg-12">
                                             <fieldset>
                                                 <input type="text" name="contact" id="contacts"
-                                                    placeholder="Contact" required>
+                                                    placeholder="Contact" maxlength="11" required>
                                             </fieldset>
                                         </div>
                                         <div class="col-lg-12 mb-2 mt-2">
