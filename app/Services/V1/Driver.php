@@ -190,6 +190,24 @@ class Driver{
         $this->RESULT = ['dumpsiteturnover', "Garbage is successfully dump in the dumpsite", 'null'];
     }
 
+    private function records($req){
+        $collection = CollectionProgress::where('td_id', $req->driver_id)
+        ->join('brgy_lists', 'brgy_lists.brgy_id', '=', 'collection_progress.brgy_id')
+        ->get();
+        $dumpsite = DumpsiteTurnovers::where('td_id', $req->driver_id)
+        ->get();
+
+        foreach($dumpsite as $d){
+            $truck = DumpTruckModel::where('dt_id', $d->dt_id)->first();
+
+            $d->capacity = $truck->can_carry;
+        }
+
+        $data  = [$collection, $dumpsite];
+
+        $this->RESULT = ['records', "Get All Records", $data];
+    }
+
     public function getResult(){
         return $this->RESULT;
     }

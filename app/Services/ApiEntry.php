@@ -137,7 +137,8 @@ class ApiEntry{
             'active'=> ['driver_id'],
             'updatelocation'=> ['driver_id', 'longitude', 'latitude'],
             'completecollection' => ['driver_id', 'time_in', 'time_out', 'brgy_id'],
-            'dumpsiteturnover'=> ['td_id']
+            'dumpsiteturnover'=> ['td_id'],
+            'records'=> ['empty']
         ],
         'adminaccount'=> [
             'update'=> ['id', 'name', 'username'],

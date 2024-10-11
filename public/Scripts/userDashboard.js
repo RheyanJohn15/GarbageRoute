@@ -33,7 +33,6 @@ window.onload = async () => {
 
     loadMap();
     loadZoneInfo();
-
     activateUser();
 }
 
@@ -151,7 +150,7 @@ function loadMap() {
                     const dumpSiteLong = parseFloat(dumpSiteLocation[0]);
                     const dumpSiteLat = parseFloat(dumpSiteLocation[1]);
                     console.log(dumpSiteLocation);
-                    const currentLocationPoint = turf.point([122.974124, 10.775059]);
+                    const currentLocationPoint = turf.point([e.coords.longitude, e.coords.latitude]);
                     const dumpSitePoint = turf.point([dumpSiteLong, dumpSiteLat]);
 
                     setText('currentLocationLong', e.coords.longitude);
@@ -407,3 +406,61 @@ document.getElementById('turnOverToDumpsite').addEventListener('click', async ()
     }
   })
 });
+
+
+function loadRecords(){
+
+  $.ajax({
+    type: "GET",
+    url: `/api/get/drivers/records?driver_id=${driverId}`,
+    dataType:"json",
+    success: res => {
+      const collection = res.result.data[0];
+      const dumpsite = res.result.data[1];
+      console.log(dumpsite);
+      $('#collectionReports').DataTable({
+        data:collection,
+        columns: [
+          {title: "Brgy", data: "brgy_name"},
+          {title: "Time Entered", data: "time_entered"},
+          {title: "Time Complete", data: "time_out"}
+        ]
+      });
+
+      const cleanData = groupByMonthYear(dumpsite);
+
+      $('#dumpsiteTurnOverRecords').DataTable({
+        data:cleanData,
+        columns: [
+          {title: "Month-Year", data: "month"},
+          {title: "Total Turn Over(Tons)", data: "total_turnover"}
+        ]
+      })
+   
+    }, error: xhr=> console.log(xhr.responseText)
+  })
+}
+
+function groupByMonthYear(data) {
+  // Create a map to hold the totals of dt_id for each month-year
+  const monthYearMap = new Map();
+
+  data.forEach(item => {
+      // Extract the month and year from the created_at date
+      const date = new Date(item.created_at);
+      const monthYear = `${date.toLocaleString('default', { month: 'long' })}-${date.getFullYear()}`;
+
+      // Initialize the entry if it doesn't exist
+      if (!monthYearMap.has(monthYear)) {
+          monthYearMap.set(monthYear, { month: monthYear, total_turnover: 0 });
+      }
+
+      // Add the dt_id to the corresponding month-year total
+      monthYearMap.get(monthYear).total_turnover += parseInt(item.capacity);
+  });
+
+  // Convert the map to an array of objects
+  const result = Array.from(monthYearMap.values());
+
+  return result;
+}

@@ -35,7 +35,7 @@
                 <li class="nav-item submenu" role="presentation">
                   <a class="nav-link active" id="line-profile-tab" data-bs-toggle="pill" href="#mapTab" role="tab" aria-controls="map" aria-selected="true">Map Collection</a>
                 </li>
-                <li class="nav-item" role="presentation">
+                <li class="nav-item" onclick="loadRecords()" role="presentation">
                   <a class="nav-link" id="line-contact-tab" data-bs-toggle="pill" href="#records" role="tab" aria-controls="records" aria-selected="false" tabindex="-1">Records</a>
                 </li>
               </ul>
@@ -72,9 +72,33 @@
                   <div id="map" style="border: 1px solid black"></div>
                 </div>
                 <div class="tab-pane fade" id="records" role="tabpanel" aria-labelledby="records">
-                  <p>Pityful a rethoric question ran over her cheek, then she continued her way. On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word "and" and the Little Blind Text should turn around and return to its own, safe country.</p>
+                  <h3>Collection Reports</h3>
+                  <table id="collectionReports" class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
+                    <thead>
+                      <tr>
+                        <th scope="col">Brgy</th>
+                        <th scope="col">Time Entered</th>
+                        <th scope="col">Time Completed</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    
+                    </tbody>
+                  </table>
 
-                  <p> But nothing the copy said could convince her and so it didnâ€™t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their</p>
+                  <h3>Dumpsite Turn Over Reports</h3>
+                  <table id="dumpsiteTurnOverRecords" class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
+                    <thead>
+                      <tr>
+                        <th scope="col">Month-Year</th>
+                        <th scope="col">Total Turn Overs(Tons)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    
+                    </tbody>
+                  </table>
+
                 </div>
               </div>
 
