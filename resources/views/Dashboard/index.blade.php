@@ -115,6 +115,41 @@
               </div>
             </div>
 
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Garbage Collection Statistics</div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <div class="card-title">Collectors Total Turnovers</div>
+                      </div>
+                      <div class="card-body">
+                        <div class="chart-container">
+                          <canvas id="collectorTotalTurnOver"></canvas>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <div class="card-title">Collected Garbage Per Zones(Tons)</div>
+                      </div>
+                      <div class="card-body">
+                        <div class="chart-container">
+                          <canvas id="garbagePerZone"></canvas>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 

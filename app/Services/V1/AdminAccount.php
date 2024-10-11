@@ -3,10 +3,12 @@ namespace App\Services\V1;
 use App\Models\Accounts;
 use App\Models\TruckDriverModel;
 use App\Models\DumpTruckModel;
-use App\Models\RoutesModel;
+use Carbon\Carbon;
 use App\Models\Complaints;
+use App\Models\DumpsiteTurnovers;
 use Illuminate\Support\Facades\Hash;
 use App\Services\ApiException;
+
 class AdminAccount{
     private $RESULT = null;
 
@@ -116,6 +118,8 @@ class AdminAccount{
         $truck = DumpTruckModel::all();
         $complaint = Complaints::all();
 
+        $dumpsiteTurnovers = DumpsiteTurnovers::all();
+
         $resolvedComplaint = Complaints::where('comp_status', 2)->get();
         $comp = [
             "Missed Collection",
@@ -141,7 +145,14 @@ class AdminAccount{
             $complaintStatus[] = $count;
         }
 
-        $dashboard = [$driver, $truck, $complaint, $complaintData, $resolvedComplaint, $complaintStatus];
+        $dashboard = [
+            $driver, 
+            $truck, 
+            $complaint, 
+            $complaintData, 
+            $resolvedComplaint, 
+            $complaintStatus
+        ];
 
         $this->RESULT = ['dashboard', 'Succesfully fetch all dashboard data', $dashboard];
     }
