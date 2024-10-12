@@ -80,12 +80,9 @@ window.onload = () => {
                 type: "bar",
                 data: {
                   labels: [
-                    "New",
+                    "Pending",
                     "In Progress",
                     "Resolved",
-                    "Closed",
-                    "Cancelled",
-                    "Pending",
                   ],
                   datasets: [
                     {

@@ -56,6 +56,13 @@
                                                 </select>
                                             </fieldset>
                                         </div>
+                                        <div class="col-lg-12 mb-2 mt-2">
+                                            <fieldset>
+                                                <select disabled id="zonelist" class="form-select" name="zone" required>
+                                                    <option>Loading......</option>
+                                                </select>
+                                            </fieldset>
+                                        </div>
                                         <div class="col-lg-12 mb-4 mt-2">
                                             <fieldset>
                                                 <textarea class="form-control" id="message" name="remarks" placeholder="Message/Remarks" rows="5" required></textarea>

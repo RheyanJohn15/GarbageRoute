@@ -15,6 +15,28 @@ document.getElementById('contact').addEventListener('submit', (e) => {
             const inputs = form.querySelectorAll('input, textarea, select');
             toastr["success"](res.result.response)
             inputs.forEach(input => input.value = '');
+            document.getElementById('imagePreview').src = '';
         }, error: xhr => console.log(xhr.responseText)
     });
 });
+
+
+window.onload = () =>{
+    $.ajax({
+        type: "GET",
+        url: "/api/get/complaints/getzone",
+        dataType: "json",
+        success: res=> {
+            const zones = document.getElementById('zonelist');
+            zones.disabled = false;
+            const data = res.result.data;
+            zones.innerHTML = ` <option value="" disabled selected> Select Zone of Complaint
+                                                    </option>`;
+
+            console.log(res);
+            data.forEach( d => {
+                zones.innerHTML += `<option value="${d.zone_id}">${d.zone_name}</option>`
+            });
+        }, error: xhr=> console.log(xhr.responseText)
+    })
+}

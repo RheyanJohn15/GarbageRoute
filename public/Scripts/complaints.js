@@ -8,17 +8,12 @@ window.onload = () => {
 function stats(data){
     switch(data){
         case 0:
-            return ['primary', 'New'];
+            return ['warning', 'Pending'];
         case 1:
-            return ['info', 'In Progress'];
+            return ['primary', 'In Progress'];
         case 2:
             return ['success', 'Resolved'];
-        case 3:
-            return ['black', 'Closed'];
-        case 4:
-            return ['danger', 'Cancelled'];
-        case 5:
-            return ['warning', 'pending'];
+
     }
 }
 
@@ -69,7 +64,8 @@ function  loadAllComplaints(){
                         '${data.comp_remarks}',
                         '${data.comp_status}',
                         '${data.created_at}',
-                        '${data.comp_image}'
+                        '${data.comp_image}',
+                        '${data.zone_name}'
                         )" data-bs-toggle="modal" data-bs-target="#viewComplaint" class="btn btn-icon btn-round btn-info"><i class="fa fa-eye"></i></button>
                         <button onclick="removeComplaint('${data.comp_id}')" class="btn btn-icon btn-round btn-danger"><i class="fa fa-trash"></i></button>
                         </div>`;
@@ -123,16 +119,17 @@ document.getElementById('updateComplaint').addEventListener('submit', (e)=> {
   })
 });
 
-function viewDetails(name, email, contact, nature, remarks, status, date,image){
+function viewDetails(name, email, contact, nature, remarks, status, date,image, zone_name){
     setText('complainant_span', name);
     setText('email_span', email);
     setText('contact_span', contact);
     setText('nature_span', nature);
-    setText('date_span', date);
+    setText('date_span', parseDate(date));
     setText('status_span', stats(+status)[1]);
     setText('remarks_content', remarks);
     isShow('imgLoader', false);
     isShow('complaintImage', true, 'block');
     setImage('complaintImage', `/ComplaintAssets/${image}`);
+    setText('zone_location', zone_name)
 }
 

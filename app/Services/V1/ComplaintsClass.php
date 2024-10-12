@@ -2,7 +2,7 @@
 namespace App\Services\V1;
 use App\Models\Complaints;
 use App\Services\ApiException;
-
+use App\Models\Zones;
 class ComplaintsClass{
     private $RESULT = null;
 
@@ -29,6 +29,7 @@ class ComplaintsClass{
         $comp->comp_contact = $request->contact;
         $comp->comp_nature = $request->nature;
         $comp->comp_remarks = $request->remarks;
+        $comp->comp_zone = $request->zone;
         $comp->comp_status = 0;
         $comp->save();
 
@@ -44,7 +45,7 @@ class ComplaintsClass{
     }
 
     private function list($request){
-        $complaints = Complaints::all();
+        $complaints = Complaints::join('zones', 'zones.zone_id', '=', 'complaints.comp_zone')->get();
 
         $this->RESULT = ['list', 'Complaint List', $complaints];
     }
@@ -63,6 +64,13 @@ class ComplaintsClass{
 
         $this->RESULT = ['update', 'Complaint is Successfully Updated', 'null'];
     }
+
+    private function getzone($req){
+        $zone = Zones::all();
+
+        $this->RESULT= ['getzone', "Zone Fetched", $zone];
+    }
+
     public function getResult(){
         return $this->RESULT;
     }

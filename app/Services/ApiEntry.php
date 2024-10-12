@@ -120,11 +120,12 @@ class ApiEntry{
                 'list' => ['empty']
              ],
         'complaints' => [
-            'submit' => ['comp_name', 'email', 'contact', 'nature', 'remarks'],
+            'submit' => ['comp_name', 'email', 'contact', 'nature', 'remarks', 'zone'],
             'list'=> ['empty'],
             'remove'=> ['comp_id'],
             'details'=> ['comp_id'],
-            'update'=> ['comp_id', 'status']
+            'update'=> ['comp_id', 'status'],
+            'getzone'=>['empty']
         ],
         'drivers' => [
             'getzoneinfo'=> ['driverid'],

@@ -105,12 +105,9 @@
                 <div class="form-group form-group-default">
                   <label>Status</label>
                   <select name="status" class="form-select">
-                    <option value="0">New</option>
+                    <option value="0">Pending</option>
                     <option value="1">In Progress</option>
-                    <option value="2">Resolved</option>
-                    <option value="3">Closed</option>
-                    <option value="4">Cancelled</option>
-                    <option value="5">Pending</option>
+                    <option value="2">Resolved</option>               
                   </select>
                 </div>
               </div>
@@ -180,6 +177,7 @@
           <h5>Nature: <span id="nature_span"></span><h5>
             <p>Date: <span id="date_span"></span><p>
             <p>Status: <span id="status_span"></span><p>
+            <p>Zone: <span id="zone_location"></span><p>
           </div>
         </div>
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('comp_nature')->nullable();
             $table->string('comp_remarks')->nullable();
             $table->integer('comp_status')->nullable();
+            $table->integer('comp_zone')->nullable();
             $table->string('comp_image')->nullable();
             $table->timestamps();
         });
