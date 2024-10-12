@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Services\ApiException;
 use App\Models\DumpTruckModel;
 use App\Models\ZoneDrivers;
+use App\Models\Schedules;
+
 class TruckDriver {
     
     private $RESULT = null;
@@ -102,7 +104,7 @@ class TruckDriver {
     }
 
     private function driverassignedzone($req){
-      $zone = ZoneDrivers::where('zone_id', $req->zone)->get();
+      $zone = ZoneDrivers::where('zone_id', $req->zone)->get(); 
       $mainDriver = explode('-', $req->maindriver);
       $standbyDriver = explode('-', $req->standbydriver);
       
@@ -123,6 +125,22 @@ class TruckDriver {
               break;
           }
         }
+
+        $updateSchedMain = Schedules::where('td_id', $mainDriver[0])->first();
+        $updateSchedStandby = Schedules::where('td_id', $standbyDriver[0])->first();
+
+        $updateSchedMain->update([
+          'days'=> $req->sched_days,
+          'collection_start'=> $req->collection_start,
+          'collection_end' => $req->collection_end,
+        ]);
+
+        $updateSchedStandby -> update([
+            'days'=> $req->sched_days,
+            'collection_start'=> $req->collection_start,
+            'collection_end'=> $req->collection_end
+        ]);
+        
       }else{
         $addMain = new ZoneDrivers();
         $addMain->zone_id = $req->zone;
@@ -135,9 +153,37 @@ class TruckDriver {
         $addStandBy->td_id = $standbyDriver[0];
         $addStandBy->type = "Standby Driver";
         $addStandBy->save();
+
+
+        $scheduleMain = new Schedules();
+        $scheduleMain->td_id = $mainDriver[0];
+        $scheduleMain->days = $req->sched_days;
+        $scheduleMain->collection_start = $req->collection_start;
+        $scheduleMain->collection_end = $req->collection_end;
+        $scheduleMain->save();
+
+        $scheduleStandby = new Schedules();
+        $scheduleStandby->td_id  = $standbyDriver[0];
+        $scheduleStandby->days = $req->sched_days;
+        $scheduleStandby->collection_start = $req->collection_start;
+        $scheduleStandby->collection_end = $req->collection_end;
+        $scheduleStandby->save();
       }
 
       $this->RESULT = ['driverassignedzone', "Driver Assigned to Zone $req->zone Successfully", "null"];
+    }
+
+    private function getschedule($req){
+        $zone = ZoneDrivers::where('zone_id', $req->zone)->get();
+
+        $data = [];
+        foreach($zone as $z){
+          $schedule = Schedules::where('td_id', $z->td_id)->first();
+
+          $data[] = $schedule;
+        }
+
+        $this->RESULT = ['getschedule', "Fetch all data", $data];
     }
 
     public function getResult(){

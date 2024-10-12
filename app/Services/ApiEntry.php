@@ -109,7 +109,8 @@ class ApiEntry{
              'details' => ['id'],
              'list'=> ['empty'],
              'getdriverbyzone' => ['empty'],
-             'driverassignedzone'=> ['zone', 'maindriver', 'standbydriver']
+             'driverassignedzone'=> ['zone', 'maindriver', 'standbydriver', 'sched_days', 'collection_start', 'collection_end'],
+             'getschedule'=> ['empty']
             ],
        'dumptruck' =>
              [

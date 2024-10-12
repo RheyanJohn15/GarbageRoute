@@ -32,9 +32,11 @@
                             <button id="changeDumpsiteLocation" class="btn btn-label-warning btn-round me-2"><i
                                     class="fas fa-warehouse"></i> Change Dumpsite Location </button>
                             <button id="assignDriverBtn"data-bs-toggle="modal" data-bs-target="#assignDriver"
-                                class="btn btn-label-info btn-round me-2">Assign Drivers</button>
+                                class="btn btn-label-info btn-round me-2"><i class="fas fa-user-friends"></i> Assign Drivers</button>
+                            <button 
+                                class="btn btn-label-success btn-round me-2"><i class="fas fa-map-marker-alt"></i> Zone Waypoints </button>
                             <button id="updateZonesBtn" data-bs-toggle="modal" data-bs-target="#updateZones"
-                                class="btn btn-primary btn-round">Update Zones</button>
+                                class="btn btn-label-primary btn-round"> <i class="fas fa-map-marked-alt"></i> Update Zones</button>
                         </div>
 
                     </div>
@@ -229,6 +231,64 @@
                         </div>
                     </div>
 
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <div class="card-title">Set Schedule  <span>(Optional)</span></div>
+                            <small>The default schedule is everyday at 5:00 AM to 03:00 PM if you don't select one</small>
+                        </div>
+
+                        <div class="card-body">
+                            
+                    <div class="form-group">
+                        <div class="selectgroup selectgroup-pills">
+                          <label class="selectgroup-item">
+                            <input type="checkbox" name="schedDays" value="Mon" class="selectgroup-input">
+                            <span class="selectgroup-button">Mon</span>
+                          </label>
+                          <label class="selectgroup-item">
+                            <input type="checkbox" name="schedDays" value="Tue" class="selectgroup-input">
+                            <span class="selectgroup-button">Tues</span>
+                          </label>
+                          <label class="selectgroup-item">
+                            <input type="checkbox" name="schedDays" value="Wed" class="selectgroup-input">
+                            <span class="selectgroup-button">Wed</span>
+                          </label>
+                          <label class="selectgroup-item">
+                            <input type="checkbox" name="schedDays" value="Thurs" class="selectgroup-input">
+                            <span class="selectgroup-button">Thurs</span>
+                          </label>
+                          <label class="selectgroup-item">
+                            <input type="checkbox" name="schedDays" value="Fri" class="selectgroup-input">
+                            <span class="selectgroup-button">Fri</span>
+                          </label>
+                          <label class="selectgroup-item">
+                            <input type="checkbox" name="schedDays" value="Sat" class="selectgroup-input">
+                            <span class="selectgroup-button">Sat</span>
+                          </label>
+                          <label class="selectgroup-item">
+                            <input type="checkbox" name="schedDays" value="Sun" class="selectgroup-input">
+                            <span class="selectgroup-button">Sun</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        
+                      <div class="form-group col-6">
+                        <label for="collectionStart">Collection Begins @</label>
+                        <input type="time" id="collectionStart" name="collectionStart" class="form-control">
+                      </div>
+
+                      <div class="form-group col-6">
+                        <label for="collectionEnd">Collection Ends @</label>
+                        <input type="time" id="collectionEnd" name="collectionEnd" class="form-control" >
+                      </div>
+
+                      </div>
+
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" id="saveDriverToZone" class="btn btn-primary">
@@ -252,8 +312,6 @@
                     updateRouteStatus(e);
                 })
         }, 2000);
-
-
     </script>
 </body>
 

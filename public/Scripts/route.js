@@ -264,7 +264,6 @@ function loadZones(type){
             zones.innerHTML = `<option value="all">All Baranggays</option>`;
             addZones.innerHTML = '<option value="" disabled selected>------Select a Zone-------</option>';
 
-            console.log(res);
             const assignDriverZone = document.getElementById('addDriverZoneList');
             assignDriverZone.innerHTML = '';
 
@@ -274,7 +273,7 @@ function loadZones(type){
                     addZones.innerHTML += `<option value="${z.zone_id}">${z.zone_name}</option>`;
                 }else{
                     assignDriverZone.innerHTML += ` <label class="selectgroup-item">
-                        <input type="radio" name="zonelist" value="${z.zone_id}" class="selectgroup-input">
+                        <input type="radio" name="zonelist" onclick="chooseZone('${z.zone_id}')" value="${z.zone_id}" class="selectgroup-input">
                         <span class="selectgroup-button">${z.zone_name}</span>
                         </label>`
                 }
@@ -426,7 +425,6 @@ function loadDriver(){
         url: "/api/get/truckdriver/getdriverbyzone",
         dataType:"json",
         success: res => {
-            console.log(res);
             const main = document.getElementById('driverListMain');
             const standBy = document.getElementById('driverListStandby');
             main.innerHTML = `<option disabled selected value="">-----No Driver Selected-----</option>`
@@ -480,8 +478,19 @@ document.getElementById('saveDriverToZone').addEventListener('click', async ()=>
     const mainDriver = document.getElementById('driverListMain').value;
     const standByDriver = document.getElementById('driverListStandby').value;
 
+    const schedDays = document.querySelectorAll(`input[name="schedDays"]`);
+    const collectionStart = document.getElementById('collectionStart');
+    const collectionEnd = document.getElementById('collectionEnd');
+
+    const schedDaysValues = Array.from(schedDays)
+      .filter(checkbox => checkbox.checked)
+      .map(checkbox => checkbox.value);
+
+
+
     let selectedZone;
     let validity = 0;
+
     if(zoneSelect){
         selectedZone = zoneSelect.value;
         isShow('noZoneSelected', false, 'block');
@@ -504,6 +513,7 @@ document.getElementById('saveDriverToZone').addEventListener('click', async ()=>
         isShow('noStandbyDriverSelected', true, 'block');
     }
 
+  
     if(validity == 3){
         load.on();
 
@@ -516,7 +526,10 @@ document.getElementById('saveDriverToZone').addEventListener('click', async ()=>
                     "_token": csrf,
                     "zone": selectedZone,
                     "maindriver": `${mainDriver}-Main Driver`,
-                    "standbydriver": `${standByDriver}-Standby Driver`
+                    "standbydriver": `${standByDriver}-Standby Driver`,
+                    "sched_days": schedDaysValues.length == 0 ? "everyday" : schedDaysValues.join(','),
+                    "collection_start": collectionStart.value == "" ? "05:00" : collectionStart.value,
+                    "collection_end": collectionEnd.value == "" ? "15:00" : collectionEnd.value
                 },
             success: res=> {
                 parseResult(res);
@@ -534,7 +547,7 @@ document.getElementById('saveDriverToZone').addEventListener('click', async ()=>
 
 
 function updateRouteStatus(route) {
-    console.log(route);
+
     const data = route.data;
 
     data.forEach(e => {
@@ -553,4 +566,48 @@ function updateRouteStatus(route) {
             .setLngLat(coord) // Set marker coordinates
             .addTo(map); // Add marker to the map
     });
+}
+
+
+function chooseZone(id){
+    $.ajax({
+        type: "GET",
+        url: `/api/get/truckdriver/getschedule?zone=${id}`,
+        dataType: "json",
+        success: res=> {
+
+            const checkboxDisable = document.querySelectorAll(`input[name="schedDays"]`);
+            const collectionStart = document.getElementById('collectionStart');
+            const collectionEnd = document.getElementById('collectionEnd');
+
+            collectionStart.value = "";
+            collectionEnd.value = "";
+
+            checkboxDisable.forEach(element => {
+                element.checked = false;
+            });
+            if(res.result.data.length == 0){
+                return;
+            }
+
+            const data = res.result.data[0];
+
+            if(data.days != "everyday"){
+                const scheduleDays = data.days.split(',');    
+                scheduleDays.forEach(day => {
+                    // Use querySelector to select the checkbox with the matching value
+                    const checkbox = document.querySelector(`input[name="schedDays"][value="${day}"]`);
+                    
+                    // If the checkbox is found, set it to checked
+                    if (checkbox) {
+                      checkbox.checked = true;
+                    }
+                  });
+
+                  collectionStart.value = data.collection_start;
+                  collectionEnd.value = data.collection_end;
+            }
+
+        }, error: xhr=> console.log(xhr.responseText)
+    })
 }
