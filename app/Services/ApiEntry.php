@@ -162,7 +162,9 @@ class ApiEntry{
             'addbrgy'=> ['brgy', 'zone'],
             'getgeodata'=>['empty'],
             'changedumpsitelocation'=> ['context', 'longitude', 'latitude'],
-            'getdriverassignedzone'=> ['driver_id']
+            'getdriverassignedzone'=> ['driver_id'],
+            'addwaypoint'=> ['brgy', 'waypoints', 'zone'],
+            'getallwaypoint'=> ['empty']
         ],
         'settings'=> [
             'getval'=> ['context']

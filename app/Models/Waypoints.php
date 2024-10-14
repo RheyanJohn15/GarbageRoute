@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BrgyList extends Model
+class Waypoints extends Model
 {
     use HasFactory;
-    protected $table = 'brgy_lists';
+    protected $table = 'waypoints';
     protected $primaryKey = 'brgy_id';
     protected $fillable = [
-        'zone_id',
-        'brgy_name',
-        'max_waypoint'
+        'brgy_id',
+        'longitude',
+        'latitude',
+        'zone_id'
     ];
 }

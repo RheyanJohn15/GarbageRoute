@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('brgy_lists', function (Blueprint $table) {
-            $table->id('brgy_id');
+        Schema::create('waypoints', function (Blueprint $table) {
+            $table->id('wp_id');
+            $table->unsignedBigInteger('brgy_id')->nullable();
+            $table->foreign('brgy_id')->references('brgy_id')->on('brgy_lists');
             $table->unsignedBigInteger('zone_id')->nullable();
             $table->foreign('zone_id')->references('zone_id')->on('zones');
-            $table->string('brgy_name');
-            $table->integer('max_waypoint');
+            $table->string('longitude');
+            $table->string('latitude');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brgy_lists');
+        Schema::dropIfExists('waypoints');
     }
 };

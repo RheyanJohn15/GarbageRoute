@@ -6,6 +6,7 @@ use App\Models\GeoData;
 use App\Models\GeoDataCoordinates;
 use App\Models\Settings;
 use App\Services\ApiException;
+use App\Models\Waypoints;
 use App\Models\ZoneDrivers;
 
 class Zone{
@@ -95,6 +96,37 @@ class Zone{
         $data = [$zone, $brgy, $dumpsite];
 
         $this->RESULT = ['getdriverassignedzone', 'Fetch Zone Coordinates', $data];
+    }
+
+    private function addwaypoint($req){
+        $check = Waypoints::where('zone_id', $req->zone)->get();
+
+        foreach($check as $data){
+            $data->delete();
+        }
+        $coord = $req->waypoints;
+        foreach($req->brgy as $brgy){
+            if(array_key_exists($brgy[0], $coord)){
+                $coordinates = $coord[$brgy[0]];
+                foreach($coordinates as $c){
+                    $waypoint = new Waypoints();
+                    $waypoint->brgy_id = $brgy[2];
+                    $waypoint->longitude = $c[0];
+                    $waypoint->latitude = $c[1];
+                    $waypoint->zone_id = $req->zone;
+                    $waypoint->save();
+                }    
+            }
+       
+        } 
+        
+        $this->RESULT = ['addwaypoint', "Waypoints are successfully saved", 'null'];
+    }
+
+    private function getallwaypoint($req){
+        $waypoints = Waypoints::where('waypoints.zone_id', $req->zone)->join('brgy_lists','brgy_lists.brgy_id', '=', 'waypoints.brgy_id')->get();
+
+        $this->RESULT = ['getallwaypoints', "Fetch all waypoints", $waypoints];
     }
 
     public function getResult(){
