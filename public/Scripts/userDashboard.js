@@ -1,7 +1,8 @@
 let accesstoken;
 let driverId;
 let dumpsiteLoc;
-
+let waypointMarker = [];
+let zoneGlobal;
 let getDriverData = new Promise(async (resolve, reject) => {
     try {
         const token = localStorage.getItem('access_token');
@@ -30,9 +31,9 @@ window.onload = async () => {
 
     const userInfo = await getDriverDataInfo();
     driverId = userInfo.data.td_id;
-
-    loadMap();
     loadZoneInfo();
+    loadMap();
+
     activateUser();
 }
 
@@ -63,7 +64,7 @@ let enterZoneTimeStamp = [];
 let brgy_id;
 let dumpsiteEnterStatus = false;
 let zoneCompleteStatus = false;
-function loadMap() {
+async function loadMap() {
     $.ajax({
         type: "GET",
         url: `/api/get/zone/getdriverassignedzone?driver_id=${driverId}`,
@@ -292,8 +293,29 @@ function loadMap() {
 
         }, error: xhr => console.log(xhr.responseText)
     });
+
+
+
+    const existWaypointsReq = await $.ajax({
+        type: "GET",
+        url: `/api/get/zone/getallwaypoint?zone=${zoneGlobal}`,
+        dataType: "json"
+    });
+
+
+    const waypointsData = await existWaypointsReq;
+
+    console.log(waypointsData);
+
 }
 
+
+function addWaypoint(coordinates) {
+    const marker = new mapboxgl.Marker()
+        .setLngLat(coordinates)
+        .addTo(map);
+    waypointMarker.push(marker);
+}
 
 function loadZoneInfo() {
     const header = document.getElementById('infoAssignedZone');
@@ -306,7 +328,8 @@ function loadZoneInfo() {
         dataType: "json",
         success: res => {
             const data = res.result.data;
-
+            zoneGlobal = data[0].zone_id;
+            console.log(zoneGlobal);
             header.textContent = data[0].zone_name;
 
             let rows = ''

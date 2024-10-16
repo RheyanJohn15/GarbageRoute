@@ -557,30 +557,63 @@ document.getElementById('saveDriverToZone').addEventListener('click', async () =
         })
     }
 });
+// Array to store active markers
+let activeMarkers = [];
 
-
-function updateRouteStatus(route) {
-
+ function updateRouteStatus(route) {
     const data = route.data;
+    const table = document.getElementById('activeDriverTable');
+    table.innerHTML = '';
 
-    data.forEach(e => {
+    // Remove existing markers from the map
+    activeMarkers.forEach(marker => marker.remove());
+    activeMarkers = []; // Clear the marker array
+
+    data.forEach(async e => {
         const splitCoord = e.ad_coordinates.split(',');
         const markerEl = document.createElement('div');
         markerEl.className = 'custom-marker';
 
         // Add Font Awesome icon to the custom marker
-        markerEl.innerHTML = `<div style="text-align: center;">
-        <i class="fas fa-truck-moving" style="font-size: 24px; color: #6610f2;"></i>
-        <p style="margin: 0; font-size: 14px; color: black;">${e.driver.name}</p>
-        </div>`;
-        const coord = [splitCoord[0], splitCoord[1]];
+        markerEl.innerHTML = `
+            <div style="text-align: center;">
+                <i class="fas fa-truck-moving" style="font-size: 24px; color: #6610f2;"></i>
+                <p style="margin: 0; font-size: 14px; color: black;">${e.driver.name}</p>
+            </div>`;
+        
+        const coord = [parseFloat(splitCoord[0]), parseFloat(splitCoord[1])];
 
-        new mapboxgl.Marker(markerEl)
+        // Create a new marker and add it to the map
+        const marker = new mapboxgl.Marker(markerEl)
             .setLngLat(coord) // Set marker coordinates
             .addTo(map); // Add marker to the map
+
+        // Store the created marker in the activeMarkers array
+        activeMarkers.push(marker);
+        const location = await getPlaceName(coord[1], coord[0]);
+        // Update the table with driver information
+        table.innerHTML += `
+            <tr>
+                <td>${e.driver.name}</td>
+                <td>${e.truck.model}</td>
+                <td>${e.truck.can_carry}(Tons)</td>
+                <td>${e.zone.zone_name}</td>
+                 <td>${location}</td>
+                <td><button onclick="viewDriverOnMap(${coord[0]}, ${coord[1]})" class="btn btn-label-primary btn-round">View Location</button></td>
+            </tr>`;
     });
 }
 
+// Function to fly the map to the specified driver's location
+function viewDriverOnMap(lat, lng) {
+    map.flyTo({
+        center: [lat, lng], // Coordinates to fly to
+        zoom: 14, // Zoom level (adjust as needed)
+        speed: 1.5, // Speed of the animation (default is 1.2)
+        curve: 1, // Controls the smoothness of the animation
+        essential: true // This makes the animation a required transition
+    });
+}
 
 function chooseZone(id) {
     $.ajax({
@@ -636,19 +669,28 @@ document.getElementById('addWaypointToZone').addEventListener('click', async () 
     const splitSelect = select.value.split('-');
     const zoneData = geoDataSilayGlobal.filter(x => x.properties.zone == splitSelect[0]);
     selectedZoneWaypoints = splitSelect[0];
-
+    
     const existWaypointsReq = await $.ajax({
         type: "GET",
         url: `/api/get/zone/getallwaypoint?zone=${selectedZoneWaypoints}`,
         dataType: "json"
     });
 
+    isShow('activeTableDiv', false, 'block');
+
     const existWaypointRes = await existWaypointsReq;
 
     // Count existing waypoints per barangay
     const existingWaypointCount = {};
+
     existWaypointRes.result.data.forEach(waypoint => {
         const brgyId = waypoint.brgy_id;
+        if (!waypoints[waypoint.brgy_name]) {
+            waypoints[waypoint.brgy_name] = [];
+        }
+        
+        waypoints[waypoint.brgy_name].push([parseFloat(waypoint.longitude), parseFloat(waypoint.latitude)]);
+
         existingWaypointCount[brgyId] = (existingWaypointCount[brgyId] || 0) + 1;
     });
 
@@ -768,6 +810,8 @@ document.getElementById('addWaypointToZone').addEventListener('click', async () 
                 delay: 2000,
             });
         }
+
+        console.log(waypoints);
     });
 
     clicked('closeAddWaypoints');
@@ -784,7 +828,17 @@ document.getElementById('addWaypointToZone').addEventListener('click', async () 
     } else {
         brgyList.innerHTML = '<li>No Brgy Added</li>';
     }
+    const brgyNames =  existWaypointRes.result.data.filter((item, index, self) =>
+        index === self.findIndex((t) => t.brgy_name === item.brgy_name)
+      );
 
+    brgyNames.forEach(brgy => {
+        const element = document.getElementById(`waypoint_${brgy.brgy_name}`);
+
+        const numOfWaypoint = existWaypointRes.result.data.filter(x=> x.brgy_name === brgy.brgy_name).length;
+
+        element.textContent = numOfWaypoint;
+    })
     $.notify({ 'message': `Editing ${splitSelect[1]} Waypoints`, 'icon': 'fas fa-exclamation-triangle' }, {
         type: 'success',
         placement: {
@@ -826,7 +880,20 @@ function redoMap() {
 }
 
 document.getElementById('redoEditWaypoints').addEventListener('click', ()=> {
-        redoMap();
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Redo Waypoint Selection!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+            redoMap();
+        }
+      });
+       
 });
 
 document.getElementById('saveEditWaypoints').addEventListener('click', async ()=> {
@@ -857,7 +924,7 @@ document.getElementById('saveEditWaypoints').addEventListener('click', async ()=
 
     }
     load.on();
-
+    console.log(waypoints);
     const csrf = await getCSRF();
 
     $.ajax({
@@ -880,6 +947,7 @@ document.getElementById('closeEditWaypointPage').addEventListener('click', ()=> 
     isShow('headerMenu',true, 'block');
     isShow('closeEditWaypointPage', false, 'block');
     isShow('addZoneEditDetailsDiv', false, 'block');
+    isShow('activeTableDiv', true, 'block');
     LoadMap();
 });
 

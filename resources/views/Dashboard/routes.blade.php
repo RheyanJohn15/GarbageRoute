@@ -3,6 +3,7 @@
 
 <head>
     @include('Components.header', ['title' => 'Routes'])
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
     #map {
@@ -50,7 +51,7 @@
 
                     <div id="addZoneEditDetailsDiv" class="w-100 pl-4 d-none row">
                         <div class="col-6">
-                            <h4 id="addWaypointDetailHeader">Zone 1</h4>
+                            <h4 id="addWaypointDetailHeader">Loading....</h4>
                             <ul id="addWaypointBrgyList">
                             </ul>
                         </div>
@@ -69,7 +70,28 @@
                             </button>
                         </div>
                     </div>
-                    <div class="rounded" id="map"></div>
+                    <div class="rounded mb-4" id="map"></div>
+                    <div id="activeTableDiv">
+                        
+                    <h3>Currently Collecting Active Drivers</h3>
+                    <p>Track All Active drivers and there location on the map</p>
+                    <table class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
+                        <thead>
+                          <tr>
+                            <th scope="col">Driver Name</th>
+                            <th scope="col">Truck Model</th>
+                            <th scope="col">Capacity</th>
+                            <th scope="col">Zone</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="activeDriverTable">
+                            <tr><td colspan="6" class="text-center">Loading......</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+
                 </div>
 
             </div>

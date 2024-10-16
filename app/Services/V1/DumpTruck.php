@@ -50,7 +50,7 @@ class DumpTruck{
       $dumpTruck->update([
          'model'=>$req->model,
          'can_carry' => $req->can_carry,
-         'driver'=> $req->driver,
+         'td_id'=> $req->driver,
          'plate_num'=> $req->plate_num
       ]);
 
