@@ -15,11 +15,8 @@ return new class extends Migration
             $table->id('cp_id');
             $table->unsignedBigInteger('td_id')->nullable();
             $table->foreign('td_id')->references('td_id')->on('truck_drivers');
-            $table->unsignedBigInteger('brgy_id')->nullable();
-            $table->foreign('brgy_id')->references('brgy_id')->on('brgy_lists');
-            $table->string('status')->nullable();
-            $table->string('time_entered')->nullable();
-            $table->string('time_out')->nullable();
+            $table->integer('wp_id');
+            $table->string('status');
             $table->timestamps();
         });
     }

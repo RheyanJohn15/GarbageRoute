@@ -170,12 +170,9 @@ class Driver{
     private function completecollection($req){
         $collection = new CollectionProgress();
         $collection->td_id = $req->driver_id;
-        $collection->brgy_id = $req->brgy_id;
-        $collection->status = 1;
-        $collection->time_entered = $req->time_in;
-        $collection->time_out = $req->time_out;
+        $collection->wp_id = $req->waypoint_id;
+        $collection->status = "Complete";
         $collection->save();
-
         $this->RESULT = ['completecollection', "Collection Complete in this Location", 'null'];
     }
 
@@ -192,7 +189,7 @@ class Driver{
 
     private function records($req){
         $collection = CollectionProgress::where('td_id', $req->driver_id)
-        ->join('brgy_lists', 'brgy_lists.brgy_id', '=', 'collection_progress.brgy_id')
+        ->join('waypoints', 'waypoints.wp_id', '=', 'collection_progress.wp_id')
         ->get();
         $dumpsite = DumpsiteTurnovers::where('td_id', $req->driver_id)
         ->get();

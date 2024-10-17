@@ -960,7 +960,7 @@ document.getElementById('selectZoneAddWaypoint').addEventListener('change', asyn
     try {
         const response = await $.ajax({
             type: "GET",
-            url: `/api/get/zone/getallwaypoint?zone=${e.target.value.split('-')[0]}`,
+            url: `/api/get/zone/getallwaypoint?zone=${e.target.value.split('-')[0]}&type=admin&id=null`,
             dataType: "json"
         });
 

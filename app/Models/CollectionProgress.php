@@ -12,9 +12,7 @@ class CollectionProgress extends Model
     protected $primaryKey = 'cp_id';
     protected $fillable = [
         'td_id',
-        'brgy_id',
+        'wp_id',
         'status',
-        'time_entered',
-        'time_out'
     ];
 }

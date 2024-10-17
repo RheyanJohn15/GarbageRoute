@@ -335,9 +335,9 @@
                                         <span class="selectgroup-button">Wed</span>
                                     </label>
                                     <label class="selectgroup-item">
-                                        <input type="checkbox" name="schedDays" value="Thurs"
+                                        <input type="checkbox" name="schedDays" value="Thu"
                                             class="selectgroup-input">
-                                        <span class="selectgroup-button">Thurs</span>
+                                        <span class="selectgroup-button">Thu</span>
                                     </label>
                                     <label class="selectgroup-item">
                                         <input type="checkbox" name="schedDays" value="Fri"

@@ -138,7 +138,7 @@ class ApiEntry{
             'inactive'=> ['driver_id'],
             'active'=> ['driver_id'],
             'updatelocation'=> ['driver_id', 'longitude', 'latitude'],
-            'completecollection' => ['driver_id', 'time_in', 'time_out', 'brgy_id'],
+            'completecollection' => ['driver_id', 'waypoint_id'],
             'dumpsiteturnover'=> ['td_id'],
             'records'=> ['empty']
         ],

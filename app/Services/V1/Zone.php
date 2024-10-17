@@ -8,6 +8,9 @@ use App\Models\Settings;
 use App\Services\ApiException;
 use App\Models\Waypoints;
 use App\Models\ZoneDrivers;
+use Carbon\Carbon;
+use App\Models\Schedules;
+use App\Models\CollectionProgress;
 
 class Zone{
     private $RESULT = null;
@@ -76,6 +79,24 @@ class Zone{
     }
 
     private function getdriverassignedzone($req){
+
+        $schedule = Schedules::where('td_id', $req->driver_id)->first();
+        $today = Carbon::now()->format('D');
+        $currentTime = Carbon::now();
+        if($schedule->days != 'everyday'){
+            $schedDays = explode(',', $schedule->days);
+        }else{
+            $schedDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat','Sun'];
+        }
+
+        $startTime = Carbon::createFromFormat('H:i', $schedule->collection_start); // Start time
+        $endTime = Carbon::createFromFormat('H:i', $schedule->collection_end); // End time
+
+        $isScheduleToday = false;
+        if (in_array($today, $schedDays) && $currentTime->between($startTime, $endTime)) {
+            $isScheduleToday = true;
+        }
+
         $zoneDriver = ZoneDrivers::where('td_id', $req->driver_id)->first();
 
         if(!$zoneDriver){
@@ -93,7 +114,7 @@ class Zone{
         $zone = Zones::where('zone_id', $zoneDriver->zone_id)->first();
         
         $dumpsite = Settings::where('settings_context', 'dumpsite_location')->first();
-        $data = [$zone, $brgy, $dumpsite];
+        $data = [$zone, $brgy, $dumpsite, $isScheduleToday];
 
         $this->RESULT = ['getdriverassignedzone', 'Fetch Zone Coordinates', $data];
     }
@@ -124,7 +145,24 @@ class Zone{
     }
 
     private function getallwaypoint($req){
-        $waypoints = Waypoints::where('waypoints.zone_id', $req->zone)->join('brgy_lists','brgy_lists.brgy_id', '=', 'waypoints.brgy_id')->get();
+        if($req->type == 'admin'){
+            $waypoints = Waypoints::where('waypoints.zone_id', $req->zone)->join('brgy_lists','brgy_lists.brgy_id', '=', 'waypoints.brgy_id')->get();
+        }else{
+            $doneWaypoints = [];
+            $getOtherDriverQuery = ZoneDrivers::where('zone_id', $req->zone)->get();
+            foreach($getOtherDriverQuery as $otherDriver){
+                $queryWaypoints = CollectionProgress::where('td_id', $otherDriver->td_id)->whereDate('created_at', Carbon::today())->get();
+
+                foreach($queryWaypoints as $qw){
+                    $doneWaypoints[] = $qw->wp_id;
+                }
+            }
+            
+            $waypoints = Waypoints::where('waypoints.zone_id', $req->zone)
+            ->whereNotIn('waypoints.wp_id', $doneWaypoints)
+            ->join('brgy_lists','brgy_lists.brgy_id', '=', 'waypoints.brgy_id')->get();
+
+        }
 
         $this->RESULT = ['getallwaypoints', "Fetch all waypoints", $waypoints];
     }

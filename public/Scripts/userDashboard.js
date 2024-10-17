@@ -2,7 +2,6 @@ let accesstoken;
 let driverId;
 let dumpsiteLoc;
 let waypointMarker = [];
-let zoneGlobal;
 let getDriverData = new Promise(async (resolve, reject) => {
     try {
         const token = localStorage.getItem('access_token');
@@ -64,16 +63,23 @@ let enterZoneTimeStamp = [];
 let brgy_id;
 let dumpsiteEnterStatus = false;
 let zoneCompleteStatus = false;
+let nearestWaypointId;
 async function loadMap() {
     $.ajax({
         type: "GET",
         url: `/api/get/zone/getdriverassignedzone?driver_id=${driverId}`,
         dataType: "json",
         success: res => {
+            
+            if(!res.result.data[3]){
+                isShow('notScheduleToday', true);
+                isShow('todaySchedule', false, 'block');
+                return
+            }
+
             const assignedZone = [];
 
             const data = res.result.data[1];
-
             data.forEach(feat => {
                 const geodata = {};
 
@@ -145,13 +151,11 @@ async function loadMap() {
 
                 geolocate.on('geolocate', async (e) => {
                     isShow('currentLocationDiv', true, 'block');
-                    console.log(dumpsiteLoc)
                     const dumpSiteLocation = dumpsiteLoc.split(',');
-             
+
                     const dumpSiteLong = parseFloat(dumpSiteLocation[0]);
                     const dumpSiteLat = parseFloat(dumpSiteLocation[1]);
-                    console.log(dumpSiteLocation);
-                    const currentLocationPoint = turf.point([e.coords.longitude, e.coords.latitude]);
+                    const currentLocationPoint = turf.point([122.9519850491377, 10.843868274614221]);
                     const dumpSitePoint = turf.point([dumpSiteLong, dumpSiteLat]);
 
                     setText('currentLocationLong', e.coords.longitude);
@@ -161,62 +165,61 @@ async function loadMap() {
 
                     setText('currentLocationName', placeName);
 
-                    //Check if driver is inside a zone
+                    const waypointProximityThreshold = 10; // 10 meters threshold
+                    let stayTimer = null;
+                    let countdownTimer = null;
+                    let countdownValue = 180; // 3 minutes in seconds (180 seconds)
+                    waypointMarker.forEach((waypoint) => {
+                        const waypointCoords = waypoint.marker.getLngLat();
+                        const waypointPoint = turf.point([waypointCoords.lng, waypointCoords.lat]);
+                        const distanceToWaypoint = turf.distance(currentLocationPoint, waypointPoint, { units: 'meters' });
 
-                    let isInsideZone = false;
-                    assignedZone.forEach( async (zone) => {
-                        const zonePolygon = turf.multiPolygon(zone.geometry.coordinates);
-                        if (turf.booleanPointInPolygon(currentLocationPoint, zonePolygon)) {
-                            isInsideZone = true;
-                            brgy_id = zone.properties.brgy_id;
-                       
-                            console.log(`Current location is inside zone: ${zone.properties.name}`);
+                        if (distanceToWaypoint <= waypointProximityThreshold) {
+                            if (!nearestWaypointId || nearestWaypointId !== waypoint.id) {
+                                nearestWaypointId = waypoint.id;
+
+                                // Clear any existing timers
+                                if (stayTimer) clearTimeout(stayTimer);
+                                if (countdownTimer) clearInterval(countdownTimer);
+
+                                // Reset the countdown value and start updating it
+                                countdownValue = 180; // 3 minutes in seconds
+                                updateCountdownText(countdownValue); // Initial countdown display
+
+                                // Start the countdown interval
+                                countdownTimer = setInterval(() => {
+                                    countdownValue--;
+                                    updateCountdownText(countdownValue);
+
+                                    if (countdownValue <= 0) {
+                                        clearInterval(countdownTimer);
+                                    }
+                                }, 1000); // Update every second
+
+                                // Start the stay timer for 3 minutes (180000 milliseconds)
+                                stayTimer = setTimeout(() => {
+                                    // Execute the function only if the driver stays for 3 minutes
+                                    reactive('cpmpleteCollectionBtn', false);
+                                    clearInterval(countdownTimer); // Stop the countdown timer when the time is up
+                                    updateCountdownText(0); // Set to 0 after the timer completes
+                                    setText('cpmpleteCollectionBtn', 'Complete Collection in this waypoint');
+                                }, 1000 * 60 * 3); // 3 minutes
+                            }
+                        } else {
+                            // If the driver moves away from the waypoint, clear the timer and reset the button
+                            if (nearestWaypointId === waypoint.id) {
+                                nearestWaypointId = null;
+
+                                if (stayTimer) clearTimeout(stayTimer);
+                                if (countdownTimer) clearInterval(countdownTimer);
+
+                                reactive('cpmpleteCollectionBtn', true);
+                                resetCountdownText(); // Reset button text when the driver moves away
+                            }
                         }
                     });
 
-                    if (!isInsideZone) {
-                        isInsideZone = false;
-                        enterZoneTimeStamp.length = 0;
-                        reactive('cpmpleteCollectionBtn', true);
-                        zoneCompleteStatus = false;
-                        console.log("Current location is outside all zones.");
-                    }
-                    const  getTimeDifferenceInMinutes = (startTime, endTime) => {
-                        // Split the time strings into hours and minutes
-                        const [startHours, startMinutes] = startTime.split(':').map(Number);
-                        const [endHours, endMinutes] = endTime.split(':').map(Number);
-
-                        // Convert start and end times into total minutes from midnight
-                        const startTotalMinutes = startHours * 60 + startMinutes;
-                        const endTotalMinutes = endHours * 60 + endMinutes;
-
-                        // Calculate the difference in minutes
-                        const difference = endTotalMinutes - startTotalMinutes;
-
-                        return difference;
-                    }
-
                     const csrf = await getCSRF();
-                    if (isInsideZone) {
-                        const now = new Date();
-                        // Extract hours and minutes in military format (24-hour)
-                        const hours = String(now.getHours()).padStart(2, '0');
-                        const minutes = String(now.getMinutes()).padStart(2, '0');
-
-                        // Create the time string in HH:mm format
-                        const timeString = `${hours}:${minutes}`;
-
-                        enterZoneTimeStamp.push(timeString);
-                        console.log(enterZoneTimeStamp);
-                        const difference = getTimeDifferenceInMinutes(enterZoneTimeStamp[0], timeString);
-
-                        if(difference > 2){
-                         if(!zoneCompleteStatus){
-                          reactive('cpmpleteCollectionBtn', false);
-                          }
-                        }
-                    } 
-                   
 
                     $.ajax({
                         type: "POST",
@@ -231,21 +234,21 @@ async function loadMap() {
                     const distanceToDumpSite = turf.distance(currentLocationPoint, dumpSitePoint, { units: 'meters' });
                     const proximityThreshold = 100; // Set your threshold distance (in meters)
                     if (distanceToDumpSite <= proximityThreshold) {
-                      isShow('turnOverToDumpsite', true, 'block');  
-                      isShow('cpmpleteCollectionBtn', false, 'block');
-                      setText('turnOverToDumpsite', "Dumpsite Turn Over(Nearby! Get closer to turn over)")
-                      if(distanceToDumpSite < 20){
-                        setText('turnOverToDumpsite', "Dumpsite Turn Over")
-                        if(!dumpsiteEnterStatus){
-                          reactive('turnOverToDumpsite', false);
+                        isShow('turnOverToDumpsite', true, 'block');
+                        isShow('cpmpleteCollectionBtn', false, 'block');
+                        setText('turnOverToDumpsite', "Dumpsite Turn Over(Nearby! Get closer to turn over)")
+                        if (distanceToDumpSite < 20) {
+                            setText('turnOverToDumpsite', "Dumpsite Turn Over")
+                            if (!dumpsiteEnterStatus) {
+                                reactive('turnOverToDumpsite', false);
+                            }
                         }
-                      }
-                  } else {
-                    isShow('turnOverToDumpsite', false, 'block');
-                    isShow('cpmpleteCollectionBtn', true, 'block');
-                    reactive('turnOverToDumpsite', true);
-                    dumpsiteEnterStatus = false;
-                  }
+                    } else {
+                        isShow('turnOverToDumpsite', false, 'block');
+                        isShow('cpmpleteCollectionBtn', true, 'block');
+                        reactive('turnOverToDumpsite', true);
+                        dumpsiteEnterStatus = false;
+                    }
                 });
 
                 geolocate.on('trackuserlocationend', () => {
@@ -296,40 +299,55 @@ async function loadMap() {
 
 
 
-    const existWaypointsReq = await $.ajax({
-        type: "GET",
-        url: `/api/get/zone/getallwaypoint?zone=${zoneGlobal}`,
-        dataType: "json"
-    });
-
-
-    const waypointsData = await existWaypointsReq;
-
-    console.log(waypointsData);
 
 }
 
 
-function addWaypoint(coordinates) {
+function addWaypoint(coordinates, id) {
     const marker = new mapboxgl.Marker()
         .setLngLat(coordinates)
         .addTo(map);
-    waypointMarker.push(marker);
+    waypointMarker.push({ marker, id });
 }
+
+// Function to update the button text with the countdown
+function updateCountdownText(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const formattedTime = `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    setText('cpmpleteCollectionBtn', `Stay for: ${formattedTime}`);
+}
+
+// Function to reset the button text when the countdown is not active
+function resetCountdownText() {
+    setText('cpmpleteCollectionBtn', 'Complete Collection');
+}
+
 
 function loadZoneInfo() {
     const header = document.getElementById('infoAssignedZone');
     const table = document.getElementById('infoTable');
     const tableBody = document.getElementById('infoTableBody');
-
+    waypointMarker.length = 0;
     $.ajax({
         type: "GET",
         url: `/api/get/drivers/getzoneinfo?driverid=${driverId}`,
         dataType: "json",
-        success: res => {
+        success: async res => {
             const data = res.result.data;
-            zoneGlobal = data[0].zone_id;
-            console.log(zoneGlobal);
+            const existWaypointsReq = await $.ajax({
+                type: "GET",
+                url: `/api/get/zone/getallwaypoint?zone=${data[0].zone_id}&type=driver&id=${driverId}`,
+                dataType: "json"
+            });
+
+
+            const waypointsData = await existWaypointsReq;
+
+            waypointsData.result.data.forEach(d => {
+                addWaypoint([parseFloat(d.longitude), parseFloat(d.latitude)], d.wp_id);
+            });
+
             header.textContent = data[0].zone_name;
 
             let rows = ''
@@ -349,12 +367,11 @@ function loadZoneInfo() {
 
                 } else {
                     attrib.forEach(att => {
-                        bullet += `<li>${att == 'can_carry' ? 'Capacity' : att.toUpperCase()}: ${array[att] == 'can_carry' ? array[att] + 'Tons' : array[att]}</li>`
+                        bullet += `<li>${att == 'can_carry' ? 'CAPACITY' : att.toUpperCase()}: ${array[att] == 'can_carry' ? array[att] + 'Tons' : array[att]}</li>`
                     })
                 }
                 return `<ul>${bullet}</ul>`;
             }
-
             processRows('Baranggay List', bullitized(data[4], 'brgy_name'));
             processRows('Truck Details', bullitized(data[1], ['model', 'plate_num', 'can_carry'], false));
             processRows('Standby Driver', bullitized(data[2], ['name', 'address', 'contact', 'license'], false));
@@ -387,20 +404,22 @@ async function activateUser() {
     })
 }
 
-document.getElementById('cpmpleteCollectionBtn').addEventListener('click', async ()=>{
+document.getElementById('cpmpleteCollectionBtn').addEventListener('click', async () => {
     load.on();
     const csrf = await getCSRF();
-    const timeIn = enterZoneTimeStamp[0];
-    const timeOut = enterZoneTimeStamp[enterZoneTimeStamp.length - 1];
+
     $.ajax({
         type: "POST",
         url: "/api/post/drivers/completecollection",
-        data: {"_token": csrf,"driver_id":driverId, "time_in": timeIn, "time_out": timeOut, "brgy_id": brgy_id},
-        success: res=> {
+        data: { "_token": csrf, "driver_id": driverId, "waypoint_id": nearestWaypointId },
+        success: res => {
             load.off();
             zoneCompleteStatus = true;
             parseResult(res);
-        }, error: xhr=> {
+            loadMap();
+            loadZoneInfo();
+            setText('cpmpleteCollectionBtn', "Continue Collection");
+        }, error: xhr => {
             load.off();
             console.log(xhr.responseText)
             parseResult(JSON.parse(xhr.responseText))
@@ -409,81 +428,138 @@ document.getElementById('cpmpleteCollectionBtn').addEventListener('click', async
 });
 
 
-document.getElementById('turnOverToDumpsite').addEventListener('click', async ()=> {
-  load.on();
-  const csrf = await getCSRF();
-  $.ajax({
-    type:"POST",
-    url: "/api/post/drivers/dumpsiteturnover",
-    data: {"_token":csrf, "td_id": driverId},
-    success: res=> {
-      parseResult(res);
-      load.off();
-      reactive('turnOverToDumpsite', false);
-      setText('turnOverToDumpsite', "Done! Collect More Garbage");
-      dumpsiteEnterStatus = true;
-    },error: xhr=> {
-      console.log(xhr.responseText);
-      load.off();
-      parseResult(JSON.parse(xhr.responseText));
-    }
-  })
+document.getElementById('turnOverToDumpsite').addEventListener('click', async () => {
+    load.on();
+    const csrf = await getCSRF();
+    $.ajax({
+        type: "POST",
+        url: "/api/post/drivers/dumpsiteturnover",
+        data: { "_token": csrf, "td_id": driverId },
+        success: res => {
+            parseResult(res);
+            load.off();
+            reactive('turnOverToDumpsite', false);
+            setText('turnOverToDumpsite', "Done! Collect More Garbage");
+            dumpsiteEnterStatus = true;
+        }, error: xhr => {
+            console.log(xhr.responseText);
+            load.off();
+            parseResult(JSON.parse(xhr.responseText));
+        }
+    })
 });
 
 
-function loadRecords(){
+function loadRecords() {
 
-  $.ajax({
-    type: "GET",
-    url: `/api/get/drivers/records?driver_id=${driverId}`,
-    dataType:"json",
-    success: res => {
-      const collection = res.result.data[0];
-      const dumpsite = res.result.data[1];
-      console.log(dumpsite);
-      $('#collectionReports').DataTable({
-        data:collection,
-        columns: [
-          {title: "Brgy", data: "brgy_name"},
-          {title: "Time Entered", data: "time_entered"},
-          {title: "Time Complete", data: "time_out"}
-        ]
-      });
-
-      const cleanData = groupByMonthYear(dumpsite);
-
-      $('#dumpsiteTurnOverRecords').DataTable({
-        data:cleanData,
-        columns: [
-          {title: "Month-Year", data: "month"},
-          {title: "Total Turn Over(Tons)", data: "total_turnover"}
-        ]
-      })
-   
-    }, error: xhr=> console.log(xhr.responseText)
-  })
+    $.ajax({
+        type: "GET",
+        url: `/api/get/drivers/records?driver_id=${driverId}`,
+        dataType: "json",
+        success: async res => {
+            const collection = res.result.data[0];
+            const dumpsite = res.result.data[1];
+    
+            // Create an array to hold promises for all place names
+            const placeNamePromises = collection.map(data => {
+                return getPlaceName(data.longitude, data.latitude).then(place_name => ({
+                    ...data,
+                    place_name // Attach the resolved place_name to the data object
+                }));
+            });
+    
+            // Wait for all place names to be fetched
+            const enrichedCollection = await Promise.all(placeNamePromises);
+    
+            $('#collectionReports').DataTable({
+                data: enrichedCollection,
+                columns: [
+                    {
+                        title: "Waypoint Location",
+                        data: "place_name" // Use the pre-fetched place_name directly
+                    },
+                    {
+                        title: "Time Completed", 
+                        data: null,
+                        render: data => {
+                            const date = new Date(data.created_at.replace(' ', 'T'));
+    
+                            // Extract the hours and minutes
+                            let hours = date.getHours();
+                            const minutes = date.getMinutes();
+    
+                            // Determine AM/PM and adjust hours
+                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                            hours = hours % 12;
+                            hours = hours || 12; // Adjust hour '0' to '12' for AM/PM
+    
+                            // Format minutes to be two digits
+                            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    
+                            // Combine hours, minutes, and AM/PM into the desired format
+                            return `${hours}:${formattedMinutes} ${ampm}`;
+                        }
+                    },
+                    {
+                        title: "Date", 
+                        data: null,
+                        render: data => {
+                            const date = new Date(data.created_at);
+    
+                            // Array of month names
+                            const months = [
+                                "January", "February", "March", "April", "May", "June",
+                                "July", "August", "September", "October", "November", "December"
+                            ];
+    
+                            // Extract the month, day, and year
+                            const month = months[date.getMonth()]; // getMonth() returns month index (0-11)
+                            const day = date.getDate();
+                            const year = date.getFullYear();
+    
+                            // Combine into the desired format
+                            return `${month}, ${day}, ${year}`;
+                        }
+                    }
+                ]
+            });
+    
+            const cleanData = groupByMonthYear(dumpsite);
+    
+            $('#dumpsiteTurnOverRecords').DataTable({
+                data: cleanData,
+                columns: [
+                    { title: "Month-Year", data: "month" },
+                    { title: "Total Turn Over(Tons)", data: "total_turnover" }
+                ]
+            });
+    
+        }, 
+        error: xhr => console.log(xhr.responseText)
+    });
+    
 }
 
 function groupByMonthYear(data) {
-  // Create a map to hold the totals of dt_id for each month-year
-  const monthYearMap = new Map();
+    // Create a map to hold the totals of dt_id for each month-year
+    const monthYearMap = new Map();
 
-  data.forEach(item => {
-      // Extract the month and year from the created_at date
-      const date = new Date(item.created_at);
-      const monthYear = `${date.toLocaleString('default', { month: 'long' })}-${date.getFullYear()}`;
+    data.forEach(item => {
+        // Extract the month and year from the created_at date
+        const date = new Date(item.created_at);
+        const monthYear = `${date.toLocaleString('default', { month: 'long' })}-${date.getFullYear()}`;
 
-      // Initialize the entry if it doesn't exist
-      if (!monthYearMap.has(monthYear)) {
-          monthYearMap.set(monthYear, { month: monthYear, total_turnover: 0 });
-      }
+        // Initialize the entry if it doesn't exist
+        if (!monthYearMap.has(monthYear)) {
+            monthYearMap.set(monthYear, { month: monthYear, total_turnover: 0 });
+        }
 
-      // Add the dt_id to the corresponding month-year total
-      monthYearMap.get(monthYear).total_turnover += parseInt(item.capacity);
-  });
+        // Add the dt_id to the corresponding month-year total
+        monthYearMap.get(monthYear).total_turnover += parseInt(item.capacity);
+    });
 
-  // Convert the map to an array of objects
-  const result = Array.from(monthYearMap.values());
+    // Convert the map to an array of objects
+    const result = Array.from(monthYearMap.values());
 
-  return result;
+    return result;
 }
