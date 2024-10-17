@@ -155,7 +155,7 @@ async function loadMap() {
 
                     const dumpSiteLong = parseFloat(dumpSiteLocation[0]);
                     const dumpSiteLat = parseFloat(dumpSiteLocation[1]);
-                    const currentLocationPoint = turf.point([122.9519850491377, 10.843868274614221]);
+                    const currentLocationPoint = turf.point([e.coords.longitude, e.coords.latitude]);
                     const dumpSitePoint = turf.point([dumpSiteLong, dumpSiteLat]);
 
                     setText('currentLocationLong', e.coords.longitude);
