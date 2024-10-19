@@ -15,7 +15,7 @@ document.getElementById('contact').addEventListener('submit', (e) => {
             const inputs = form.querySelectorAll('input, textarea, select');
             toastr["success"](res.result.response)
             inputs.forEach(input => input.value = '');
-            document.getElementById('imagePreview').src = '';
+            document.getElementById('preview').src = '';
         }, error: xhr => console.log(xhr.responseText)
     });
 });

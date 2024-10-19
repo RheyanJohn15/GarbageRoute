@@ -38,13 +38,13 @@ class Authenticate extends Controller
         return $this->redirectRoute('settings', $req);
     }
 
-
-    /*
-    *Author: Rheyan John Blanco
-    *Date: August, 12, 2024
-    *Description: Check if the use is authenticated and redirect to login page if not
-    *Params: $routes - name of blade file to redirect if the use is authenticated
-    */
+    public function ViewTruck(Request $req){
+        return $this->redirectRoute('viewtruck', $req);
+    }
+    public function ViewDriver(Request $req){
+        return $this->redirectRoute('viewDriver', $req);
+    }
+    
     private function redirectRoute($routes, $req){
         $auth = new Auth();
         return $auth->checkAuth($req) ? view('Dashboard.'. $routes) : redirect()->route('login');

@@ -13,6 +13,8 @@ Route::get('/truckdriver', [Authenticate::class, 'TruckDriver'])->name('truckdri
 Route::get('/truckregister', [Authenticate::class, 'TruckRegister'])->name('truckregister');
 Route::get('/profile', [Authenticate::class, 'Profile']);
 Route::get('/settings', [Authenticate::class, 'Settings']);
+Route::get('/viewtruck', [Authenticate::class, 'ViewTruck']);
+Route::get('/viewdriver', [Authenticate::class, 'ViewDriver']);
 
 Route::get('/', function () {return view('User.index');})->name('home');
 Route::get('/user/complaint', function () {return view('User.complaint');})->name('usercomplaints');
@@ -36,7 +38,6 @@ Route::get('/auth/driver/login', function () {
 Route::get('/csrf-token', function () {
     return csrf_token();
 });
-
 
 
 Route::get('/automate/geoson', function () {

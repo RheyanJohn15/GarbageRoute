@@ -1,5 +1,4 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoicmhleWFuIiwiYSI6ImNsenpydzA4eDFnajUyanB4M2V3NjZjdDUifQ.7cXuHyW86hXStq6Mh2kF8Q';
-// import { geoDataSilay } from "./SilayBrgyGeoData.js ";
 
 window.onload = LoadMap();
 
@@ -70,6 +69,16 @@ async function LoadMap() {
     const geoDataSilay = await getGeoData();
     const dumpsiteLocation = await getDumpSiteLocation();
     const dumpsiteCoord = dumpsiteLocation.split(',');
+
+    const response = await fetch('/api/get/zone/getwaypointadmin', {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+    });
+
+    const result = await response.json();
+    const waypoints = result.result.data;
+    console.log(waypoints);
+
     geoDataSilayGlobal = geoDataSilay;
 
     // Initialize map
@@ -139,6 +148,14 @@ async function LoadMap() {
                 'circle-color': '#ff0000',
                 'circle-opacity': 0.3,
             },
+        });
+
+        waypoints.forEach(waypoint => {
+            new mapboxgl.Marker({
+                color: waypoint.color || waypoint.zone_color, 
+            })
+            .setLngLat([parseFloat(waypoint.longitude), parseFloat(waypoint.latitude)])
+            .addTo(map);
         });
     });
 
@@ -621,7 +638,7 @@ function chooseZone(id) {
         url: `/api/get/truckdriver/getschedule?zone=${id}`,
         dataType: "json",
         success: res => {
-
+            isShow('manageSchedules', true, 'block');
             const checkboxDisable = document.querySelectorAll(`input[name="schedDays"]`);
             const collectionStart = document.getElementById('collectionStart');
             const collectionEnd = document.getElementById('collectionEnd');
@@ -633,6 +650,7 @@ function chooseZone(id) {
                 element.checked = false;
             });
             if (res.result.data.length == 0) {
+                isShow('manageSchedules', false, 'block');
                 return;
             }
 
@@ -1026,3 +1044,14 @@ async function getPlaceName(latitude, longitude) {
         return "Error fetching place name.";
     }
 }
+
+
+document.getElementById('manageSchedules').addEventListener('click', ()=> {
+    isShow('assignScheduleDiv', false, 'block');
+    isShow('manageScheduleDiv', true, 'block');
+});
+
+document.getElementById('closeManageSchedule').addEventListener('click', ()=> {
+    isShow('assignScheduleDiv', true, 'block');
+    isShow('manageScheduleDiv', false, 'block');
+});

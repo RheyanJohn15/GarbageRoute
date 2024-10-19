@@ -164,7 +164,8 @@ class ApiEntry{
             'changedumpsitelocation'=> ['context', 'longitude', 'latitude'],
             'getdriverassignedzone'=> ['driver_id'],
             'addwaypoint'=> ['brgy', 'waypoints', 'zone'],
-            'getallwaypoint'=> ['empty']
+            'getallwaypoint'=> ['empty'],
+            'getwaypointadmin'=> ['empty']
         ],
         'settings'=> [
             'getval'=> ['context']

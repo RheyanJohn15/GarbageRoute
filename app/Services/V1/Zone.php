@@ -166,6 +166,13 @@ class Zone{
 
         $this->RESULT = ['getallwaypoints', "Fetch all waypoints", $waypoints];
     }
+    
+    private function getwaypointadmin($req){
+        $wp = Waypoints::join('zones','zones.zone_id', '=', 'waypoints.zone_id')->get();
+
+        $this->RESULT = ['getwaypointadmin', 'Successfully get all waypoints', $wp];
+    }
+
 
     public function getResult(){
         return $this->RESULT;

@@ -308,11 +308,17 @@
                         </div>
                     </div>
 
-                    <div class="card mt-4">
-                        <div class="card-header">
+                    <div id="assignScheduleDiv" class="card mt-4">
+                        <div class="card-header row">
+                           <div class="col-6">
                             <div class="card-title">Set Schedule <span>(Optional)</span></div>
                             <small>The default schedule is everyday at 5:00 AM to 03:00 PM if you don't select
                                 one</small>
+                           </div>
+
+                           <div  class="col-6 d-flex justify-content-end align-items-center ">
+                            <button id="manageSchedules" class="btn btn-label-success btn-round d-none"><i class="fa fa-calendar"></i> Manage Schedules</button>
+                           </div>
                         </div>
 
                         <div class="card-body">
@@ -374,6 +380,34 @@
                             </div>
 
                         </div>
+                    </div>
+
+                    <div id="manageScheduleDiv" class="card mt-4 d-none">
+                        <div class="card-header row">
+                           <div class="col-6">
+                            <div class="card-title">Manage Schedules for Collection </div>
+                            <small>Select Certain waypoint reach collection for a certain day or time</small>
+                           </div>
+
+                           <div  class="col-6 d-flex justify-content-end align-items-center ">
+                            <button id="closeManageSchedule" class="btn btn-label-danger btn-round"><i class="fa fa-times"></i> Cancel</button>
+                           </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="selectDayManageSched">Select Schedule Days</label>
+                                <select class="form-select" id="selectDayManageSched"></select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="selectWaypointManageSched">Select Waypoint</label>
+                                <select class="form-select" id="selectWatpointManageSched"></select>
+                            </div>
+
+                        </div>
+
+
                     </div>
 
                 </div>
