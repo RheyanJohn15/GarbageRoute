@@ -157,7 +157,8 @@ async function ViewDumpTruck(id){
         setText('dumpTruckDriver', driver.name);
 
         const fallback_image = getAsset('assets/img/logo.png');
-
+        document.getElementById('viewDumptruckButton').href = "/viewtruck?id=" + truck.dt_id;
+        document.getElementById('viewDriverButton').href = "/viewdriver?id=" + driver.td_id;
         setImage('dumpTruckProfile', truck.profile_pic == null ? fallback_image : getAsset(`assets/user/${truck.profile_pic}`));
         setImage('truckDriverProfile', driver.profile_pic == null ? fallback_image : getAsset(`assets/user/${driver.profile_pic}`));
       }

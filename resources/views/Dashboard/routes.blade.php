@@ -389,8 +389,9 @@
                             <small>Select Certain waypoint reach collection for a certain day or time</small>
                            </div>
 
-                           <div  class="col-6 d-flex justify-content-end align-items-center ">
+                           <div  class="col-6 d-flex justify-content-end align-items-center gap-2">
                             <button id="closeManageSchedule" class="btn btn-label-danger btn-round"><i class="fa fa-times"></i> Cancel</button>
+                            <button id="saveManageSchedule" class="btn btn-label-primary btn-round"> <i class="fa fa-save"></i> Save</button>
                            </div>
                         </div>
 
@@ -404,6 +405,22 @@
                                 <label for="selectWaypointManageSched">Select Waypoint</label>
                                 <select class="form-select" id="selectWatpointManageSched"></select>
                             </div>
+
+                            <h3 class="mt-3">Schedule List</h3>
+                            <table class="table table-bordered ">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Day</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Waypoint</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="scheduleTable">
+                                    <tr>
+                                        <td colspan="3" class="text-center">Loading.....</td>
+                                    </tr>
+                                </tbody>
+                              </table>
 
                         </div>
 

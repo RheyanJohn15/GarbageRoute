@@ -134,6 +134,9 @@ async function ViewDriver(id){
       
         const fallback_image = getAsset('assets/img/logo.png');
 
+        document.getElementById('viewDriverButton').href = "/viewdriver?id=" + driver.td_id;
+        document.getElementById('viewTruckButton').href = "/viewtruck?id=" + truck.dt_id;
+
         setImage('dumpTruckProfile', truck.profile_pic == null ? fallback_image : getAsset(`assets/user/${truck.profile_pic}`));
         setImage('truckDriverProfile', driver.profile_pic == null ? fallback_image : getAsset(`assets/user/${driver.profile_pic}`));
       }

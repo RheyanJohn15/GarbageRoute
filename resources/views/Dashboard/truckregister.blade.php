@@ -51,7 +51,7 @@
                     <div id="dumpTruckDriver" class="desc"></div>
 
                     <div class="view-profile">
-                      <a href="#" class="btn btn-secondary w-100"
+                      <a href="#" id="viewDumptruckButton" class="btn btn-secondary w-100"
                         >View Full Profile</a
                       >
                     </div>
@@ -84,7 +84,7 @@
                     <div id="truckDriverAddress" class="desc"></div>
 
                     <div class="view-profile">
-                      <a href="#" class="btn btn-secondary w-100"
+                      <a href="#"  id="viewDriverButton" class="btn btn-secondary w-100"
                         >View Full Profile</a
                       >
                     </div>
