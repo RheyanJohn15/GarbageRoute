@@ -6,6 +6,8 @@ use App\Models\DumpTruckModel;
 use Carbon\Carbon;
 use App\Models\Complaints;
 use App\Models\DumpsiteTurnovers;
+use App\Models\ZoneDrivers;
+use App\Models\Zones;
 use Illuminate\Support\Facades\Hash;
 use App\Services\ApiException;
 
@@ -118,7 +120,45 @@ class AdminAccount{
         $truck = DumpTruckModel::all();
         $complaint = Complaints::all();
 
-        $dumpsiteTurnovers = DumpsiteTurnovers::all();
+        $zoneArry = [];
+        $garbagePerZone = [];
+        $dumpsiteTurnovers = DumpsiteTurnovers::join('truck_drivers', 'truck_drivers.td_id', '=', 'dumpsite_turnovers.td_id')->get();
+        $zones = Zones::all();
+        foreach($zones as $zone){
+            $zoneArry[] = $zone->zone_name;
+            $garbagePerZone[] = 0;
+        }
+
+        foreach($dumpsiteTurnovers as $dt){
+            $ZoneDrivers = ZoneDrivers::where('td_id', $dt->td_id)->first();
+            $dumpTruck = DumpTruckModel::where('dt_id', $dt->dt_id)->first();
+            $getZone = Zones::where('zone_id', $ZoneDrivers->zone_id)->first();
+
+            $zoneIndex = array_search($getZone->zone_name, $zoneArry);
+
+            if($zoneIndex){
+                $garbagePerZone[$zoneIndex] += $dumpTruck->can_carry;
+            }
+        }
+
+        $driversCollection = [];
+        $currentYear = Carbon::now()->year;
+        $driverList = TruckDriverModel::all();
+        foreach($driverList as $driver){
+           for($i = 0; $i < 12; $i++){
+            $turnovers = DumpsiteTurnovers::where('td_id', $driver->td_id)
+                ->whereMonth('created_at', $i+1)
+                ->whereYear('created_at', $currentYear)
+                ->get();
+
+            $tons = 0;
+            foreach($turnovers as $to){
+                $truck = DumpTruckModel::where('dt_id', $to->dt_id)->first();
+                $tons += $truck->can_carry;
+            }
+            $driversCollection[$driver->name][$i] = $tons;
+           }
+        }
 
         $resolvedComplaint = Complaints::where('comp_status', 2)->get();
         $comp = [
@@ -146,12 +186,15 @@ class AdminAccount{
         }
 
         $dashboard = [
-            $driver, 
-            $truck, 
-            $complaint, 
-            $complaintData, 
-            $resolvedComplaint, 
-            $complaintStatus
+            $driver,
+            $truck,
+            $complaint,
+            $complaintData,
+            $resolvedComplaint,
+            $complaintStatus,
+            $zoneArry,
+            $garbagePerZone,
+            $driversCollection
         ];
 
         $this->RESULT = ['dashboard', 'Succesfully fetch all dashboard data', $dashboard];
