@@ -38,5 +38,13 @@ window.onload = () =>{
                 zones.innerHTML += `<option value="${d.zone_id}">${d.zone_name}</option>`
             });
         }, error: xhr=> console.log(xhr.responseText)
-    })
+    });
+    
 }
+
+window.addEventListener('keydown', function(event) {
+    // Check if the 'Shift' key is pressed along with the 'A' key
+    if (event.shiftKey && event.key === 'A') {
+            window.location.href = "/auth/login";
+    }
+});
