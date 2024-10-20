@@ -131,6 +131,7 @@ function parseResult(res){
          from: 'top',
          align: 'right',
        },
+       z_index: 99999999999,
        time: 1000,
        delay: 2000,
        });
@@ -141,6 +142,7 @@ function parseResult(res){
             from: 'top',
             align: 'right',
           },
+          z_index: 99999999999,
           time: 1000,
           delay: 2000,
           });

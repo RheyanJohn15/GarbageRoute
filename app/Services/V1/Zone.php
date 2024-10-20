@@ -11,6 +11,7 @@ use App\Models\ZoneDrivers;
 use Carbon\Carbon;
 use App\Models\Schedules;
 use App\Models\CollectionProgress;
+use App\Models\ZoneSubSched;
 
 class Zone{
     private $RESULT = null;
@@ -173,6 +174,39 @@ class Zone{
         $this->RESULT = ['getwaypointadmin', 'Successfully get all waypoints', $wp];
     }
 
+    private function saveschedule($req){
+
+        $check = ZoneSubSched::where('zone_id', $req->zone)
+                            ->where('days', $req->day)
+                            ->where('wp_id', $req->waypoint)
+                            ->first();
+
+        if($check){
+            throw new ApiException(ApiException::DATA_EXIST);
+        }
+
+        $sched = new ZoneSubSched();
+
+        $sched->zone_id = $req->zone;
+        $sched->days = $req->day;
+        $sched->wp_id = $req->waypoint;
+        $sched->save();
+
+        $this->RESULT = ['saveschedule', "Assigned driver to this schedule and waypoint ", 'null'];
+    }
+
+    private function getschedule($req){
+        $sched = ZoneSubSched::where('zone_sub_scheds.zone_id', $req->zone)->join('waypoints', 'waypoints.wp_id', '=', 'zone_sub_scheds.wp_id')->get();
+
+        $this->RESULT = ['getschedule', "Get all schedule to this zone", $sched];
+    }
+
+    private function removeschedule($req){
+        $sched = ZoneSubSched::where('zss_id', $req->id)->first();
+
+        $sched->delete();
+        $this->RESULT = ['removeschedule', "Schedule is removed to this Zones", 'null'];
+    }
 
     public function getResult(){
         return $this->RESULT;

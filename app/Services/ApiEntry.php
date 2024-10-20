@@ -165,7 +165,10 @@ class ApiEntry{
             'getdriverassignedzone'=> ['driver_id'],
             'addwaypoint'=> ['brgy', 'waypoints', 'zone'],
             'getallwaypoint'=> ['empty'],
-            'getwaypointadmin'=> ['empty']
+            'getwaypointadmin'=> ['empty'],
+            'saveschedule'=> ['zone', 'day', 'waypoint'],
+            'getschedule' => ['empty'],
+            'removeschedule'=> ['id']
         ],
         'settings'=> [
             'getval'=> ['context']

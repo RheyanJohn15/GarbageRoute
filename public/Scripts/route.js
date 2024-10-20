@@ -632,7 +632,9 @@ function viewDriverOnMap(lat, lng) {
     });
 }
 
+let selectedZoneSched;
 function chooseZone(id) {
+    selectedZoneSched = id;
     $.ajax({
         type: "GET",
         url: `/api/get/truckdriver/getschedule?zone=${id}`,
@@ -645,6 +647,9 @@ function chooseZone(id) {
 
             collectionStart.value = "";
             collectionEnd.value = "";
+
+            isShow('assignScheduleDiv', true, 'block');
+            isShow('manageScheduleDiv', false, 'block');
 
             checkboxDisable.forEach(element => {
                 element.checked = false;
@@ -1046,12 +1051,144 @@ async function getPlaceName(latitude, longitude) {
 }
 
 
-document.getElementById('manageSchedules').addEventListener('click', ()=> {
+document.getElementById('manageSchedules').addEventListener('click', async ()=> {
     isShow('assignScheduleDiv', false, 'block');
     isShow('manageScheduleDiv', true, 'block');
+    loadAssignedSched();
+    const response = await fetch(`/api/get/truckdriver/getschedule?zone=${selectedZoneSched}`, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"}
+    });
+
+    const result = await response.json();
+
+    const data = result.result.data[0];
+
+    const selectDayManageSched = document.getElementById('selectDayManageSched');
+    selectDayManageSched.innerHTML = '<option disabled selected value="">-----Select Day-----</option>';
+    if(data.days == 'everyday'){
+        const day = [
+            'Mon',
+            'Tue',
+            'Wed',
+            'Thu',
+            'Fri', 
+            'Sat',
+            'Sun'
+        ]
+
+        day.forEach(d=> {
+            selectDayManageSched.innerHTML += `<option value="${d}">${d}</option>`
+        });
+    }else{
+        const day = data.days.split(',');
+        day.forEach(d=> {
+            selectDayManageSched.innerHTML += `<option value="${d}">${d}</option>`
+        })
+    }
+
+    const getWaypointAdmin = await fetch(`/api/get/zone/getallwaypoint?zone=${selectedZoneSched}&type=admin`, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"}
+    });
+
+    const getWaypointResult = await getWaypointAdmin.json();
+
+    const selectWatpointManageSched = document.getElementById('selectWatpointManageSched');
+    selectWatpointManageSched.innerHTML = '<option disabled selected value="">-----No Selected Locations------</option>'
+    getWaypointResult.result.data.forEach(wp=> {
+        getPlaceName(parseFloat(wp.latitude), parseFloat(wp.longitude)).then(pn => {
+            selectWatpointManageSched.innerHTML += `<option value="${wp.wp_id}">${pn}</option>`
+        });
+    }); 
 });
 
 document.getElementById('closeManageSchedule').addEventListener('click', ()=> {
     isShow('assignScheduleDiv', true, 'block');
     isShow('manageScheduleDiv', false, 'block');
 });
+
+document.getElementById('saveManageSchedule').addEventListener('click', async ()=>{
+    const csrf = await getCSRF();
+
+    load.on();
+
+    $.ajax({
+        type: "POST",
+        url: "/api/post/zone/saveschedule",
+        data: {"_token": csrf, "zone": selectedZoneSched, "day": getVal('selectDayManageSched'),"waypoint": getVal('selectWatpointManageSched')},
+        success: res=> {
+           load.off();
+           loadAssignedSched();
+           parseResult(res);
+           const selectWatpointManageSched = document.getElementById('selectWatpointManageSched');
+           const selectDayManageSched = document.getElementById('selectDayManageSched');
+
+           selectWatpointManageSched.value = "";
+           selectDayManageSched.value = "";
+        },error: xhr=> {
+            console.log(xhr.responseText);
+            load.off();
+            parseResult(JSON.parse(xhr.responseText))
+        }
+    });
+});
+
+function removeSched(id){
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+            const csrf = await getCSRF();
+            load.on();
+            $.ajax({
+                type: "POST",
+                url: "/api/post/zone/removeschedule",
+                data: {"_token": csrf, "id": id},
+                success: res=> {
+                    load.off();
+                    parseResult(res);
+                    loadAssignedSched();
+                }, error: xhr=> {
+                    console.log(xhr.responseText);
+                    load.off();
+                    parseResult(JSON.parse(xhr.responseText));
+                }
+            })
+        }
+      });
+
+ 
+}
+
+function loadAssignedSched(){
+    const table = document.getElementById('scheduleTable');
+    table.innerHTML = '';
+
+    $.ajax({
+        type: "GET",
+        url: `/api/get/zone/getschedule?zone=${selectedZoneSched}`,
+        dataType: "json",
+        success: res=> {
+            const data = res.result.data;
+            data.forEach(async d=> {
+          
+                const placeName = await getPlaceName(d.latitude, d.longitude);
+                table.innerHTML += `
+                <tr>
+                    <td>${d.days}</td>
+                    <td>${placeName}</td>
+                    <td><button onclick="removeSched('${d.zss_id}')" class="btn btn-label-danger"><i class="fa fa-trash"></i></button></td>
+                </tr>
+                `
+            });
+        }, error: xhr=> console.log(xhr.responseText)
+    })
+}

@@ -308,7 +308,7 @@
                         </div>
                     </div>
 
-                    <div id="assignScheduleDiv" class="card mt-4">
+                    <div id="assignScheduleDiv" class="card mt-4 d-none">
                         <div class="card-header row">
                            <div class="col-6">
                             <div class="card-title">Set Schedule <span>(Optional)</span></div>
@@ -402,7 +402,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="selectWaypointManageSched">Select Waypoint</label>
+                                <label for="selectWaypointManageSched">Waypoint Location</label>
                                 <select class="form-select" id="selectWatpointManageSched"></select>
                             </div>
 
@@ -411,8 +411,8 @@
                                 <thead>
                                   <tr>
                                     <th scope="col">Day</th>
-                                    <th scope="col">Time</th>
                                     <th scope="col">Waypoint</th>
+                                    <th scope="col">Action</th>
                                   </tr>
                                 </thead>
                                 <tbody id="scheduleTable">
