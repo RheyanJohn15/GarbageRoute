@@ -3,7 +3,12 @@ window.onload = () => {
     const id = params.get('id');
 
     loadTruck(id).then(data => {
-        console.log(data);
+        setText('model', data.model);
+        setText('capacity', data.can_carry);
+        setText('plate_num', data.plate_num);
+        setText('driver', data.driver.name);
+
+        setImage('truckImage', data.profile_pic != null ? '/UserPics/Truck/' + data.profile_pic : '/assets/img/logo.png');
     });
 }
 

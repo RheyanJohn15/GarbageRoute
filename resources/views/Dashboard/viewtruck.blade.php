@@ -22,6 +22,19 @@
 
           </div>
 
+          <div class="row">
+            <div class="col-3">
+              <div class="avatar avatar-xxl">
+                <img src="../assets/img/loader.gif" alt="TruckImage" id="truckImage" class="avatar-img rounded-circle">
+              </div>
+            </div>
+            <div class="col-9">
+              <p class="fw-bold fs-4">Model: <span id="model" class="fw-normal">Loading...</span></p>
+              <p class="fw-bold fs-4">Capacity: <span id="capacity" class="fw-normal">Loading...</span></p>
+              <p class="fw-bold fs-4">Plate Number: <span id="plate_num" class="fw-normal">Loading...</span></p>
+              <p class="fw-bold fs-4">Driver: <span id="driver" class="fw-normal">Loading...</span></p>
+            </div>
+          </div>
         
           </div>
         </div>

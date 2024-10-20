@@ -3,7 +3,13 @@ window.onload = () => {
     const id = params.get('id');
 
     loadDriver(id).then(data=> {
-        console.log(data);
+        setText('name', data.name);
+        setText('username', data.username);
+        setText('license', data.license);
+        setText('contact', data.contact);
+        setText('address', data.address);
+
+        setImage('driverImage', data.profile_pic != null ? '/UserPics/Driver/' + data.profile_pic : '/assets/img/logo.png');
     });
 }
 

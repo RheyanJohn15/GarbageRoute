@@ -22,6 +22,22 @@
     
           </div>
 
+
+          <div class="row">
+            <div class="col-3">
+              <div class="avatar avatar-xxl">
+                <img src="../assets/img/loader.gif" id="driverImage" alt="DriverImage" class="avatar-img rounded-circle">
+              </div>
+            </div>
+
+            <div class="col-9">
+              <p class="fw-bold fs-4">Name: <span id="name" class="fw-normal">Loading...</span></p>
+              <p class="fw-bold fs-4">Username: <span id="username" class="fw-normal">Loading...</span></p>
+              <p class="fw-bold fs-4">License: <span id="license" class="fw-normal">Loading...</span></p>
+              <p class="fw-bold fs-4">Contact: <span id="contact" class="fw-normal">Loading...</span></p>
+              <p class="fw-bold fs-4">Address: <span id="address" class="fw-normal">Loading...</span></p>
+            </div>
+          </div>
         
           </div>
         </div>
