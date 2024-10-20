@@ -23,26 +23,26 @@
               </div>
             </div>
       
-            <div class="d-flex w-100 gap-4 justify-content-center align-items-center flex-column">
+            <div class="d-flex w-100 justify-content-center">
               <div class="avatar avatar-xxl">
-                <img src="/assets/img/load.jfif" alt="..." class="avatar-img rounded-circle">
+                <img id="pageProfile" src="/assets/img/loader.gif" alt="..." class="avatar-img rounded-circle">
               </div>
 
-              <div class="row w-50">
-                  <div class="col-6">
-                    <h2>Name</h2>
-                    <p>License</p>
-                    <p>Address</p>
-                    <p>Contact</p>
-                    <p>Username</p>
-                  </div>
-                  <div class="col-6">
-                      <h2>Assigned Truck</h2>
-                      <p>Model</p>
-                      <p>Capacity</p>
-                  </div>
-              </div>
-            </div>
+             </div>
+             <div class="text-center w-100">
+              <h2 id="pageName">Loading....</h2>
+              <p>Username: <span id="pageUsername">Loading....</span></p>
+              <p>License: <span id="pageLicense">Loading....</span></p>
+              <p>Address: <span id="pageAddress">Loading....</span></p>
+              <p>Contact: <span id="pageContact">Loading....</span></p>
+
+              <h2 class="mt-2">Assigned Truck</h2>
+              <p>Model: <span id="pageModel">Loading.....</span></p>
+              <p>Capacity: <span id="pageCapacity">Loading....</span></p>
+              <p>Plate Number: <span id="pagePlateNum">Loading....</span></p>
+             </div>
+           
+
         </div>
 
       </div>
