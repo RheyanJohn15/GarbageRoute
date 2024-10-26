@@ -2,7 +2,60 @@
 <html lang="en">
 
 @include('User.components.head')
-
+<style>
+    .loader {
+    color: #00ff00;
+    font-size: 45px;
+    text-indent: -9999em;
+    overflow: hidden;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    position: relative;
+    transform: translateZ(0);
+    animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
+  }
+  
+  @keyframes mltShdSpin {
+    0% {
+      box-shadow: 0 -0.83em 0 -0.4em,
+      0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
+      0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+    }
+    5%,
+    95% {
+      box-shadow: 0 -0.83em 0 -0.4em, 
+      0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 
+      0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+    }
+    10%,
+    59% {
+      box-shadow: 0 -0.83em 0 -0.4em, 
+      -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, 
+      -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
+    }
+    20% {
+      box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em,
+       -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, 
+       -0.749em -0.34em 0 -0.477em;
+    }
+    38% {
+      box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em,
+       -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, 
+       -0.82em -0.09em 0 -0.477em;
+    }
+    100% {
+      box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 
+      0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+    }
+  }
+  
+  @keyframes round {
+    0% { transform: rotate(0deg) }
+    100% { transform: rotate(360deg) }
+  }
+   
+</style>
 <body>
     @include('Components.dashload')
     @include('User.components.preloader')
@@ -121,96 +174,15 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="owl-carousel owl-services">
-
-                        <div class="item">
-                            <h4>Complaint #1</h4>
-                            <img src="ComplaintAssets/Complaint3.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 250px; ">
-                            <p class="text-start m-0">
-                                <strong>Name:</strong> John Doe<br>
-                                <strong>Nature:</strong> Collection Delay<br>
-                                <strong>Status:</strong> Resolved<br>
-                            </p>
-                        </div>
-
-                        <div class="item">
-                            <h4>Complaint #2</h4>
-                            <img src="ComplaintAssets/Complaint4.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 250px; ">
-                            <p class="text-start m-0">
-                                <strong>Name:</strong> Jane Smith<br>
-                                <strong>Nature:</strong> Noise Complaint<br>
-                                <strong>Status:</strong> In Progress<br>
-                            </p>
-                        </div>
-
-                        <div class="item">
-                            <h4>Complaint #3</h4>
-                            <img src="ComplaintAssets/Complaint3.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 250px; ">
-                            <p class="text-start m-0">
-                                <strong>Name:</strong> Alex Johnson<br>
-                                <strong>Nature:</strong> Pothole Issue<br>
-                                <strong>Status:</strong> Not Resolved<br>
-                            </p>
-                        </div>
-
-                        <div class="item">
-                            <h4>Complaint #4</h4>
-                            <img src="ComplaintAssets/Complaint4.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 250px; ">
-                            <p class="text-start m-0">
-                                <strong>Name:</strong> Emily Davis<br>
-                                <strong>Nature:</strong> Street Light Outage<br>
-                                <strong>Status:</strong> Resolved<br>
-                            </p>
-                        </div>
-
-                        <div class="item">
-                            <h4>Complaint #5</h4>
-                            <img src="ComplaintAssets/Complaint3.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 250px; ">
-                            <p class="text-start m-0">
-                                <strong>Name:</strong> Michael Brown<br>
-                                <strong>Nature:</strong> Graffiti Removal<br>
-                                <strong>Status:</strong> In Progress<br>
-                            </p>
-                        </div>
-
-                        <div class="item">
-                            <h4>Complaint #6</h4>
-                            <img src="ComplaintAssets/Complaint4.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 250px; ">
-                            <p class="text-start m-0">
-                                <strong>Name:</strong> Sarah Wilson<br>
-                                <strong>Nature:</strong> Fallen Tree Branch<br>
-                                <strong>Status:</strong> Not Resolved<br>
-                            </p>
-                        </div>
-
-                        <div class="item">
-                            <h4>Complaint #7</h4>
-                            <img src="ComplaintAssets/Complaint3.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 250px; ">
-                            <p class="text-start m-0" style="font-size: 18px">
-                                <strong>Name:</strong> David Lee<br>
-                                <strong>Nature:</strong> Water Leak<br>
-                                <strong>Status:</strong> Resolved<br>
-                            </p>
-                        </div>
-
-                        <div class="item">
-                            <h4>Complaint #8</h4>
-                            <img src="ComplaintAssets/Complaint4.jpg" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 250px; ">
-                            <p class="text-start m-0">
-                                <strong>Name:</strong> Jessica Taylor<br>
-                                <strong>Nature:</strong> Abandoned Vehicle<br>
-                                <strong>Status:</strong> In Progress<br>
-                            </p>
-                        </div>
-
+                    <div class="w-100 d-none justify-content-center align-items-center flex-column gap-4" id="emptyCpl">
+                        <img src="/assets/images/empty.png" class="w-25" alt="empty">
+                        <h2>No <em>Complaints</em></h2>
+                    </div>
+                    <div style="height: 40vh" id="compLoader" class="w-100 d-flex justify-content-center flex-column gap-4 align-items-center">
+                        <div class="loader"></div>
+                        <p>Please Wait.......</p>
+                    </div>
+                    <div class="owl-carousel owl-services d-none" id="complaintList">
 
                     </div>
                 </div>

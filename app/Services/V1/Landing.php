@@ -13,11 +13,12 @@ class Landing{
         $pending = Complaints::where('comp_status', 0)->get()->count();
         $progress = Complaints::where('comp_status', 1)->get()->count();
         $resolved = Complaints::where('comp_status', 2)->get()->count();
-
+        $complaints = Complaints::where('comp_status', 2)->limit(15)->get();
         $data = [
             $pending,
             $progress,
             $resolved,
+            $complaints
         ];
 
         $this->RESULT = ['dashboard', 'Get All Dashboard', $data];
