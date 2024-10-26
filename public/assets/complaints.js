@@ -39,6 +39,21 @@ window.onload = () =>{
             });
         }, error: xhr=> console.log(xhr.responseText)
     });
+
+
+    $.ajax({
+        type: "GET",
+        url: "/api/get/landing/dashboard",
+        dataType: "json",
+        success: res=> {
+            const data = res.result.data;
+           setText('pendingCounter', data[0]);
+           setText('progressCounter', data[1]);
+           setText('resolveCounter', data[2]);
+        }, error: xhr=> console.log(xhr.responseText)
+    });
+
+
     
 }
 

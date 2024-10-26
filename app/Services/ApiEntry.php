@@ -172,6 +172,9 @@ class ApiEntry{
         ],
         'settings'=> [
             'getval'=> ['context']
+        ],
+        'landing'=> [
+            'dashboard'=> ['empty']
         ]
     ];
 

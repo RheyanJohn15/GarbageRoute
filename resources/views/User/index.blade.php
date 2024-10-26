@@ -240,9 +240,9 @@
                                 <div class="fact-item">
                                     <div class="count-area-content">
                                         <div class="icon">
-                                            <i class="fas fa-recycle icon-large"></i>
+                                            <i class="fas fa-clock icon-large"></i>
                                         </div>
-                                        <div class="count-digit">320</div>
+                                        <div id="pendingCounter" class="count-digit">0</div>
                                         <div class="count-title">Pending</div>
                                         <p>Complaints received and awaiting action.</p>
                                     </div>
@@ -252,9 +252,9 @@
                                 <div class="fact-item">
                                     <div class="count-area-content">
                                         <div class="icon">
-                                            <i class="fas fa-users icon-large"></i>
+                                            <i class="fas fa-gears icon-large"></i>
                                         </div>
-                                        <div class="count-digit">640</div>
+                                        <div id="progressCounter" class="count-digit">0</div>
                                         <div class="count-title">Scheduled for Action</div>
                                         <p>Issues identified and actions scheduled.</p>
                                     </div>
@@ -264,9 +264,9 @@
                                 <div class="fact-item">
                                     <div class="count-area-content">
                                         <div class="icon">
-                                            <i class="fas fa-handshake icon-large"></i>
+                                            <i class="fas fa-check-circle icon-large"></i>
                                         </div>
-                                        <div class="count-digit">120</div>
+                                        <div id="resolveCounter" class="count-digit">0</div>
                                         <div class="count-title">Resolved</div>
                                         <p>Complaints resolved with actions taken.</p>
                                     </div>
