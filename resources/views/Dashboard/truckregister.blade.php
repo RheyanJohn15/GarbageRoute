@@ -179,7 +179,7 @@
                           type="text"
                           name="model"
                           class="form-control"
-                          placeholder="Full Name"
+                          placeholder="Enter Truck Model"
                         />
                         <small id="addModel_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
@@ -190,9 +190,9 @@
                         <input
                           id="addCanCarry"
                           name="can_carry"
-                          type="text"
+                          type="number"
                           class="form-control"
-                          placeholder="fill username"
+                          placeholder="Enter Truck Capacity"
                         />
                         <small id="addCanCarry_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
@@ -221,6 +221,7 @@
                             name="plate_num"
                             class="form-control"
                             placeholder="Plate Number"
+                            oninput="autoCaps(this)"
                           />
                           <small id="addPlateNum_e" style="display: none" class="text-danger">(This field is required)</small>
                         </div>
@@ -289,7 +290,7 @@
                           type="text"
                           name="model"
                           class="form-control"
-                          placeholder="Full Name"
+                          placeholder="Enter Truck Model"
                         />
                         <small id="updateModel_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
@@ -300,9 +301,9 @@
                         <input
                           id="updateCanCarry"
                           name="can_carry"
-                          type="text"
+                          type="number"
                           class="form-control"
-                          placeholder="Capacity"
+                          placeholder="Enter Truck Capacity"
                         />
                         <small id="updateCanCarry_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
@@ -331,6 +332,7 @@
                             name="plate_num"
                             class="form-control"
                             placeholder="Plate Number"
+                            oninput="autoCaps(this)"
                           />
                           <small id="updatePlateNum_e" style="display: none" class="text-danger">(This field is required)</small>
                         </div>

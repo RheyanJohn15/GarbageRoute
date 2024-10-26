@@ -338,3 +338,12 @@ function checkInp(inp, err){
 
     return 1;
 }
+
+
+function nameClean(input) {
+    input.value = input.value.replace(/[^a-zA-Z.\-\s]/g, '');
+  }
+
+function autoCaps(input){
+    input.value = input.value.toUpperCase();
+}
