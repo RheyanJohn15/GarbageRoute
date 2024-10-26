@@ -116,9 +116,9 @@ class AdminAccount{
     }
 
     private function dashboard($request){
-        $driver = TruckDriverModel::all();
-        $truck = DumpTruckModel::all();
-        $complaint = Complaints::all();
+        $driverCount = TruckDriverModel::all()->count();
+        $truck = DumpTruckModel::all()->count();
+        $complaint = Complaints::all()->count();
 
         $zoneArry = [];
         $garbagePerZone = [];
@@ -160,7 +160,7 @@ class AdminAccount{
            }
         }
 
-        $resolvedComplaint = Complaints::where('comp_status', 2)->get();
+        $resolvedComplaint = Complaints::where('comp_status', 2)->get()->count();
         $comp = [
             "Missed Collection",
             "Late Irregular Service",
@@ -172,7 +172,7 @@ class AdminAccount{
             $count = Complaints::where('comp_nature', $c)->count();
             $percentage = 0;
             if($count > 0){
-                $percentage = ($count / $complaint->count()) * 100;
+                $percentage = ($count / $complaint) * 100;
             }
             array_push($complaintData, $percentage);
         }
@@ -186,8 +186,8 @@ class AdminAccount{
         }
 
         $dashboard = [
-            $driver,
             $truck,
+            $driverCount,
             $complaint,
             $complaintData,
             $resolvedComplaint,

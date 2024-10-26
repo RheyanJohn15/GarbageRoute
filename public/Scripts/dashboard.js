@@ -6,11 +6,11 @@ window.onload = () => {
         success: res => {
             const data = res.result.data;
 
-            setText('truckNum', data[0].length);
-            setText('driverNum', data[1].length);
-            setText('complaintNum', data[2].length);
-            setText('resolvedComplaintNum', data[4].length);
-            console.log(data[8]);
+            setText('truckNum', data[0]);
+            setText('driverNum', data[1]);
+            setText('complaintNum', data[2]);
+            setText('resolvedComplaintNum', data[4]);
+            console.log(data[0].length);
             const complaintChart = document.getElementById('complaintChart').getContext('2d');
             var myPieChart = new Chart(complaintChart, {
                 type: "pie",
