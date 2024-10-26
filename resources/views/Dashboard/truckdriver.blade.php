@@ -180,6 +180,7 @@
                           name="name"
                           class="form-control"
                           placeholder="Full Name"
+                          oninput="nameClean(this)"
                         />
                         <small id="addName_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
@@ -220,6 +221,7 @@
                           type="text"
                           class="form-control"
                           placeholder="fill license number"
+                          oninput="autoCaps(this); limitChar(this, 12)"
                         />
                         <small id="addLicense_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
@@ -318,6 +320,7 @@
                         name="name"
                         class="form-control"
                         placeholder="Full Name"
+                        oninput="nameClean(this)"
                       />
                       <small id="updateName_e" style="display: none" class="text-danger">(This field is required)</small>
                     </div>
@@ -345,6 +348,7 @@
                         type="text"
                         class="form-control"
                         placeholder="fill license number"
+                        oninput="autoCaps(this); limitChar(this, 12)"
                       />
                       <small id="updateLicense_e" style="display: none" class="text-danger">(This field is required)</small>
                     </div>
