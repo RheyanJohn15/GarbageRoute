@@ -347,3 +347,9 @@ function nameClean(input) {
 function autoCaps(input){
     input.value = input.value.toUpperCase();
 }
+
+function limitChar(input, max) {
+    if (input.value.length > max) {
+      input.value = input.value.slice(0, max);
+    }
+  }

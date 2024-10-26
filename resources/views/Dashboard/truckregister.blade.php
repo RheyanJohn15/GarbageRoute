@@ -193,6 +193,7 @@
                           type="number"
                           class="form-control"
                           placeholder="Enter Truck Capacity"
+                          oninput="limitChar(this, 2)"
                         />
                         <small id="addCanCarry_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
@@ -304,6 +305,7 @@
                           type="number"
                           class="form-control"
                           placeholder="Enter Truck Capacity"
+                          oninput="limitChar(this, 2)"
                         />
                         <small id="updateCanCarry_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
