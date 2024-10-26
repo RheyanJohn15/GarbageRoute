@@ -287,7 +287,7 @@
 
                     <div class="row d-none" id="selectDriver">
                         <div class="col-6">
-                            <div class="form-group">
+                            <div class="form-group d-none" id="assignDriverToThisZoneMain">
                                 <label for="driverListMain">Assign a driver to this zone</label>
                                 <select class="form-select" name="" id="driverListMain">
 
@@ -297,7 +297,7 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <div class="form-group">
+                            <div class="form-group d-none" id="assignDriverToThisZoneStandby">
                                 <label for="driverListStandby">Assign a standby driver to this zone</label>
                                 <select class="form-select" name="" id="driverListStandby">
 

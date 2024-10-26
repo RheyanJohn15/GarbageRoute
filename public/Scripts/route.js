@@ -77,7 +77,6 @@ async function LoadMap() {
 
     const result = await response.json();
     const waypoints = result.result.data;
-    console.log(waypoints);
 
     geoDataSilayGlobal = geoDataSilay;
 
@@ -650,16 +649,22 @@ function chooseZone(id) {
 
             isShow('assignScheduleDiv', true, 'block');
             isShow('manageScheduleDiv', false, 'block');
+            isShow('assignDriverToThisZoneMain', true, 'block');
+            isShow('assignDriverToThisZoneStandby', true, 'block');
 
             checkboxDisable.forEach(element => {
                 element.checked = false;
             });
             if (res.result.data.length == 0) {
                 isShow('manageSchedules', false, 'block');
+                setValue('driverListMain', "");
+                setValue('driverListStandby', "");
                 return;
             }
 
             const data = res.result.data[0];
+            setValue('driverListMain', res.result.data.filter(x => x.zone.type === 'Main Driver')[0].td_id);
+            setValue('driverListStandby', res.result.data.filter(x => x.zone.type === 'Standby Driver')[0].td_id);
 
             if (data.days != "everyday") {
                 const scheduleDays = data.days.split(',');
@@ -1096,10 +1101,13 @@ document.getElementById('manageSchedules').addEventListener('click', async ()=> 
 
     const selectWatpointManageSched = document.getElementById('selectWatpointManageSched');
     selectWatpointManageSched.innerHTML = '<option disabled selected value="">-----No Selected Locations------</option>'
+    let waypointCount = 1;
     getWaypointResult.result.data.forEach(wp=> {
         getPlaceName(parseFloat(wp.latitude), parseFloat(wp.longitude)).then(pn => {
-            selectWatpointManageSched.innerHTML += `<option value="${wp.wp_id}">${pn}</option>`
+            selectWatpointManageSched.innerHTML += `<option value="${wp.wp_id}"><span class="fw-bold">Waypoint #${waypointCount}</span> ${pn}</option>`
+            waypointCount++;
         });
+     
     }); 
 });
 

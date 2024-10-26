@@ -113,12 +113,29 @@ class TruckDriver {
           switch($z->type){
             case "Main Driver":
               $updateMain = ZoneDrivers::where('zone_id', $req->zone)->where('type', 'Main Driver')->first();
+              $updateSchedMain = Schedules::where('td_id', $updateMain->td_id)->first();
+
+              $updateSchedMain->update([
+                'td_id' => $mainDriver[0],
+                'days'=> $req->sched_days,
+                'collection_start'=> $req->collection_start,
+                'collection_end' => $req->collection_end,
+              ]);
+
               $updateMain->update([
                 'td_id'=> $mainDriver[0]
               ]);
               break;
             default:
               $updateStandBy = ZoneDrivers::where('zone_id', $req->zone)->where('type', "Standby Driver")->first();
+              $updateSchedStandby = Schedules::where('td_id', $updateStandBy->td_id)->first();
+
+              $updateSchedStandby -> update([
+                'td_id' => $standbyDriver[0],
+                'days'=> $req->sched_days,
+                'collection_start'=> $req->collection_start,
+                'collection_end'=> $req->collection_end
+              ]);
               $updateStandBy->update([
                 'td_id'=> $standbyDriver[0]
               ]);
@@ -126,20 +143,10 @@ class TruckDriver {
           }
         }
 
-        $updateSchedMain = Schedules::where('td_id', $mainDriver[0])->first();
-        $updateSchedStandby = Schedules::where('td_id', $standbyDriver[0])->first();
+        
+      
+    
 
-        $updateSchedMain->update([
-          'days'=> $req->sched_days,
-          'collection_start'=> $req->collection_start,
-          'collection_end' => $req->collection_end,
-        ]);
-
-        $updateSchedStandby -> update([
-            'days'=> $req->sched_days,
-            'collection_start'=> $req->collection_start,
-            'collection_end'=> $req->collection_end
-        ]);
         
       }else{
         $addMain = new ZoneDrivers();
@@ -179,7 +186,7 @@ class TruckDriver {
         $data = [];
         foreach($zone as $z){
           $schedule = Schedules::where('td_id', $z->td_id)->first();
-
+          $schedule->zone = $z;
           $data[] = $schedule;
         }
 
