@@ -133,7 +133,7 @@ class ApiEntry{
             'update'=> ['id', 'name', 'license', 'address', 'contact', 'username'],
             'changepass'=>['id', 'currentpass', 'newpass'],
             'changeprofilepic'=>['id', 'pic'],
-            'updatetruck'=> ['id', 'model', 'capacity'],
+            'updatetruck'=> ['id', 'model', 'capacity', 'plate_num'],
             'changetruckimage'=> ['id', 'pic'],
             'inactive'=> ['driver_id'],
             'active'=> ['driver_id'],

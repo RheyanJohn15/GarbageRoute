@@ -45,29 +45,29 @@
                 <div class="col-6">
                   <div class="form-group">
                     <label for="driverName">Name</label>
-                    <input type="text" onclick="changeDetect()" name="name" class="form-control" id="driverName" disabled placeholder="Name" value="Loading....">
+                    <input type="text" oninput="changeDetect()" name="name" class="form-control" id="driverName" disabled placeholder="Name" value="Loading....">
                     <small id="driverNameE" class="text-danger d-none">*This field is required*</small>
                   </div>
                   <div class="form-group">
                     <label for="driverLicenseInp">License</label>
-                    <input type="text" name="license" onclick="changeDetect()" class="form-control" id="driverLicenseInp" disabled value="Loading...." placeholder="License">
+                    <input type="text" name="license" oninput="changeDetect()" class="form-control" id="driverLicenseInp" disabled value="Loading...." placeholder="License">
                     <small id="driverLicenseE" class="text-danger d-none">*This field is required*</small>
                   </div>
                   <div class="form-group">
                     <label for="driverAddress">Address</label>
-                    <input type="text" name="address" onclick="changeDetect()" class="form-control" id="driverAddress" placeholder="Address" disabled value="Loading...." >
+                    <input type="text" name="address" oninput="changeDetect()" class="form-control" id="driverAddress" placeholder="Address" disabled value="Loading...." >
                     <small id="driverAddressE" class="text-danger d-none">*This field is required*</small>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="form-group">
                     <label for="driverUsername">Username</label>
-                    <input type="text" name="username" onclick="changeDetect()" class="form-control" id="driverUsername" disabled value="Loading...." placeholder="Username">
+                    <input type="text" name="username" oninput="changeDetect()" class="form-control" id="driverUsername" disabled value="Loading...." placeholder="Username">
                     <small id="driverUsernameE" class="text-danger d-none">*This field is required*</small>
                   </div>
                   <div class="form-group">
                     <label for="driverContact">Contact</label>
-                    <input type="number" name="contact" onclick="changeDetect()" class="form-control" id="driverContact" value="00000000" disabled placeholder="Contact">
+                    <input type="number" name="contact" oninput="changeDetect()" class="form-control" id="driverContact" value="00000000" disabled placeholder="Contact">
                     <small id="driverContactE" class="text-danger d-none">*This field is required*</small>
                   </div>
           
@@ -100,11 +100,17 @@
                     <input type="text" name="capacity" class="form-control" id="truckCapacity" value="Loading...." disabled placeholder="Truck Capacity">
                     <small id="truckCapacityE" class="text-danger d-none">*This field is required*</small>
                   </div>
+
+                  <div class="form-group">
+                    <label for="truckPlateNumber">Plate Number</label>
+                    <input type="text" name="plate_num" class="form-control" id="truckPlateNumber" value="Loading...." disabled placeholder="Truck Plate Number">
+                    <small id="truckPlateNumberE" class="text-danger d-none">*This field is required*</small>
+                  </div>
                   <button disabled id="saveTruckChanges" class="btn mt-4 ml-2 btn-success"><i class="fa fa-save"></i> Save Changes</button>
                 </form>
                 <div class="col-9 d-flex justify-content-center align-items-center flex-column p-4">
                   <button data-bs-toggle="modal" data-bs-target="#changeTruckPhoto" class="btn btn-primary"> <i class="fa fa-camera"></i> Upload Truck Photo </button>
-                  <img class="rounded w-full" style="height: 40vh" src="/UserPics/Truck/truck-placeholder.jpg" alt="truckImg">
+                  <img class="rounded w-full" style="height: 40vh" src="/UserPics/Truck/truck-placeholder.jpg" id="truckImage" alt="truckImg">
                 </div>
               </div>
             </div>

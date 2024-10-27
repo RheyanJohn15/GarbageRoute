@@ -25,10 +25,13 @@ function loadDetails(driverData){
         setValue('truckCapacity', data.truck.can_carry);  
         setValue('truckUpdateId', data.truck.dt_id);
         setValue('uploadTruckId', data.truck.dt_id);
+        setValue('truckPlateNumber', data.truck.plate_num)
+        setImage('truckImage', `/UserPics/Truck/${data.truck.profile_pic}`);
 
         reactive('truckModel', false);
         reactive('truckCapacity', false);
-        reactive('saveTruckChanges', false);    
+        reactive('saveTruckChanges', false);
+        reactive('truckPlateNumber', false);    
     }else{
         setText('truckModel', "Unavailable");
         setText('truckCapacity',"Unavailable");
@@ -143,6 +146,8 @@ document.getElementById('changeProfilePicForm').addEventListener('submit', e=> {
             load.off();
             parseResult(res);
             clicked('closeChangeProfilePic');
+            setImage('profilePicSettings', `/UserPics/Driver/${res.result.data}`);
+            setImage('userProfilePic', `/UserPics/Driver/${res.result.data}`)
         },error: xhr => {
             console.log(xhr.responseText);
             load.off();
@@ -171,6 +176,7 @@ document.getElementById('uploadTruckImageForm').addEventListener('submit', e=>{
             load.off();
             parseResult(res);
             clicked('closeUploadTruckImage');
+            setImage('truckImage', `/UserPics/Truck/${res.result.data}`);
         }, error: xhr=> {
             console.log(xhr.responseText);
             load.off();
@@ -186,14 +192,15 @@ document.getElementById('truckUpdateForm').addEventListener('submit', e=> {
     let validity = 0;
     const inputs = [
         ['truckModel', 'truckModelE'],
-        ['truckCapacity', 'truckCapacityE']
+        ['truckCapacity', 'truckCapacityE'],
+        ['truckPlateNumber', 'truckPlateNumberE']
     ];
 
     inputs.forEach(data=> {
         validity += checkInp(data[0], data[1]);
     });
 
-    if(validity == 2){
+    if(validity == 3){
         load.on();
 
         $.ajax({

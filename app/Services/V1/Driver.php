@@ -91,7 +91,7 @@ class Driver{
             'profile_pic'=> $fileName
         ]);
 
-        $this->RESULT = ['changeprofilepic', "Profile Pic Successfully Updated", 'null'];
+        $this->RESULT = ['changeprofilepic', "Profile Pic Successfully Updated", $fileName];
     }
 
     private function updatetruck($request){
@@ -99,7 +99,8 @@ class Driver{
 
         $truck->update([
             'model'=> $request->model,
-            'can_carry'=> $request->capacity
+            'can_carry'=> $request->capacity,
+            'plate_num' => $request->plate_num
         ]);
 
         $this->RESULT = ['updatetruck', "Truck Details successfully updated", "null"];
@@ -127,7 +128,7 @@ class Driver{
             'profile_pic'=> $fileName
         ]);
 
-        $this->RESULT = ['changetruckimage', "Truck Image successfully uploaded", "null"];
+        $this->RESULT = ['changetruckimage', "Truck Image successfully uploaded", $fileName];
     }
 
     private function inactive($req){
