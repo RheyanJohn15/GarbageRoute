@@ -128,17 +128,27 @@ async function ViewDriver(id){
         setText('truckDriverLicense', driver.license);
         setText('truckDriverName', driver.name);
 
-        setText('dumpTruckModel', truck.model);
-        setText('dumpTruckCanCarry', truck.can_carry);
-        setText('dumpTruckDriver', driver.name);
-      
         const fallback_image = getAsset('assets/img/logo.png');
 
-        document.getElementById('viewDriverButton').href = "/viewdriver?id=" + driver.td_id;
-        document.getElementById('viewTruckButton').href = "/viewtruck?id=" + truck.dt_id;
+        if(truck){
+          setText('dumpTruckModel', truck.model);
+          setText('dumpTruckCanCarry', truck.can_carry);
+          setText('dumpTruckDriver', driver.name);
+          document.getElementById('viewTruckButton').href = "/viewtruck?id=" + truck.dt_id;
+          setImage('dumpTruckProfile', truck.profile_pic == null ? fallback_image : getAsset(`UserPics/Truck/${truck.profile_pic}`));
+        }else{
+          setText('dumpTruckModel', 'Not Available');
+          setText('dumpTruckCanCarry', 'Not Available');
+          setText('dumpTruckDriver', 'Not Avaialable');
+          setImage('dumpTruckProfile', fallback_image);
+          reactive('viewTruckButton', true);
+          setText('viewTruckButton', 'Not Available')
+        }
 
-        setImage('dumpTruckProfile', truck.profile_pic == null ? fallback_image : getAsset(`assets/user/${truck.profile_pic}`));
-        setImage('truckDriverProfile', driver.profile_pic == null ? fallback_image : getAsset(`assets/user/${driver.profile_pic}`));
+        document.getElementById('viewDriverButton').href = "/viewdriver?id=" + driver.td_id;
+        setImage('truckDriverProfile', driver.profile_pic == null ? fallback_image : getAsset(`userPics/Driver/${driver.profile_pic}`));
+
+      
       }
     }, error: xhr => {
       load.off();
