@@ -360,6 +360,12 @@ function loadZoneInfo() {
 
             const bullitized = (array, attrib, single = true) => {
                 let bullet = '';
+
+                if(!array){
+                    bullet += `<li>NO DATA AVAILABLE</li>`;
+                    return `<ul>${bullet}</ul>`;
+                }
+
                 if (single) {
                     array.forEach(data => {
                         bullet += `<li>${data[attrib]}</li>`
