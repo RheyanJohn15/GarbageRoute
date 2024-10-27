@@ -6,6 +6,9 @@ use App\Models\GeoDataCoordinates;
 use App\Models\Zones;
 use App\Models\Settings;
 use App\Models\Waypoints;
+use App\Models\CollectionProgress;
+use Carbon\Carbon;
+
 class Landing{
     
     private $RESULT = null;
@@ -33,7 +36,16 @@ class Landing{
 
         $dumpsiteLocation = Settings::where("settings_context", "dumpsite_location")->first();
 
-        $wp = Waypoints::join('zones','zones.zone_id', '=', 'waypoints.zone_id')->get();
+        $todayCollection = CollectionProgress::whereDate('created_at', Carbon::today())->get();
+        $wpId = [];
+
+        foreach($todayCollection as $collect){
+            $wpId[] = $collect->wp_id;
+        }
+
+        $cleanWaypoint_id = array_unique($wpId);
+        
+        $wp = Waypoints::whereNotIn('wp_id', $cleanWaypoint_id)->join('zones','zones.zone_id', '=', 'waypoints.zone_id')->get();
 
         $data = [
             $pending,
