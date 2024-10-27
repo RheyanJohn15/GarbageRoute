@@ -155,6 +155,7 @@ async function loadMap() {
 
                     const dumpSiteLong = parseFloat(dumpSiteLocation[0]);
                     const dumpSiteLat = parseFloat(dumpSiteLocation[1]);
+                    
                     const currentLocationPoint = turf.point([e.coords.longitude, e.coords.latitude]);
                     const dumpSitePoint = turf.point([dumpSiteLong, dumpSiteLat]);
 
@@ -183,7 +184,7 @@ async function loadMap() {
                                 if (countdownTimer) clearInterval(countdownTimer);
 
                                 // Reset the countdown value and start updating it
-                                countdownValue = 180; // 3 minutes in seconds
+                                countdownValue = 120; // 2 minutes in seconds
                                 updateCountdownText(countdownValue); // Initial countdown display
 
                                 // Start the countdown interval
@@ -196,14 +197,13 @@ async function loadMap() {
                                     }
                                 }, 1000); // Update every second
 
-                                // Start the stay timer for 3 minutes (180000 milliseconds)
                                 stayTimer = setTimeout(() => {
                                     // Execute the function only if the driver stays for 3 minutes
                                     reactive('cpmpleteCollectionBtn', false);
                                     clearInterval(countdownTimer); // Stop the countdown timer when the time is up
                                     updateCountdownText(0); // Set to 0 after the timer completes
                                     setText('cpmpleteCollectionBtn', 'Complete Collection in this waypoint');
-                                }, 1000 * 60 * 3); // 3 minutes
+                                }, 1000 * 60 * 2); 
                             }
                         } else {
                             // If the driver moves away from the waypoint, clear the timer and reset the button
@@ -425,6 +425,7 @@ document.getElementById('cpmpleteCollectionBtn').addEventListener('click', async
             loadMap();
             loadZoneInfo();
             setText('cpmpleteCollectionBtn', "Continue Collection");
+            reactive('cpmpleteCollectionBtn', true);
         }, error: xhr => {
             load.off();
             console.log(xhr.responseText)
@@ -444,7 +445,7 @@ document.getElementById('turnOverToDumpsite').addEventListener('click', async ()
         success: res => {
             parseResult(res);
             load.off();
-            reactive('turnOverToDumpsite', false);
+            reactive('turnOverToDumpsite', true);
             setText('turnOverToDumpsite', "Done! Collect More Garbage");
             dumpsiteEnterStatus = true;
         }, error: xhr => {
@@ -465,7 +466,7 @@ function loadRecords() {
         success: async res => {
             const collection = res.result.data[0];
             const dumpsite = res.result.data[1];
-    
+            console.log(collection);
             // Create an array to hold promises for all place names
             const placeNamePromises = collection.map(data => {
                 return getPlaceName(data.longitude, data.latitude).then(place_name => ({

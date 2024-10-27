@@ -190,6 +190,7 @@ class Driver{
     private function records($req){
         $collection = CollectionProgress::where('td_id', $req->driver_id)
         ->join('waypoints', 'waypoints.wp_id', '=', 'collection_progress.wp_id')
+        ->select('collection_progress.*', 'waypoints.longitude', 'waypoints.latitude')
         ->get();
         $dumpsite = DumpsiteTurnovers::where('td_id', $req->driver_id)
         ->get();
