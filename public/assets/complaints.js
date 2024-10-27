@@ -24,6 +24,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicmhleWFuIiwiYSI6ImNsenpydzA4eDFnajUyanB4M2V3N
 let webmaps;
 let marker;
 let circleLayerId = 'marker-radius'; 
+let driverMarker = [];
 
 window.onload = () =>{
 
@@ -216,3 +217,32 @@ window.addEventListener('keydown', function(event) {
 });
 
 
+function updateRouteStatus(route) {
+    const data = route.data;
+
+    // Remove existing markers from the map
+    driverMarker.length;
+    driverMarker = [];
+
+    data.forEach(async e => {
+        const splitCoord = e.ad_coordinates.split(',');
+        const markerEl = document.createElement('div');
+        markerEl.className = 'custom-marker';
+
+        // Add Font Awesome icon to the custom marker
+        markerEl.innerHTML = `
+            <div style="text-align: center;">
+                <i class="fas fa-truck-moving" style="font-size: 24px; color: #6610f2;"></i>
+                <p style="margin: 0; font-size: 14px; color: black;">${e.driver.name}</p>
+            </div>`;
+        
+        const coord = [parseFloat(splitCoord[0]), parseFloat(splitCoord[1])];
+
+        // Create a new marker and add it to the map
+        const marker = new mapboxgl.Marker(markerEl)
+            .setLngLat(coord) 
+            .addTo(webmaps);
+
+        driverMarker.push(marker);
+    });
+}

@@ -372,8 +372,18 @@
         }
     }
 </script>
+@vite('resources/js/app.js')
 
 <script src="{{ asset('assets/complaints.js') }}"></script>
+<script>
+    setTimeout(() => {
+        window.Echo.channel('gps-update')
+            .listen('GpsUpdate', (e) => {
+                updateRouteStatus(e);
+            })
+    }, 2000);
+</script>
+
 <script src="{{ asset('Scripts/helper.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
