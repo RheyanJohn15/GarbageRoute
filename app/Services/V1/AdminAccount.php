@@ -117,7 +117,7 @@ class AdminAccount{
 
     private function dashboard($request){
         $driverCount = TruckDriverModel::all()->count();
-        $truck = DumpTruckModel::all()->count();
+        $truckCount = DumpTruckModel::all()->count();
         $complaint = Complaints::all()->count();
 
         $zoneArry = [];
@@ -186,7 +186,7 @@ class AdminAccount{
         }
 
         $dashboard = [
-            $truck,
+            $truckCount,
             $driverCount,
             $complaint,
             $complaintData,
