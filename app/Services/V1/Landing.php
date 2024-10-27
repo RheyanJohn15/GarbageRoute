@@ -1,6 +1,11 @@
 <?php
 namespace App\Services\V1;
 use App\Models\Complaints;
+use App\Models\GeoData;
+use App\Models\GeoDataCoordinates;
+use App\Models\Zones;
+use App\Models\Settings;
+use App\Models\Waypoints;
 class Landing{
     
     private $RESULT = null;
@@ -14,11 +19,30 @@ class Landing{
         $progress = Complaints::where('comp_status', 1)->get()->count();
         $resolved = Complaints::where('comp_status', 2)->get()->count();
         $complaints = Complaints::where('comp_status', 2)->limit(15)->get();
+
+        $geoData = GeoData::join('brgy_lists', 'geo_data.brgy_id', '=', 'brgy_lists.brgy_id')->get();
+        foreach($geoData as $geo){
+            $coords = GeoDataCoordinates::where('gd_id', $geo->gd_id)->get();
+            $geo->coordinates = $coords;
+
+            if($geo->zone_id != null){
+                $zone = Zones::where('zone_id',$geo->zone_id)->first();
+                $geo->zone = $zone;
+            }
+        }
+
+        $dumpsiteLocation = Settings::where("settings_context", "dumpsite_location")->first();
+
+        $wp = Waypoints::join('zones','zones.zone_id', '=', 'waypoints.zone_id')->get();
+
         $data = [
             $pending,
             $progress,
             $resolved,
-            $complaints
+            $complaints,
+            $geoData,
+            $dumpsiteLocation,
+            $wp
         ];
 
         $this->RESULT = ['dashboard', 'Get All Dashboard', $data];

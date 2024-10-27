@@ -30,5 +30,14 @@
             margin-bottom: 10px;
             color: #008000;
         }
+
+        #webMap{
+            width:100%;
+            height: 80vh;
+            border-radius: 20px;
+        }
     </style>
+
+<link href='https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css' rel='stylesheet' />
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.css" />
 </head>

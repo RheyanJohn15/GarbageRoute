@@ -262,12 +262,8 @@
             <div class="row mb-4 px-0">
                 <!-- Map Row -->
                 <div class="col-lg-12">
-                    <div id="map">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d105474.0540206068!2d123.0259006472008!3d10.757358656807547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33aed61aecc67287%3A0x420b7cea0efc5e27!2sSilay%20City%2C%20Negros%20Occidental!5e0!3m2!1sen!2sph!4v1728598263084!5m2!1sen!2sph"
-                            width="100%" height="500px" frameborder="0" style="border:0"
-                            allowfullscreen=""></iframe>
-
+                    <div id="webMap">
+                        
                     </div>
                 </div>
             </div>
