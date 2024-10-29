@@ -22,7 +22,7 @@
             </div>
             <div class="ms-md-auto py-2 py-md-0">
               <button style="display: none" id="closeView" onclick="CloseView()" class="btn btn-label-danger btn-round me-2">Close View</button>
-              <button data-bs-toggle="modal" data-bs-target="#addDriverModal" class="btn btn-primary btn-round">Add Driver</button>
+              <button id="addDriverOpenModalBtn" data-bs-toggle="modal" data-bs-target="#addDriverModal" class="btn btn-primary btn-round">Add Driver</button>
             </div>
           </div>
 

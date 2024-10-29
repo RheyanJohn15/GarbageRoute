@@ -1,8 +1,55 @@
-function getDumpTruckList() {
+async function getDumpTruckList() {
     if ($.fn.DataTable.isDataTable('#truckList')) {
       $('#truckList').DataTable().clear().destroy();
     }
 
+    const superAdminStatus = await getSuperAdminStatus();
+    let adminTable;
+    if(superAdminStatus){
+      adminTable = [
+        { title: "Truck Model", data: "model" },
+        { title: "Capacity(Tons)", data: "can_carry" },
+        { title: "Driver", data: "driver" },
+        { title: "Plate Number", data: "plate_num"},
+        {
+          title: "Action",
+          data: null,
+          render: data => {
+            return `<div class="d-flex gap-1">
+              <button data-bs-toggle="modal" data-bs-target="#updateTruckModal" onclick="UpdateTruck(
+                '${data.dt_id}',
+                '${data.model}',
+                '${data.can_carry}',
+                '${data.driver_id}',
+                '${data.plate_num}'
+              )" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
+              <button onclick="ViewDumpTruck('${data.dt_id}')" class="btn btn-outline-success"><i class="fas fa-eye"></i></button>
+              <button onclick="RemoveTruck('${data.dt_id}')" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+            </div>`;
+          },
+          orderable: false,  
+          searchable: false 
+        }
+      ]
+    }else{
+      adminTable = [
+        { title: "Truck Model", data: "model" },
+        { title: "Capacity(Tons)", data: "can_carry" },
+        { title: "Driver", data: "driver" },
+        { title: "Plate Number", data: "plate_num"},
+        {
+          title: "Action",
+          data: null,
+          render: data => {
+            return `<div class="d-flex gap-1">
+              Not Available
+            </div>`;
+          },
+          orderable: false,  
+          searchable: false 
+        }
+      ]
+    }
     $.ajax({
       type: "get",
       url: getApi('dumptruck', 'list', 'get'),
@@ -10,31 +57,7 @@ function getDumpTruckList() {
       success: res => {
         $("#truckList").DataTable({
           data: res.result.data,
-          columns: [
-            { title: "Truck Model", data: "model" },
-            { title: "Capacity(Tons)", data: "can_carry" },
-            { title: "Driver", data: "driver" },
-            { title: "Plate Number", data: "plate_num"},
-            {
-              title: "Action",
-              data: null,
-              render: data => {
-                return `<div class="d-flex gap-1">
-                  <button data-bs-toggle="modal" data-bs-target="#updateTruckModal" onclick="UpdateTruck(
-                    '${data.dt_id}',
-                    '${data.model}',
-                    '${data.can_carry}',
-                    '${data.driver_id}',
-                    '${data.plate_num}'
-                  )" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
-                  <button onclick="ViewDumpTruck('${data.dt_id}')" class="btn btn-outline-success"><i class="fas fa-eye"></i></button>
-                  <button onclick="RemoveTruck('${data.dt_id}')" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
-                </div>`;
-              },
-              orderable: false,  // Disable sorting for the Action column
-              searchable: false  // Disable searching for the Action column
-            }
-          ],
+          columns: adminTable,
           pageLength: 5,
           initComplete: function () {
             this.api().columns().every(function (index) {

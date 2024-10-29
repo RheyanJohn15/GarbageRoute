@@ -1,5 +1,5 @@
 let profilePic;
-
+let superAdminTypeStatus = true;
 let globalUserPromise = new Promise(async (resolve, reject) => {
     try {
         const getToken = await fetch('/api/get/request/accesstoken?userType=admin', {
@@ -39,6 +39,15 @@ let globalUserPromise = new Promise(async (resolve, reject) => {
         setImage('changeProfileSelected', profilePic);
         setText('userNameDrop', user.acc_name);
         setText('userType', user.acc_type);
+
+        if(user.acc_type != 'Super Admin'){
+            reactive('addDriverOpenModalBtn', true);
+            reactive('addTruckOpenModalBtn', true);
+            setText('addTruckOpenModalBtn', "Not Available");
+            setText('addDriverOpenModalBtn', "Not Available");
+            superAdminTypeStatus = false;
+        }
+
     } catch (error) {
         reject(error); 
     }
@@ -48,6 +57,13 @@ let globalUserPromise = new Promise(async (resolve, reject) => {
 async function getGlobalUser() {
     return await globalUserPromise;
 }
+
+async function getSuperAdminStatus() {
+    const check = await globalUserPromise;
+
+    return superAdminTypeStatus;
+}
+
 
 const profileBackgrounds = [
     "e6e6fa", // Lavender

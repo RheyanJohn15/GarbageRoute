@@ -30,11 +30,61 @@ document.getElementById('addDriver').addEventListener('click', () => {
    }
 });
 
-function getTruckDriverList() {
+async function getTruckDriverList() {
   if ($.fn.DataTable.isDataTable('#driverList')) {
     $('#driverList').DataTable().clear().destroy();
   }
+  const superAdminStatus = await getSuperAdminStatus();
+  let adminTable;
 
+  if(superAdminStatus){
+    adminTable =  [
+      { title: "Name", data: "name" },
+      { title: "Username", data: "username" },
+      { title: "License", data: "license" },
+      { title: "Contact", data: "contact" },
+      { title: "Address", data: "address" },
+      { 
+        title: "Action", 
+        data: null, 
+        render: data => {
+          return `<div class="d-flex gap-1">
+            <button data-bs-toggle="modal" data-bs-target="#updateDriverModal" onclick="UpdateDriver(
+              '${data.td_id}',
+              '${data.name}',
+              '${data.username}',
+              '${data.license}',
+              '${data.contact}',
+              '${data.address}'
+            )" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
+            <button onclick="ViewDriver('${data.td_id}')" class="btn btn-outline-success"><i class="fas fa-eye"></i></button>
+            <button onclick="RemoveDriver('${data.td_id}')" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+          </div>`;
+        },
+        orderable: false, 
+        searchable: false  
+      }
+    ]
+  }else{
+    adminTable =  [
+      { title: "Name", data: "name" },
+      { title: "Username", data: "username" },
+      { title: "License", data: "license" },
+      { title: "Contact", data: "contact" },
+      { title: "Address", data: "address" },
+      { 
+        title: "Action", 
+        data: null, 
+        render: data => {
+          return `<div class="d-flex gap-1">
+           Not Available
+          </div>`;
+        },
+        orderable: false,  
+        searchable: false  
+      }
+    ]
+  }
   $.ajax({
     type: "get",
     url: getApi('truckdriver', 'list', 'get'),
@@ -42,33 +92,7 @@ function getTruckDriverList() {
     success: res => {
       $("#driverList").DataTable({
         data: res.result.data,
-        columns: [
-          { title: "Name", data: "name" },
-          { title: "Username", data: "username" },
-          { title: "License", data: "license" },
-          { title: "Contact", data: "contact" },
-          { title: "Address", data: "address" },
-          { 
-            title: "Action", 
-            data: null, 
-            render: data => {
-              return `<div class="d-flex gap-1">
-                <button data-bs-toggle="modal" data-bs-target="#updateDriverModal" onclick="UpdateDriver(
-                  '${data.td_id}',
-                  '${data.name}',
-                  '${data.username}',
-                  '${data.license}',
-                  '${data.contact}',
-                  '${data.address}'
-                )" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
-                <button onclick="ViewDriver('${data.td_id}')" class="btn btn-outline-success"><i class="fas fa-eye"></i></button>
-                <button onclick="RemoveDriver('${data.td_id}')" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
-              </div>`;
-            },
-            orderable: false,  // Disable sorting for the Action column
-            searchable: false  // Disable searching for the Action column
-          }
-        ],
+        columns:adminTable,
         pageLength: 5,
         initComplete: function () {
           this.api().columns().every(function (index) {
