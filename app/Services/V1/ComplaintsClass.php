@@ -15,6 +15,9 @@ class ComplaintsClass{
 
         $attachment = $request->file('attachment');
 
+        if(!$attachment){
+            throw new ApiException(ApiException::NO_IMAGE);
+        }
         if(!in_array($attachment->getClientOriginalExtension(), ['jpg', 'jpeg', 'png'])){
             throw new ApiException(ApiException::INVALID_PIC_TYPE);
         }

@@ -26,4 +26,5 @@ class ApiException extends \Exception
     public const LARGE_IMAGE = "File is too large below 10mb is valid";
     public const NO_ZONE_ASSIGNED = "You are not assigned in any zone";
     public const DATA_EXIST = "Data already exist duplication is not allowed";
+    public const NO_IMAGE = "You have not attach any complaint image. Please Attach one!";
 }

@@ -16,7 +16,11 @@ document.getElementById('contact').addEventListener('submit', (e) => {
             toastr["success"](res.result.response)
             inputs.forEach(input => input.value = '');
             document.getElementById('preview').src = '';
-        }, error: xhr => console.log(xhr.responseText)
+        }, error: xhr =>{
+            console.log(xhr.responseText)
+            load.off();
+            toastr['error'](JSON.parse(xhr.responseText).message);
+        }
     });
 });
 
