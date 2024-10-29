@@ -352,4 +352,4 @@ function limitChar(input, max) {
     if (input.value.length > max) {
       input.value = input.value.slice(0, max);
     }
-  }
+}

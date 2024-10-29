@@ -55,7 +55,7 @@ async function getTruckDriverList() {
               '${data.username}',
               '${data.license}',
               '${data.contact}',
-              '${data.address}'
+              '${data.address.replace(/(\r\n|\n|\r)/gm, ' ')}'
             )" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
             <button onclick="ViewDriver('${data.td_id}')" class="btn btn-outline-success"><i class="fas fa-eye"></i></button>
             <button onclick="RemoveDriver('${data.td_id}')" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>

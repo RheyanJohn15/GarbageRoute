@@ -232,10 +232,11 @@
                         <label>Contact #</label>
                         <input
                           id="addContact"
-                          type="text"
+                          type="number"
                           name="contact"
                           class="form-control"
                           placeholder="fill contact #"
+                          oninput="limitChar(this, 12)"
                         />
                         <small id="addContact_e" style="display: none" class="text-danger">(This field is required)</small>
                       </div>
@@ -359,10 +360,11 @@
                       <label>Contact #</label>
                       <input
                         id="updateContact"
-                        type="text"
+                        type="number"
                         name="contact"
                         class="form-control"
                         placeholder="fill contact #"
+                        oninput="limitChar(this, 12)"
                       />
                       <small id="updateContact_e" style="display: none" class="text-danger">(This field is required)</small>
                     </div>
