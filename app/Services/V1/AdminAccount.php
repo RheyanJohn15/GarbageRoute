@@ -8,6 +8,7 @@ use App\Models\Complaints;
 use App\Models\DumpsiteTurnovers;
 use App\Models\ZoneDrivers;
 use App\Models\Zones;
+use App\Services\V1\Logger;
 use Illuminate\Support\Facades\Hash;
 use App\Services\ApiException;
 
@@ -228,6 +229,11 @@ class AdminAccount{
         $this->RESULT = ['garbageperzonefilters', "Filter Garbage Per Zone", $data];
     }   
 
+    private function getallactivity($rq){
+        $act = Logger::list();
+
+        $this->RESULT = ['Get All Activity List', 'Successfully Get All Activity', $act];
+    }
     public function getResult(){
         return $this->RESULT;
     }

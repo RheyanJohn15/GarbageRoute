@@ -25,10 +25,11 @@
           <table id="tableLogs" class="table table-head-bg-success">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">User Account</th>
+                <th scope="col">Action</th>
+                <th scope="col">Result</th>
+                <th scope="col">Route</th>
+                <th scope="col">Timestamp</th>
               </tr>
             </thead>
             <tbody>

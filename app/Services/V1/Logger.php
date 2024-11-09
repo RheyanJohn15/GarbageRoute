@@ -19,4 +19,10 @@ class Logger{
 
         $act->save();
     }
+
+    public static function list(){
+        $act = ActivityLogs::join('accounts', 'accounts.acc_id', '=', 'activity_logs.user_id')->select('activity_logs.*', 'accounts.acc_name')->get();
+
+        return $act;
+    }
 }

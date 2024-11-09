@@ -158,7 +158,8 @@ class ApiEntry{
             'getalladmin'=>['params'=> ['type'], 'logs'=> false],
             'details'=> ['params'=>['id'], 'logs'=> false],
             'dashboard'=>['params'=>['empty'], 'logs'=> false],
-            'garbageperzonefilter'=> ['params'=>['empty'], 'logs'=> false]
+            'garbageperzonefilter'=> ['params'=>['empty'], 'logs'=> false],
+            'getallactivity'=> ['params'=>['empty'], 'logs'=> false],
         ],
         'brgy'=> [
             'list'=> ['params'=>['empty'], 'logs'=> false],
