@@ -594,7 +594,8 @@ function updateRouteStatus(route) {
         markerEl.innerHTML = `
             <div style="text-align: center;">
                 <i class="fas fa-truck-moving" style="font-size: 24px; color: #6610f2;"></i>
-                <p style="margin: 0; font-size: 14px; color: black;">${e.driver.name}</p>
+                <p style="margin: 0; -webkit-text-stroke: 1px black; text-stroke: 1px black;  font-weight: bold;
+                font-size: 14px; color: black;">${e.truck.plate_num}<br>${e.truck.model}</p>
             </div>`;
 
         const coord = [parseFloat(splitCoord[0]), parseFloat(splitCoord[1])];
