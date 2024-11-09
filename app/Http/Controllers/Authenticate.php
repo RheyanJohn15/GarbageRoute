@@ -44,6 +44,10 @@ class Authenticate extends Controller
     public function ViewDriver(Request $req){
         return $this->redirectRoute('viewDriver', $req);
     }
+
+    public function ActivityLogs(Request $req){
+        return $this->redirectRoute('activitylogs', $req);
+    }
     
     private function redirectRoute($routes, $req){
         $auth = new Auth();

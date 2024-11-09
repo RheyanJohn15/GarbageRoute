@@ -15,6 +15,7 @@ Route::get('/profile', [Authenticate::class, 'Profile']);
 Route::get('/settings', [Authenticate::class, 'Settings']);
 Route::get('/viewtruck', [Authenticate::class, 'ViewTruck']);
 Route::get('/viewdriver', [Authenticate::class, 'ViewDriver']);
+Route::get('/activity-logs', [Authenticate::class, 'ActivityLogs']);
 
 Route::get('/', function () {return view('User.index');})->name('home');
 Route::get('/user/complaint', function () {return view('User.complaint');})->name('usercomplaints');
