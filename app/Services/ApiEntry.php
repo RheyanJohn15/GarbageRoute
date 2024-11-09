@@ -168,7 +168,8 @@ class ApiEntry{
             'getwaypointadmin'=> ['empty'],
             'saveschedule'=> ['zone', 'day', 'waypoint'],
             'getschedule' => ['empty'],
-            'removeschedule'=> ['id']
+            'removeschedule'=> ['id'],
+            'removeallwaypoints'=> ['zone']
         ],
         'settings'=> [
             'getval'=> ['context']

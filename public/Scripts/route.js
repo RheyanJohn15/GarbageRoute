@@ -59,7 +59,7 @@ let isSelecting = false; // Flag to track if the user is selecting a location
 let circleLayerId = 'marker-radius'; // ID for the circle layer
 let map;
 let selectedBarangay = [];
-let waypoints = {}; 
+let waypoints = {};
 let geoDataSilayGlobal;
 let waypointMarker = [];
 let selectedZoneWaypoints;
@@ -72,7 +72,7 @@ async function LoadMap() {
 
     const response = await fetch('/api/get/zone/getwaypointadmin', {
         method: "GET",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
     });
 
     const result = await response.json();
@@ -83,7 +83,7 @@ async function LoadMap() {
     // Initialize map
     map = new mapboxgl.Map({
         container: 'map', // container ID
-        style: 'mapbox://styles/mapbox/satellite-streets-v12', 
+        style: 'mapbox://styles/mapbox/satellite-streets-v12',
         center: [123.0585, 10.8039], // Center set to Silay City, Negros Occidental
         zoom: 11, // Starting zoom
     });
@@ -151,10 +151,10 @@ async function LoadMap() {
 
         waypoints.forEach(waypoint => {
             new mapboxgl.Marker({
-                color: waypoint.color || waypoint.zone_color, 
+                color: waypoint.color || waypoint.zone_color,
             })
-            .setLngLat([parseFloat(waypoint.longitude), parseFloat(waypoint.latitude)])
-            .addTo(map);
+                .setLngLat([parseFloat(waypoint.longitude), parseFloat(waypoint.latitude)])
+                .addTo(map);
         });
     });
 
@@ -576,7 +576,7 @@ document.getElementById('saveDriverToZone').addEventListener('click', async () =
 // Array to store active markers
 let activeMarkers = [];
 
- function updateRouteStatus(route) {
+function updateRouteStatus(route) {
     const data = route.data;
     const table = document.getElementById('activeDriverTable');
     table.innerHTML = '';
@@ -596,7 +596,7 @@ let activeMarkers = [];
                 <i class="fas fa-truck-moving" style="font-size: 24px; color: #6610f2;"></i>
                 <p style="margin: 0; font-size: 14px; color: black;">${e.driver.name}</p>
             </div>`;
-        
+
         const coord = [parseFloat(splitCoord[0]), parseFloat(splitCoord[1])];
 
         // Create a new marker and add it to the map
@@ -688,16 +688,16 @@ function chooseZone(id) {
 
 document.getElementById('addWaypointBtn').addEventListener('click', () => {
     loadZones('assign');
-    
+
     isShow('waypointsTableDiv', false, 'block');
 });
-
+let existingWaypointCount = {};
 document.getElementById('addWaypointToZone').addEventListener('click', async () => {
     const select = document.getElementById('selectZoneAddWaypoint');
     const splitSelect = select.value.split('-');
     const zoneData = geoDataSilayGlobal.filter(x => x.properties.zone == splitSelect[0]);
     selectedZoneWaypoints = splitSelect[0];
-    
+
     const existWaypointsReq = await $.ajax({
         type: "GET",
         url: `/api/get/zone/getallwaypoint?zone=${selectedZoneWaypoints}`,
@@ -708,15 +708,13 @@ document.getElementById('addWaypointToZone').addEventListener('click', async () 
 
     const existWaypointRes = await existWaypointsReq;
 
-    // Count existing waypoints per barangay
-    const existingWaypointCount = {};
 
     existWaypointRes.result.data.forEach(waypoint => {
         const brgyId = waypoint.brgy_id;
         if (!waypoints[waypoint.brgy_name]) {
             waypoints[waypoint.brgy_name] = [];
         }
-        
+
         waypoints[waypoint.brgy_name].push([parseFloat(waypoint.longitude), parseFloat(waypoint.latitude)]);
 
         existingWaypointCount[brgyId] = (existingWaypointCount[brgyId] || 0) + 1;
@@ -798,7 +796,6 @@ document.getElementById('addWaypointToZone').addEventListener('click', async () 
             if (!waypoints[brgyName]) {
                 waypoints[brgyName] = [];
             }
-
             // Check if the limit is reached before adding a new waypoint
             if (waypoints[brgyName].length < adjustedMaxWaypoint) {
                 addWaypoint(coordinates, brgyName);
@@ -839,7 +836,7 @@ document.getElementById('addWaypointToZone').addEventListener('click', async () 
             });
         }
 
-        console.log(waypoints);
+
     });
 
     clicked('closeAddWaypoints');
@@ -856,14 +853,14 @@ document.getElementById('addWaypointToZone').addEventListener('click', async () 
     } else {
         brgyList.innerHTML = '<li>No Brgy Added</li>';
     }
-    const brgyNames =  existWaypointRes.result.data.filter((item, index, self) =>
+    const brgyNames = existWaypointRes.result.data.filter((item, index, self) =>
         index === self.findIndex((t) => t.brgy_name === item.brgy_name)
-      );
+    );
 
     brgyNames.forEach(brgy => {
         const element = document.getElementById(`waypoint_${brgy.brgy_name}`);
 
-        const numOfWaypoint = existWaypointRes.result.data.filter(x=> x.brgy_name === brgy.brgy_name).length;
+        const numOfWaypoint = existWaypointRes.result.data.filter(x => x.brgy_name === brgy.brgy_name).length;
 
         element.textContent = numOfWaypoint;
     })
@@ -885,29 +882,49 @@ function addWaypoint(coordinates, brgyName) {
     waypointMarker.push(marker);
 }
 
-function redoMap() {
-    // Remove all markers from the map
-    waypointMarker.forEach(marker => marker.remove());
-    waypointMarker = []; // Clear the markers array
+async function redoMap() {
+    load.on();
+    const csrf = await getCSRF();
 
-    // Clear the waypoints data
-    waypoints = {};
-    selectedBarangay.forEach(([name, maxWaypoint]) => {
-        document.getElementById(`waypoint_${name}`).textContent = '0';
+    $.ajax({
+        type: "POST",
+        url: "/api/post/zone/removeallwaypoints",
+        data: { "_token": csrf, "zone": selectedZoneWaypoints },
+        success: res => {
+            load.off();
+            parseResult(res);
+
+            // Remove all markers from the map
+            waypointMarker.forEach(marker => marker.remove());
+            waypointMarker = []; // Clear the markers array
+
+            // Clear the waypoints data
+            waypoints = {};
+            existingWaypointCount = {};
+            selectedBarangay.forEach(([name, maxWaypoint]) => {
+                document.getElementById(`waypoint_${name}`).textContent = '0';
+            });
+
+            $.notify({ 'message': `Map reset, all waypoints removed.`, 'icon': 'fas fa-redo' }, {
+                type: 'info',
+                placement: {
+                    from: 'top',
+                    align: 'right',
+                },
+                time: 1000,
+                delay: 2000,
+            });
+
+        }, error: xhr => {
+            console.log(xhr.responseText);
+            load.off();
+            parseResult(JSON.parse(xhr.responseText));
+        }
     });
 
-    $.notify({ 'message': `Map reset, all waypoints removed.`, 'icon': 'fas fa-redo' }, {
-        type: 'info',
-        placement: {
-            from: 'top',
-            align: 'right',
-        },
-        time: 1000,
-        delay: 2000,
-    });
 }
 
-document.getElementById('redoEditWaypoints').addEventListener('click', ()=> {
+document.getElementById('redoEditWaypoints').addEventListener('click', () => {
     Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -916,16 +933,16 @@ document.getElementById('redoEditWaypoints').addEventListener('click', ()=> {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, Redo Waypoint Selection!"
-      }).then((result) => {
+    }).then((result) => {
         if (result.isConfirmed) {
             redoMap();
         }
-      });
-       
+    });
+
 });
 
-document.getElementById('saveEditWaypoints').addEventListener('click', async ()=> {
-    if(Object.keys(waypoints).length === 0){
+document.getElementById('saveEditWaypoints').addEventListener('click', async () => {
+    if (Object.keys(waypoints).length === 0) {
         $.notify({ 'message': `No waypoint present in the map please add atleast 1.`, 'icon': 'fas fa-exclamation-triangle' }, {
             type: 'danger',
             placement: {
@@ -939,7 +956,7 @@ document.getElementById('saveEditWaypoints').addEventListener('click', async ()=
         return;
     }
 
-    if(selectedBarangay.length === 0){
+    if (selectedBarangay.length === 0) {
         $.notify({ 'message': `No baranggay added in this zone please add 1 first.`, 'icon': 'fas fa-exclamation-triangle' }, {
             type: 'danger',
             placement: {
@@ -958,8 +975,8 @@ document.getElementById('saveEditWaypoints').addEventListener('click', async ()=
     $.ajax({
         type: "POST",
         url: "/api/post/zone/addwaypoint",
-        data: {"_token": csrf, "brgy": selectedBarangay, "waypoints": waypoints, "zone": selectedZoneWaypoints },
-        success: res=> {
+        data: { "_token": csrf, "brgy": selectedBarangay, "waypoints": waypoints, "zone": selectedZoneWaypoints },
+        success: res => {
             load.off();
             parseResult(res);
         }, error: xhr => {
@@ -971,8 +988,8 @@ document.getElementById('saveEditWaypoints').addEventListener('click', async ()=
 });
 
 
-document.getElementById('closeEditWaypointPage').addEventListener('click', ()=> {
-    isShow('headerMenu',true, 'block');
+document.getElementById('closeEditWaypointPage').addEventListener('click', () => {
+    isShow('headerMenu', true, 'block');
     isShow('closeEditWaypointPage', false, 'block');
     isShow('addZoneEditDetailsDiv', false, 'block');
     isShow('activeTableDiv', true, 'block');
@@ -1015,7 +1032,7 @@ document.getElementById('selectZoneAddWaypoint').addEventListener('change', asyn
                 { data: 'placeName' }, // Now directly using placeName from the resolved promise
                 { data: null, render: data => `${data.longitude} - ${data.latitude}` }
             ],
-            rowCallback: function(row, data, index) {
+            rowCallback: function (row, data, index) {
                 // Set the waypoint number in the first column
                 $('td:eq(0)', row).html('Waypoint ' + (index + 1));
             }
@@ -1056,13 +1073,13 @@ async function getPlaceName(latitude, longitude) {
 }
 
 
-document.getElementById('manageSchedules').addEventListener('click', async ()=> {
+document.getElementById('manageSchedules').addEventListener('click', async () => {
     isShow('assignScheduleDiv', false, 'block');
     isShow('manageScheduleDiv', true, 'block');
     loadAssignedSched();
     const response = await fetch(`/api/get/truckdriver/getschedule?zone=${selectedZoneSched}`, {
         method: "GET",
-        headers: {"Content-Type": "application/json"}
+        headers: { "Content-Type": "application/json" }
     });
 
     const result = await response.json();
@@ -1071,30 +1088,30 @@ document.getElementById('manageSchedules').addEventListener('click', async ()=> 
 
     const selectDayManageSched = document.getElementById('selectDayManageSched');
     selectDayManageSched.innerHTML = '<option disabled selected value="">-----Select Day-----</option>';
-    if(data.days == 'everyday'){
+    if (data.days == 'everyday') {
         const day = [
             'Mon',
             'Tue',
             'Wed',
             'Thu',
-            'Fri', 
+            'Fri',
             'Sat',
             'Sun'
         ]
 
-        day.forEach(d=> {
+        day.forEach(d => {
             selectDayManageSched.innerHTML += `<option value="${d}">${d}</option>`
         });
-    }else{
+    } else {
         const day = data.days.split(',');
-        day.forEach(d=> {
+        day.forEach(d => {
             selectDayManageSched.innerHTML += `<option value="${d}">${d}</option>`
         })
     }
 
     const getWaypointAdmin = await fetch(`/api/get/zone/getallwaypoint?zone=${selectedZoneSched}&type=admin`, {
         method: "GET",
-        headers: {"Content-Type": "application/json"}
+        headers: { "Content-Type": "application/json" }
     });
 
     const getWaypointResult = await getWaypointAdmin.json();
@@ -1102,21 +1119,21 @@ document.getElementById('manageSchedules').addEventListener('click', async ()=> 
     const selectWatpointManageSched = document.getElementById('selectWatpointManageSched');
     selectWatpointManageSched.innerHTML = '<option disabled selected value="">-----No Selected Locations------</option>'
     let waypointCount = 1;
-    getWaypointResult.result.data.forEach(wp=> {
+    getWaypointResult.result.data.forEach(wp => {
         getPlaceName(parseFloat(wp.latitude), parseFloat(wp.longitude)).then(pn => {
             selectWatpointManageSched.innerHTML += `<option value="${wp.wp_id}"><span class="fw-bold">Waypoint #${waypointCount}</span> ${pn}</option>`
             waypointCount++;
         });
-     
-    }); 
+
+    });
 });
 
-document.getElementById('closeManageSchedule').addEventListener('click', ()=> {
+document.getElementById('closeManageSchedule').addEventListener('click', () => {
     isShow('assignScheduleDiv', true, 'block');
     isShow('manageScheduleDiv', false, 'block');
 });
 
-document.getElementById('saveManageSchedule').addEventListener('click', async ()=>{
+document.getElementById('saveManageSchedule').addEventListener('click', async () => {
     const csrf = await getCSRF();
 
     load.on();
@@ -1124,17 +1141,17 @@ document.getElementById('saveManageSchedule').addEventListener('click', async ()
     $.ajax({
         type: "POST",
         url: "/api/post/zone/saveschedule",
-        data: {"_token": csrf, "zone": selectedZoneSched, "day": getVal('selectDayManageSched'),"waypoint": getVal('selectWatpointManageSched')},
-        success: res=> {
-           load.off();
-           loadAssignedSched();
-           parseResult(res);
-           const selectWatpointManageSched = document.getElementById('selectWatpointManageSched');
-           const selectDayManageSched = document.getElementById('selectDayManageSched');
+        data: { "_token": csrf, "zone": selectedZoneSched, "day": getVal('selectDayManageSched'), "waypoint": getVal('selectWatpointManageSched') },
+        success: res => {
+            load.off();
+            loadAssignedSched();
+            parseResult(res);
+            const selectWatpointManageSched = document.getElementById('selectWatpointManageSched');
+            const selectDayManageSched = document.getElementById('selectDayManageSched');
 
-           selectWatpointManageSched.value = "";
-           selectDayManageSched.value = "";
-        },error: xhr=> {
+            selectWatpointManageSched.value = "";
+            selectDayManageSched.value = "";
+        }, error: xhr => {
             console.log(xhr.responseText);
             load.off();
             parseResult(JSON.parse(xhr.responseText))
@@ -1142,7 +1159,7 @@ document.getElementById('saveManageSchedule').addEventListener('click', async ()
     });
 });
 
-function removeSched(id){
+function removeSched(id) {
 
     Swal.fire({
         title: "Are you sure?",
@@ -1152,31 +1169,31 @@ function removeSched(id){
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!"
-      }).then(async (result) => {
+    }).then(async (result) => {
         if (result.isConfirmed) {
             const csrf = await getCSRF();
             load.on();
             $.ajax({
                 type: "POST",
                 url: "/api/post/zone/removeschedule",
-                data: {"_token": csrf, "id": id},
-                success: res=> {
+                data: { "_token": csrf, "id": id },
+                success: res => {
                     load.off();
                     parseResult(res);
                     loadAssignedSched();
-                }, error: xhr=> {
+                }, error: xhr => {
                     console.log(xhr.responseText);
                     load.off();
                     parseResult(JSON.parse(xhr.responseText));
                 }
             })
         }
-      });
+    });
 
- 
+
 }
 
-function loadAssignedSched(){
+function loadAssignedSched() {
     const table = document.getElementById('scheduleTable');
     table.innerHTML = '';
 
@@ -1184,10 +1201,10 @@ function loadAssignedSched(){
         type: "GET",
         url: `/api/get/zone/getschedule?zone=${selectedZoneSched}`,
         dataType: "json",
-        success: res=> {
+        success: res => {
             const data = res.result.data;
-            data.forEach(async d=> {
-          
+            data.forEach(async d => {
+
                 const placeName = await getPlaceName(d.latitude, d.longitude);
                 table.innerHTML += `
                 <tr>
@@ -1197,6 +1214,6 @@ function loadAssignedSched(){
                 </tr>
                 `
             });
-        }, error: xhr=> console.log(xhr.responseText)
+        }, error: xhr => console.log(xhr.responseText)
     })
 }

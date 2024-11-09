@@ -208,6 +208,16 @@ class Zone{
         $this->RESULT = ['removeschedule', "Schedule is removed to this Zones", 'null'];
     }
 
+    private function removeallwaypoints($req){
+        $wp = Waypoints::where('zone_id', $req->zone)->get();
+
+        foreach($wp as $w){
+            $w->delete();
+        }
+
+        $this->RESULT = ['removeallwaypoints', "Zone waypoint are successfully removed for redo", 'null'];
+    }
+
     public function getResult(){
         return $this->RESULT;
     }
