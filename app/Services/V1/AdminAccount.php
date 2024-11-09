@@ -128,17 +128,13 @@ class AdminAccount{
             $zoneArry[] = $zone->zone_name;
             $garbagePerZone[] = 0;
         }
-
         foreach($dumpsiteTurnovers as $dt){
             $ZoneDrivers = ZoneDrivers::where('td_id', $dt->td_id)->first();
             $dumpTruck = DumpTruckModel::where('dt_id', $dt->dt_id)->first();
             $getZone = Zones::where('zone_id', $ZoneDrivers->zone_id)->first();
 
             $zoneIndex = array_search($getZone->zone_name, $zoneArry);
-
-            if($zoneIndex){
-                $garbagePerZone[$zoneIndex] += $dumpTruck->can_carry;
-            }
+            $garbagePerZone[$zoneIndex] += $dumpTruck->can_carry;
         }
 
         $driversCollection = [];
@@ -199,6 +195,38 @@ class AdminAccount{
 
         $this->RESULT = ['dashboard', 'Succesfully fetch all dashboard data', $dashboard];
     }
+
+    private function garbageperzonefilter($req){
+
+        $zoneArry = [];
+        $garbagePerZone = [];
+        
+        if($req->month == 'all'){
+            $dumpsiteTurnovers = DumpsiteTurnovers::join('truck_drivers', 'truck_drivers.td_id', '=', 'dumpsite_turnovers.td_id')->get();
+        }else{
+            $dumpsiteTurnovers = DumpsiteTurnovers::whereMonth('dumpsite_turnovers.created_at', $req->month)
+            ->whereYear('dumpsite_turnovers.created_at', $req->year)
+            ->join('truck_drivers', 'truck_drivers.td_id', '=', 'dumpsite_turnovers.td_id')
+            ->get();
+        }
+        $zones = Zones::all();
+        foreach($zones as $zone){
+            $zoneArry[] = $zone->zone_name;
+            $garbagePerZone[] = 0;
+        }
+        foreach($dumpsiteTurnovers as $dt){
+            $ZoneDrivers = ZoneDrivers::where('td_id', $dt->td_id)->first();
+            $dumpTruck = DumpTruckModel::where('dt_id', $dt->dt_id)->first();
+            $getZone = Zones::where('zone_id', $ZoneDrivers->zone_id)->first();
+
+            $zoneIndex = array_search($getZone->zone_name, $zoneArry);
+            $garbagePerZone[$zoneIndex] += $dumpTruck->can_carry;
+        }
+
+        $data = [$zoneArry, $garbagePerZone];
+
+        $this->RESULT = ['garbageperzonefilters', "Filter Garbage Per Zone", $data];
+    }   
 
     public function getResult(){
         return $this->RESULT;

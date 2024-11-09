@@ -127,6 +127,7 @@
                         <div class="card-title">Collectors Total Turnovers</div>
                       </div>
                       <div class="card-body">
+                       
                         <div class="chart-container">
                           <canvas id="collectorTotalTurnOver"></canvas>
                         </div>
@@ -139,6 +140,38 @@
                         <div class="card-title">Collected Garbage Per Zones(Tons)</div>
                       </div>
                       <div class="card-body">
+                        <div class="row">
+                          <div class="form-group col-6">
+                            <label for="garbagePerZoneFilter">Filter By Months</label>
+                            <select class="form-select" id="garbagePerZoneFilter">
+                              <option value="all">All</option>
+                              <option value="1">January</option>
+                              <option value="2">February</option>
+                              <option value="3">March</option>
+                              <option value="4">April</option>
+                              <option value="5">May</option>
+                              <option value="6">June</option>
+                              <option value="7">July</option>
+                              <option value="8">August</option>
+                              <option value="9">September</option>
+                              <option value="10">October</option>
+                              <option value="11">November</option>
+                              <option value="12">December</option>
+                            </select>
+                          </div>
+                          <div class="form-group col-6 d-none" id="garbagePerZoneFilterYearsDiv">
+                            <label for="garbagePerZoneFilterYears">Select Years</label>
+                            <select class="form-select" id="garbagePerZoneFilterYears">
+                              <option>2024</option>
+                              <option>2025</option>
+                              <option>2026</option>
+                              <option>2027</option>
+                              <option>2028</option>
+                              <option>2029</option>
+                              <option>2030</option>
+                            </select>
+                          </div>
+                         </div>
                         <div class="chart-container">
                           <canvas id="garbagePerZone"></canvas>
                         </div>

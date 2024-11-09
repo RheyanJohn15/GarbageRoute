@@ -151,7 +151,8 @@ class ApiEntry{
             'changepassadmin'=> ['id', 'newpass'],
             'getalladmin'=> ['type'],
             'details'=> ['id'],
-            'dashboard'=>['empty']
+            'dashboard'=>['empty'],
+            'garbageperzonefilter'=> ['empty']
         ],
         'brgy'=> [
             'list'=> ['empty'],

@@ -1,3 +1,4 @@
+
 window.onload = () => {
     $.ajax({
         type: "GET",
@@ -132,134 +133,195 @@ window.onload = () => {
                     }
                 },
             });
+            console.log(data[6]);
+            console.log(data[7]);
+            loadGarbagePerZone(data[6], data[7]);
             
-            
-
-            const collectorTotalTurnOver = document
-                .getElementById("collectorTotalTurnOver")
-                .getContext("2d");
-
-            const garbagePerZone = document.getElementById("garbagePerZone").getContext("2d");
-
-            var garbagePerZoneChart = new Chart(garbagePerZone, {
-                type: "bar",
-                data: {
-                    labels: data[6],  // Assuming data[6] has labels for each of the 5 zones
-                    datasets: [
-                        {
-                            label: "Garbage (Tons)",
-                            backgroundColor: [
-                                "rgb(255, 99, 132)",  // Color for Zone 1
-                                "rgb(54, 162, 235)",  // Color for Zone 2
-                                "rgb(75, 192, 192)",  // Color for Zone 3
-                                "rgb(255, 206, 86)",  // Color for Zone 4
-                                "rgb(153, 102, 255)"  // Color for Zone 5
-                            ],
-                            borderColor: [
-                                "rgb(255, 99, 132)",  // Border color for Zone 1
-                                "rgb(54, 162, 235)",  // Border color for Zone 2
-                                "rgb(75, 192, 192)",  // Border color for Zone 3
-                                "rgb(255, 206, 86)",  // Border color for Zone 4
-                                "rgb(153, 102, 255)"  // Border color for Zone 5
-                            ],
-                            data: data[7],  // Assuming data[7] has values for each of the 5 zones
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        yAxes: [
-                            {
-                                ticks: {
-                                    beginAtZero: true,
-                                },
-                            },
-                        ],
-                    },
-                    legend: {
-                        display: true,
-                        position: 'top',
-                        labels: {
-                            fontColor: '#333',
-                            fontSize: 12,
-                            generateLabels: function(chart) {
-                                return chart.data.labels.map((label, i) => ({
-                                    text: label,
-                                    fillStyle: chart.data.datasets[0].backgroundColor[i],
-                                    strokeStyle: chart.data.datasets[0].borderColor[i],
-                                    hidden: false
-                                }));
-                            }
-                        }
-                    }
-                },
-            });
-            
-
-            let turnOverDataSet = [];
-            Object.entries(data[8]).forEach(([key, value]) => {
-                let turnover = {};
-                turnover.label = key;
-                turnover.data = value;
-                turnover.borderColor = getRandomHexColor();
-                turnover.pointBorderColor = getRandomHexColor();
-                turnover.pointBackgroundColor = getRandomHexColor();
-                turnover.pointBorderWidth = 2;
-                turnover.pointHoverRadius = 4;
-                turnover.pointHoverBorderWidth = 1;
-                turnover.pointRadius = 4;
-                turnover.backgroundColor = "transparent";
-                turnover.fill = true;
-                turnover.borderWidth = 2;
-                turnOverDataSet.push(turnover);
-            })
-            function getRandomHexColor() {
-                const randomColor = Math.floor(Math.random() * 16777215).toString(16); // Generate a random number and convert to hex
-                return `#${randomColor.padStart(6, '0')}`; // Pad with zeros if necessary
-            }
-
-            var collectionTurnOverChart = new Chart(collectorTotalTurnOver, {
-                type: "line",
-                data: {
-                    labels: [
-                        "Jan",
-                        "Feb",
-                        "Mar",
-                        "Apr",
-                        "May",
-                        "Jun",
-                        "Jul",
-                        "Aug",
-                        "Sep",
-                        "Oct",
-                        "Nov",
-                        "Dec",
-                    ],
-                    datasets:turnOverDataSet,
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    legend: {
-                        position: "top",
-                    },
-                    tooltips: {
-                        bodySpacing: 4,
-                        mode: "nearest",
-                        intersect: 0,
-                        position: "nearest",
-                        xPadding: 10,
-                        yPadding: 10,
-                        caretPadding: 10,
-                    },
-                    layout: {
-                        padding: { left: 15, right: 15, top: 15, bottom: 15 },
-                    },
-                },
-            });
-
+            loadCollectorTotalTurnover(data[8])
         }, error: xhr => console.log(xhr.responseText)
     })
 }
+
+let garbagePerZoneCharts;
+
+function loadGarbagePerZone(dataLabel, data) {
+    const garbagePerZone = document.getElementById("garbagePerZone").getContext("2d");
+
+    // Check if the chart instance exists and destroy it to avoid duplication
+    if (garbagePerZoneCharts) {
+        garbagePerZoneCharts.destroy();
+        console.log("Previous chart instance destroyed.");
+    }
+
+    // Create the new chart instance
+    garbagePerZoneCharts = new Chart(garbagePerZone, {
+        type: "bar",
+        data: {
+            labels: dataLabel,
+            datasets: [
+                {
+                    label: "Garbage (Tons)",
+                    backgroundColor: [
+                        "rgb(255, 99, 132)",  // Color for Zone 1
+                        "rgb(54, 162, 235)",  // Color for Zone 2
+                        "rgb(75, 192, 192)",  // Color for Zone 3
+                        "rgb(255, 206, 86)",  // Color for Zone 4
+                        "rgb(153, 102, 255)"  // Color for Zone 5
+                    ],
+                    borderColor: [
+                        "rgb(255, 99, 132)",  // Border color for Zone 1
+                        "rgb(54, 162, 235)",  // Border color for Zone 2
+                        "rgb(75, 192, 192)",  // Border color for Zone 3
+                        "rgb(255, 206, 86)",  // Border color for Zone 4
+                        "rgb(153, 102, 255)"  // Border color for Zone 5
+                    ],
+                    data: data,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [
+                    {
+                        ticks: {
+                            beginAtZero: true,
+                        },
+                    },
+                ],
+            },
+            legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                    fontColor: '#333',
+                    fontSize: 12,
+                    generateLabels: function(chart) {
+                        return chart.data.labels.map((label, i) => ({
+                            text: label,
+                            fillStyle: chart.data.datasets[0].backgroundColor[i],
+                            strokeStyle: chart.data.datasets[0].borderColor[i],
+                            hidden: false
+                        }));
+                    }
+                }
+            }
+        },
+    });
+}
+function loadCollectorTotalTurnover(data){
+    const collectorTotalTurnOver = document
+    .getElementById("collectorTotalTurnOver")
+    .getContext("2d");
+    let turnOverDataSet = [];
+    console.log(data);
+    Object.entries(data).forEach(([key, value]) => {
+        let turnover = {};
+        turnover.label = key;
+        turnover.data = value;
+        turnover.borderColor = getRandomHexColor();
+        turnover.pointBorderColor = getRandomHexColor();
+        turnover.pointBackgroundColor = getRandomHexColor();
+        turnover.pointBorderWidth = 2;
+        turnover.pointHoverRadius = 4;
+        turnover.pointHoverBorderWidth = 1;
+        turnover.pointRadius = 4;
+        turnover.backgroundColor = "transparent";
+        turnover.fill = true;
+        turnover.borderWidth = 2;
+        turnOverDataSet.push(turnover);
+    })
+    function getRandomHexColor() {
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16); // Generate a random number and convert to hex
+        return `#${randomColor.padStart(6, '0')}`; // Pad with zeros if necessary
+    }
+
+    var collectionTurnOverChart = new Chart(collectorTotalTurnOver, {
+        type: "line",
+        data: {
+            labels: [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+            ],
+            datasets:turnOverDataSet,
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                position: "top",
+            },
+            tooltips: {
+                bodySpacing: 4,
+                mode: "nearest",
+                intersect: 0,
+                position: "nearest",
+                xPadding: 10,
+                yPadding: 10,
+                caretPadding: 10,
+            },
+            layout: {
+                padding: { left: 15, right: 15, top: 15, bottom: 15 },
+            },
+        },
+    });
+
+}
+
+
+document.getElementById('garbagePerZoneFilter').addEventListener('change', e=> {
+    const month = e.target.value;
+    let years = '';
+    const yearSelect = document.getElementById('garbagePerZoneFilterYearsDiv');
+    if(month == 'all'){
+        yearSelect.classList.add('d-none');
+        years = 'null';
+    }else{
+        yearSelect.classList.remove('d-none');
+        years = document.getElementById('garbagePerZoneFilterYears').value;
+    }
+
+    load.on();
+    $.ajax({
+        type: "GET",
+        url: `/api/get/adminaccount/garbageperzonefilter?month=${month}&year=${years}`,
+        dataType: "json",
+        success: res => {
+            load.off();
+            const data = res.result.data;
+            loadGarbagePerZone(data[0], data[1]);
+        }, error: xhr=> {
+            console.log(xhr.responseText);
+        }
+    })
+});
+
+document.getElementById('garbagePerZoneFilterYears').addEventListener('change', e=> {
+    const year = e.target.value;
+    const month = document.getElementById('garbagePerZoneFilter').value;
+
+    load.on();
+    $.ajax({
+        type: "GET",
+        url: `/api/get/adminaccount/garbageperzonefilter?month=${month}&year=${year}`,
+        dataType: "json",
+        success: res => {
+            load.off();
+            const data = res.result.data;
+            loadGarbagePerZone(data[0], data[1]);
+        }, error: xhr=> {
+            console.log(xhr.responseText);
+        }
+    });
+});
