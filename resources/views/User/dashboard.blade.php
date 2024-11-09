@@ -72,8 +72,6 @@
                           <h5>Current Location</h5>
                           <ul>
                               <li>Location: <span id="currentLocationName">Loading...</span></li>
-                              <li>Longitude: <span id="currentLocationLong"></span> </li>
-                              <li>Latitude: <span id="currentLocationLat"></span></li>
                           </ul>
                       </div>
                     <div id="map" style="border: 1px solid black"></div>
