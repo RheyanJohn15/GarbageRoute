@@ -121,7 +121,7 @@ class ApiEntry{
                 'list' => ['empty']
              ],
         'complaints' => [
-            'submit' => ['comp_name', 'email', 'contact', 'nature', 'remarks', 'zone'],
+            'submit' => ['comp_name', 'email', 'contact', 'nature', 'zone'],
             'list'=> ['empty'],
             'remove'=> ['comp_id'],
             'details'=> ['comp_id'],

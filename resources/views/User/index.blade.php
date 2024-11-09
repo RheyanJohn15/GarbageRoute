@@ -82,13 +82,13 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <fieldset>
-                                                <input type="text" name="comp_name" id="comp_name"
+                                                <input type="text" oninput="autoCaps(this); nameClean(this)" name="comp_name" id="comp_name"
                                                     placeholder="Full Name" required>
                                             </fieldset>
                                         </div>
                                         <div class="col-lg-12">
                                             <fieldset>
-                                                <input type="email" name="email" id="email"
+                                                <input oninput="autoCaps(this)" type="email" name="email" id="email"
                                                     pattern="[^ @]*@[^ @]*" placeholder="Your Email" required>
                                             </fieldset>
                                         </div>
@@ -118,7 +118,7 @@
                                         </div>
                                         <div class="col-lg-12 mb-4 mt-2">
                                             <fieldset>
-                                                <textarea class="form-control" id="message" name="remarks" placeholder="Message/Remarks" rows="5" required></textarea>
+                                                <textarea oninput="autoCaps(this)" class="form-control" id="message" name="remarks" placeholder="Message/Remarks" rows="5"></textarea>
                                             </fieldset>
                                         </div>
                                         <div class="col-lg-12 mb-4">

@@ -87,7 +87,7 @@ window.onload = () =>{
            });
            webmaps = new mapboxgl.Map({
             container: 'webMap', 
-            style: 'mapbox://styles/mapbox/streets-v12', 
+            style: 'mapbox://styles/mapbox/satellite-streets-v12', 
             center: [123.0585, 10.8039], 
             zoom: 11, 
             });
