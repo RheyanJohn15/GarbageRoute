@@ -23,7 +23,7 @@ class DumpTruck{
         $dumpTruck->plate_num = $req->plate_num;
         $dumpTruck->save();
 
-        $this->RESULT = ['add' ,'Dump Truck Successfully Added', $dumpTruck];
+        $this->RESULT = ['Add Dump Truck' ,'Dump Truck Successfully Added', $dumpTruck];
     }
 
     private function list($req){
@@ -54,7 +54,7 @@ class DumpTruck{
          'plate_num'=> $req->plate_num
       ]);
 
-      $this->RESULT = ['update','Dump Truck Successfully Updated', $dumpTruck];
+      $this->RESULT = ['Update Dump Truck','Dump Truck Successfully Updated', $dumpTruck];
     }
 
     private function delete($req){
@@ -62,7 +62,7 @@ class DumpTruck{
 
       $dumpTruck->delete();
 
-      $this->RESULT = ['delete', 'Dump Truck Successfully Deleted', null];
+      $this->RESULT = ['Delete Dump Truck', 'Dump Truck Successfully Deleted', null];
     }
 
     private function details($req){

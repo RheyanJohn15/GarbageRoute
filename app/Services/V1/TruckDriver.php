@@ -25,7 +25,7 @@ class TruckDriver {
        $td->address = $req->address;
        $td->save();
 
-       $this->RESULT = ['add' ,'Truck Driver Successfully Added', $td];
+       $this->RESULT = ['Add Truck Driver' ,'Truck Driver Successfully Added', $td];
     }
 
     private function delete($req){
@@ -44,7 +44,7 @@ class TruckDriver {
        }
 
        $check->delete();
-        $this->RESULT = ['delete', 'Truck Driver is Successfully Deleted', null];
+        $this->RESULT = ['Delete Truck Drivers', 'Truck Driver is Successfully Deleted', null];
      }
 
     private function list($req){
@@ -73,7 +73,7 @@ class TruckDriver {
              'address'=>$req->address
         ]);
 
-        $this->RESULT = ['update', 'Update Truck Driver', $update];
+        $this->RESULT = ['Update Truck Driver', 'Update Truck Driver', $update];
     }
 
     private function details($req){
@@ -143,11 +143,6 @@ class TruckDriver {
           }
         }
 
-        
-      
-    
-
-        
       }else{
         $addMain = new ZoneDrivers();
         $addMain->zone_id = $req->zone;
@@ -177,7 +172,7 @@ class TruckDriver {
         $scheduleStandby->save();
       }
 
-      $this->RESULT = ['driverassignedzone', "Driver Assigned to Zone $req->zone Successfully", "null"];
+      $this->RESULT = ['Assigned Driver To Zone', "Driver Assigned to Zone $req->zone Successfully", "null"];
     }
 
     private function getschedule($req){

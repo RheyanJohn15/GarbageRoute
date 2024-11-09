@@ -49,7 +49,7 @@ class Zone{
         }
 
 
-        $this->RESULT = ['addbrgy', "Successfully Added the baranggay to a zone", "null"];
+        $this->RESULT = ['Add Baranggays', "Successfully Added the baranggay to a zone", "null"];
     }
 
     private function getgeodata($request){
@@ -64,7 +64,7 @@ class Zone{
             }
         }
 
-        $this->RESULT = ['getgeodata', "Successfully get all geodata", $geoData];
+        $this->RESULT = ['Get Geo Datas', "Successfully get all geodata", $geoData];
     }
 
     private function changedumpsitelocation($req){
@@ -76,7 +76,7 @@ class Zone{
             'settings_value'=> $coordinates
         ]);
 
-        $this->RESULT = ['changedumpsitelocation', "Dumpsite Location Successfully Changed", 'null'];
+        $this->RESULT = ['Change Dumpsite Location', "Dumpsite Location Successfully Changed", 'null'];
     }
 
     private function getdriverassignedzone($req){
@@ -117,7 +117,7 @@ class Zone{
         $dumpsite = Settings::where('settings_context', 'dumpsite_location')->first();
         $data = [$zone, $brgy, $dumpsite, $isScheduleToday];
 
-        $this->RESULT = ['getdriverassignedzone', 'Fetch Zone Coordinates', $data];
+        $this->RESULT = ['Get Zone Coordinates', 'Fetch Zone Coordinates', $data];
     }
 
     private function addwaypoint($req){
@@ -142,7 +142,7 @@ class Zone{
        
         } 
         
-        $this->RESULT = ['addwaypoint', "Waypoints are successfully saved", 'null'];
+        $this->RESULT = ['Add Waypoints', "Waypoints are successfully saved", 'null'];
     }
 
     private function getallwaypoint($req){
@@ -165,13 +165,13 @@ class Zone{
 
         }
 
-        $this->RESULT = ['getallwaypoints', "Fetch all waypoints", $waypoints];
+        $this->RESULT = ['Get All Waypoints', "Fetch all waypoints", $waypoints];
     }
     
     private function getwaypointadmin($req){
         $wp = Waypoints::join('zones','zones.zone_id', '=', 'waypoints.zone_id')->get();
 
-        $this->RESULT = ['getwaypointadmin', 'Successfully get all waypoints', $wp];
+        $this->RESULT = ['Get Waypoints', 'Successfully get all waypoints', $wp];
     }
 
     private function saveschedule($req){
@@ -192,20 +192,20 @@ class Zone{
         $sched->wp_id = $req->waypoint;
         $sched->save();
 
-        $this->RESULT = ['saveschedule', "Assigned driver to this schedule and waypoint ", 'null'];
+        $this->RESULT = ['Save Schedules', "Assigned driver to this schedule and waypoint ", 'null'];
     }
 
     private function getschedule($req){
         $sched = ZoneSubSched::where('zone_sub_scheds.zone_id', $req->zone)->join('waypoints', 'waypoints.wp_id', '=', 'zone_sub_scheds.wp_id')->get();
 
-        $this->RESULT = ['getschedule', "Get all schedule to this zone", $sched];
+        $this->RESULT = ['Get Schedule', "Get all schedule to this zone", $sched];
     }
 
     private function removeschedule($req){
         $sched = ZoneSubSched::where('zss_id', $req->id)->first();
 
         $sched->delete();
-        $this->RESULT = ['removeschedule', "Schedule is removed to this Zones", 'null'];
+        $this->RESULT = ['Remove Schedule', "Schedule is removed to this Zones", 'null'];
     }
 
     private function removeallwaypoints($req){
@@ -215,7 +215,7 @@ class Zone{
             $w->delete();
         }
 
-        $this->RESULT = ['removeallwaypoints', "Zone waypoint are successfully removed for redo", 'null'];
+        $this->RESULT = ['Remove All Waypoints', "Zone waypoint are successfully removed for redo", 'null'];
     }
 
     public function getResult(){

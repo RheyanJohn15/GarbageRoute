@@ -57,7 +57,7 @@ class ComplaintsClass{
         $comp = Complaints::where('comp_id', $request->comp_id)->first();
         $comp->delete();
 
-        $this->RESULT = ['delete', 'Complaint Successfully Deleted', 'null'];
+        $this->RESULT = ['Remove Complaint', 'Complaint Successfully Deleted', 'null'];
     }
 
     private function update($request){
@@ -65,7 +65,7 @@ class ComplaintsClass{
 
         $comp->update(['comp_status'=>$request->status]);
 
-        $this->RESULT = ['update', 'Complaint is Successfully Updated', 'null'];
+        $this->RESULT = ['Update Complaint Status', 'Complaint is Successfully Updated', 'null'];
     }
 
     private function getzone($req){
