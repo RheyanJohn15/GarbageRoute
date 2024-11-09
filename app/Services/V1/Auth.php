@@ -4,6 +4,7 @@ use App\Models\Accounts;
 use App\Models\DumpTruckModel;
 use App\Models\TruckDriverModel;
 use Illuminate\Support\Facades\Hash;
+use App\Services\V1\Logger;
 class Auth {
 
 
@@ -51,11 +52,15 @@ class Auth {
             }
             $acc->update(['acc_token'=> $token]);
             session(['access_token' => $token]);
+            Logger::save(['Login', 'Successfully Logged in'], $this->request);
+
             return $this->parseResult('success', $token);
           }else{
+            Logger::save(['Login', 'Failed Attempt - Invalid Password'], $this->request, false);
             return $this->parseResult('fail', 'Invalid Password');
           }
         }else{
+          Logger::save(['Login', 'Failed Attempt - No User Found'], $this->request, false);
             return $this->parseResult('fail', 'No Account Found');
         }
 

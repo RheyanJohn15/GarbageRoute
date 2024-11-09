@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\V1\Auth;
 use App\Services\ApiEntry;
 use App\Services\ApiException;
+use App\Services\V1\Logger;
 
 class APIHandler extends Controller
 {
@@ -47,6 +48,7 @@ class APIHandler extends Controller
 
 
         if($method === 'logout' && $data === 'user'){
+            Logger::save(['Logout', 'Successfully Logged Out'], $req);
             $req->session()->flush();
             return response()->json(["status"=>"success", "method"=> "logout", "result"=> "Logout Successfully" ]);
         }
