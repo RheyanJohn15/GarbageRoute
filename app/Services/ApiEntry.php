@@ -2,6 +2,7 @@
 namespace App\Services;
 use App\Services\ApiException;
 use App\Services\ApiRequest;
+use App\Services\V1\Logger;
 
 class ApiEntry{
 
@@ -52,7 +53,12 @@ class ApiEntry{
                 $this->RESULT = $init->getResponse();
             }else{
                 if($this->checkParams($request)){
+
+               
                 $init = new ApiRequest($type, $method, $request);
+                if($this->VALID_METHOD['logs']){
+                    Logger::save($init->getResponse(), $request);
+                }
                 $this->RESULT = $init->getResponse();
                 };
             }
@@ -63,7 +69,7 @@ class ApiEntry{
 
     private function checkParams($request){
         $this->PARAMS = [];
-        foreach ($this->VALID_METHOD as $param) {
+        foreach ($this->VALID_METHOD['params'] as $param) {
             if (isset($request[$param])) {
                 if($request[$param] != ''){
                     $this->PARAMS[$param] = $request[$param];
@@ -102,81 +108,81 @@ class ApiEntry{
     private const API_LIST =
     [
         'truckdriver' =>
-            ['add' => ['name','username', 'password', 'licensenum', 'contact', 'address'],
-             'delete' => ['id'],
-             'update' => ['name','username', 'id', 'licensenum', 'contact', 'address'],
-             'changepass'=> ['currentpass', 'newpass', 'id'],
-             'details' => ['id'],
-             'list'=> ['empty'],
-             'getdriverbyzone' => ['empty'],
-             'driverassignedzone'=> ['zone', 'maindriver', 'standbydriver', 'sched_days', 'collection_start', 'collection_end'],
-             'getschedule'=> ['empty']
+            ['add' => ['params'=>['name','username', 'password', 'licensenum', 'contact', 'address'], 'logs'=> true],
+             'delete' => ['params'=> ['id'], 'logs'=> true],
+             'update' => ['params'=>['name','username', 'id', 'licensenum', 'contact', 'address'], 'logs'=> true],
+             'changepass'=> ['params'=>['currentpass', 'newpass', 'id'], 'logs'=> true],
+             'details' => ['params'=>['id'], 'logs'=> true],
+             'list'=> ['params'=>['empty'], 'logs'=> true],
+             'getdriverbyzone' => ['params'=>['empty'], 'logs'=> true],
+             'driverassignedzone'=> ['params'=>['zone', 'maindriver', 'standbydriver', 'sched_days', 'collection_start', 'collection_end'], 'logs'=> true],
+             'getschedule'=> ['params'=>['empty'], 'logs'=> true]
             ],
        'dumptruck' =>
              [
-                'add' => ['model', 'can_carry', 'driver', 'plate_num'],
-                'delete'=> ['id'],
-                'update'=> ['model', 'can_carry', 'driver', 'id', 'plate_num'],
-                'details'=> ['id'],
-                'list' => ['empty']
+                'add' => ['params'=>['model', 'can_carry', 'driver', 'plate_num'], 'logs'=> true],
+                'delete'=> ['params'=>['id'], 'logs'=> true],
+                'update'=> ['params'=>['model', 'can_carry', 'driver', 'id', 'plate_num'], 'logs'=> true],
+                'details'=> ['params'=>['id'], 'logs'=> true],
+                'list' => ['params'=>['empty'], 'logs'=> true]
              ],
         'complaints' => [
-            'submit' => ['comp_name', 'email', 'contact', 'nature', 'zone'],
-            'list'=> ['empty'],
-            'remove'=> ['comp_id'],
-            'details'=> ['comp_id'],
-            'update'=> ['comp_id', 'status'],
-            'getzone'=>['empty']
+            'submit' => ['params'=>['comp_name', 'email', 'contact', 'nature', 'zone'], 'logs'=> true],
+            'list'=> ['params'=>['empty'], 'logs'=> true],
+            'remove'=> ['params'=>['comp_id'], 'logs'=> true],
+            'details'=> ['params'=>['comp_id'], 'logs'=> true],
+            'update'=> ['params'=>['comp_id', 'status'], 'logs'=> true],
+            'getzone'=>['params'=>['empty'], 'logs'=> true]
         ],
         'drivers' => [
-            'getzoneinfo'=> ['driverid'],
-            'update'=> ['id', 'name', 'license', 'address', 'contact', 'username'],
-            'changepass'=>['id', 'currentpass', 'newpass'],
-            'changeprofilepic'=>['id', 'pic'],
-            'updatetruck'=> ['id', 'model', 'capacity', 'plate_num'],
-            'changetruckimage'=> ['id', 'pic'],
-            'inactive'=> ['driver_id'],
-            'active'=> ['driver_id'],
-            'updatelocation'=> ['driver_id', 'longitude', 'latitude'],
-            'completecollection' => ['driver_id', 'waypoint_id'],
-            'dumpsiteturnover'=> ['td_id'],
-            'records'=> ['empty']
+            'getzoneinfo'=> ['params'=>['driverid'], 'logs'=> true],
+            'update'=> ['params'=>['id', 'name', 'license', 'address', 'contact', 'username'], 'logs'=> true],
+            'changepass'=>['params'=>['id', 'currentpass', 'newpass'], 'logs'=> true],
+            'changeprofilepic'=>['params'=>['id', 'pic'], 'logs'=> true],
+            'updatetruck'=> ['params'=>['id', 'model', 'capacity', 'plate_num'], 'logs'=> true],
+            'changetruckimage'=> ['params'=>['id', 'pic'], 'logs'=> true],
+            'inactive'=> ['params'=>['driver_id'], 'logs'=> true],
+            'active'=> ['params'=>['driver_id'], 'logs'=> true],
+            'updatelocation'=> ['params'=>['driver_id', 'longitude', 'latitude'], 'logs'=> true],
+            'completecollection' => ['params'=>['driver_id', 'waypoint_id'], 'logs'=> true],
+            'dumpsiteturnover'=> ['params'=>['td_id'], 'logs'=> true],
+            'records'=> ['params'=>['empty'], 'logs'=> true]
         ],
         'adminaccount'=> [
-            'update'=> ['id', 'name', 'username'],
-            'changepass'=> ['id', 'newPass', 'currentPass'],
-            'changeavatar'=> ['id', 'avatar'],
-            'add'=> ['name', 'username', 'password'],
-            'delete'=> ['id'],
-            'changepassadmin'=> ['id', 'newpass'],
-            'getalladmin'=> ['type'],
-            'details'=> ['id'],
-            'dashboard'=>['empty'],
-            'garbageperzonefilter'=> ['empty']
+            'update'=> ['params'=>['id', 'name', 'username'], 'logs'=> true],
+            'changepass'=>[ 'params'=>['id', 'newPass', 'currentPass'], 'logs'=> true],
+            'changeavatar'=> ['params'=>['id', 'avatar'], 'logs'=> true],
+            'add'=> ['params'=>['name', 'username', 'password'], 'logs'=> true],
+            'delete'=> ['params'=>['id'], 'logs'=> true],
+            'changepassadmin'=> ['params'=>['id', 'newpass'], 'logs'=> true],
+            'getalladmin'=>['params'=> ['type'], 'logs'=> true],
+            'details'=> ['params'=>['id'], 'logs'=> true],
+            'dashboard'=>['params'=>['empty'], 'logs'=> true],
+            'garbageperzonefilter'=> ['params'=>['empty'], 'logs'=> true]
         ],
         'brgy'=> [
-            'list'=> ['empty'],
-            'filterbyzone' => ['zone_id'],
+            'list'=> ['params'=>['empty'], 'logs'=> true],
+            'filterbyzone' => [['zone_id'], 'logs'=> true],
         ],
         'zone'=> [
-            'list'=> ['empty'],
-            'addbrgy'=> ['brgy', 'zone'],
-            'getgeodata'=>['empty'],
-            'changedumpsitelocation'=> ['context', 'longitude', 'latitude'],
-            'getdriverassignedzone'=> ['driver_id'],
-            'addwaypoint'=> ['brgy', 'waypoints', 'zone'],
-            'getallwaypoint'=> ['empty'],
-            'getwaypointadmin'=> ['empty'],
-            'saveschedule'=> ['zone', 'day', 'waypoint'],
-            'getschedule' => ['empty'],
-            'removeschedule'=> ['id'],
-            'removeallwaypoints'=> ['zone']
+            'list'=> ['params'=>['empty'], 'logs'=> true],
+            'addbrgy'=> ['params'=>['brgy', 'zone'], 'logs'=> true],
+            'getgeodata'=>['params'=>['empty'], 'logs'=> true],
+            'changedumpsitelocation'=> ['params'=>['context', 'longitude', 'latitude'], 'logs'=> true],
+            'getdriverassignedzone'=> ['params'=>['driver_id'], 'logs'=> true],
+            'addwaypoint'=> ['params'=>['brgy', 'waypoints', 'zone'], 'logs'=> true],
+            'getallwaypoint'=>['params'=> ['empty'], 'logs'=> true],
+            'getwaypointadmin'=> ['params'=>['empty'], 'logs'=> true],
+            'saveschedule'=> ['params'=>['zone', 'day', 'waypoint'], 'logs'=> true],
+            'getschedule' => ['params'=>['empty'], 'logs'=> true],
+            'removeschedule'=> ['params'=>['id'], 'logs'=> true],
+            'removeallwaypoints'=> ['params'=>['zone'], 'logs'=> true]
         ],
         'settings'=> [
-            'getval'=> ['context']
+            'getval'=> ['params'=>['context'], 'logs'=> true]
         ],
         'landing'=> [
-            'dashboard'=> ['empty']
+            'dashboard'=> ['params'=>['empty'], 'logs'=> true]
         ]
     ];
 
