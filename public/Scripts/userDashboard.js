@@ -106,7 +106,7 @@ async function loadMap() {
 
             map = new mapboxgl.Map({
                 container: 'map', // container ID
-                style: 'mapbox://styles/mapbox/streets-v12', // style URL
+                style: 'mapbox://styles/mapbox/satellite-streets-v12', // style URL
                 center: [123.0585, 10.8039], // Center set to Silay City, Negros Occidental
                 zoom: 11, // Starting zoom
             });
