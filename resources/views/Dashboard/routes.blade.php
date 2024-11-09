@@ -10,6 +10,8 @@
         width: 100%;
         height: 70vh;
     }
+
+
 </style>
 
 <body>
@@ -71,6 +73,34 @@
                         </div>
                     </div>
                     <div class="rounded mb-4" id="map"></div>
+                    <h3>Zone Legends</h3>
+                    <div class="w-100 d-flex p-3 gap-2 border border-primary rounded">
+                      <div class="d-flex justify-content-center align-items-center flex-column gap-2 w-100">
+                        <img src="/assets/img/zone1.png" alt="Zone1">
+                        <p>Zone 1</p>
+                        <div class="rounded-pill" style="height:24px; width:24px; background-color:#F48C06"></div>
+                      </div>
+                      <div class="d-flex justify-content-center align-items-center flex-column gap-2 w-100">
+                        <img src="/assets/img/zone2.png" alt="Zone2">
+                        <p>Zone 2</p>
+                        <div class="rounded-pill" style="height:24px; width:24px; background-color:#5C8D89"></div>
+                      </div>
+                      <div class="d-flex justify-content-center align-items-center flex-column gap-2 w-100">
+                        <img src="/assets/img/zone3.png" alt="Zone3">
+                        <p>Zone 3</p>
+                        <div class="rounded-pill" style="height:24px; width:24px; background-color:#DA627D"></div>
+                      </div>
+                      <div class="d-flex justify-content-center align-items-center flex-column gap-2 w-100">
+                        <img src="/assets/img/zone4.png" alt="Zone4">
+                        <p>Zone 4</p>
+                        <div class="rounded-pill" style="height:24px; width:24px; background-color:#345995"></div>
+                      </div>
+                      <div class="d-flex justify-content-center align-items-center flex-column gap-2 w-100">
+                        <img src="/assets/img/zone5.png" alt="Zone5">
+                        <p>Zone 5</p>
+                        <div class="rounded-pill" style="height:24px; width:24px; background-color:#6DD47E"></div>  
+                      </div>
+                    </div>
                     <div id="activeTableDiv">
                         
                     <h3>Currently Collecting Active Drivers</h3>
