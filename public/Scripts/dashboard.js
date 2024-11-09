@@ -87,8 +87,16 @@ window.onload = () => {
                     datasets: [
                         {
                             label: "No./Status",
-                            backgroundColor: "rgb(23, 125, 255)",
-                            borderColor: "rgb(23, 125, 255)",
+                            backgroundColor: [
+                                "rgb(255, 99, 132)",  // Color for "Pending"
+                                "rgb(54, 162, 235)",  // Color for "In Progress"
+                                "rgb(75, 192, 192)"   // Color for "Resolved"
+                            ],
+                            borderColor: [
+                                "rgb(255, 99, 132)",  // Border color for "Pending"
+                                "rgb(54, 162, 235)",  // Border color for "In Progress"
+                                "rgb(75, 192, 192)"   // Border color for "Resolved"
+                            ],
                             data: complaintStatusNumber,
                         },
                     ],
@@ -105,9 +113,27 @@ window.onload = () => {
                             },
                         ],
                     },
+                    legend: {
+                        display: true,  // Show or hide the legend
+                        position: 'top',  // Position of the legend: 'top', 'left', 'bottom', 'right'
+                        labels: {
+                            fontColor: '#333',  // Color of the legend text
+                            fontSize: 12,       // Font size of the legend text
+                            generateLabels: function(chart) {
+                                // Custom legend labels to match colors
+                                return chart.data.labels.map((label, i) => ({
+                                    text: label,
+                                    fillStyle: chart.data.datasets[0].backgroundColor[i],
+                                    strokeStyle: chart.data.datasets[0].borderColor[i],
+                                    hidden: false
+                                }));
+                            }
+                        }
+                    }
                 },
             });
-
+            
+            
 
             const collectorTotalTurnOver = document
                 .getElementById("collectorTotalTurnOver")
@@ -118,13 +144,25 @@ window.onload = () => {
             var garbagePerZoneChart = new Chart(garbagePerZone, {
                 type: "bar",
                 data: {
-                    labels: data[6],
+                    labels: data[6],  // Assuming data[6] has labels for each of the 5 zones
                     datasets: [
                         {
-                            label: "Garbage(Tons)",
-                            backgroundColor: "rgb(23, 125, 255)",
-                            borderColor: "rgb(23, 125, 255)",
-                            data: data[7],
+                            label: "Garbage (Tons)",
+                            backgroundColor: [
+                                "rgb(255, 99, 132)",  // Color for Zone 1
+                                "rgb(54, 162, 235)",  // Color for Zone 2
+                                "rgb(75, 192, 192)",  // Color for Zone 3
+                                "rgb(255, 206, 86)",  // Color for Zone 4
+                                "rgb(153, 102, 255)"  // Color for Zone 5
+                            ],
+                            borderColor: [
+                                "rgb(255, 99, 132)",  // Border color for Zone 1
+                                "rgb(54, 162, 235)",  // Border color for Zone 2
+                                "rgb(75, 192, 192)",  // Border color for Zone 3
+                                "rgb(255, 206, 86)",  // Border color for Zone 4
+                                "rgb(153, 102, 255)"  // Border color for Zone 5
+                            ],
+                            data: data[7],  // Assuming data[7] has values for each of the 5 zones
                         },
                     ],
                 },
@@ -140,8 +178,25 @@ window.onload = () => {
                             },
                         ],
                     },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            fontColor: '#333',
+                            fontSize: 12,
+                            generateLabels: function(chart) {
+                                return chart.data.labels.map((label, i) => ({
+                                    text: label,
+                                    fillStyle: chart.data.datasets[0].backgroundColor[i],
+                                    strokeStyle: chart.data.datasets[0].borderColor[i],
+                                    hidden: false
+                                }));
+                            }
+                        }
+                    }
                 },
             });
+            
 
             let turnOverDataSet = [];
             Object.entries(data[8]).forEach(([key, value]) => {
