@@ -146,7 +146,8 @@ class ApiEntry{
             'updatelocation'=> ['params'=>['driver_id', 'longitude', 'latitude'], 'logs'=> false],
             'completecollection' => ['params'=>['driver_id', 'waypoint_id'], 'logs'=> false],
             'dumpsiteturnover'=> ['params'=>['td_id'], 'logs'=> false],
-            'records'=> ['params'=>['empty'], 'logs'=> false]
+            'records'=> ['params'=>['empty'], 'logs'=> false],
+            'loadschedules'=> ['params'=> ['empty'], 'logs'=> false]
         ],
         'adminaccount'=> [
             'update'=> ['params'=>['id', 'name', 'username'], 'logs'=> true],
@@ -160,6 +161,7 @@ class ApiEntry{
             'dashboard'=>['params'=>['empty'], 'logs'=> false],
             'garbageperzonefilter'=> ['params'=>['empty'], 'logs'=> false],
             'getallactivity'=> ['params'=>['empty'], 'logs'=> false],
+            'loadschedules'=> ['params'=> ['empty'], 'logs'=> false]
         ],
         'brgy'=> [
             'list'=> ['params'=>['empty'], 'logs'=> false],

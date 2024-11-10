@@ -120,6 +120,22 @@
                             <tr><td colspan="6" class="text-center">Loading......</td></tr>
                         </tbody>
                       </table>
+
+                      <h3 class="mt-4">Driver Schedules</h3>
+                      <p>Drivers Collection Schedule each weeks</p>
+                      <table id="driversScheduleSummary" class="table table-bordered table-bordered-bd-warning mt-4">
+                        <thead>
+                          <tr>
+                            <th scope="col">Driver</th>
+                            <th scope="col">Scheduled Days</th>
+                            <th scope="col">Time Start/End</th>
+                            <th scope="col">Waypoint Schedules</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          
+                        </tbody>
+                      </table>
                     </div>
 
                 </div>

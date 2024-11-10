@@ -7,7 +7,9 @@ use Carbon\Carbon;
 use App\Models\Complaints;
 use App\Models\DumpsiteTurnovers;
 use App\Models\ZoneDrivers;
+use App\Models\ZoneSubSched;
 use App\Models\Zones;
+use App\Models\Schedules;
 use App\Services\V1\Logger;
 use Illuminate\Support\Facades\Hash;
 use App\Services\ApiException;
@@ -234,6 +236,23 @@ class AdminAccount{
 
         $this->RESULT = ['Get All Activity List', 'Successfully Get All Activity', $act];
     }
+
+    private function loadschedules($req){
+        $schedules = Schedules::join('truck_drivers', 'truck_drivers.td_id', '=', 'schedules.td_id')->get();
+
+        foreach($schedules as $sched){
+            $zone_drivers = ZoneDrivers::where('td_id', $sched->td_id)->first();
+
+            $zoneSubSched = ZoneSubSched::where('zone_sub_scheds.zone_id', $zone_drivers->zone_id)
+            ->join('waypoints', 'waypoints.wp_id', '=', 'zone_sub_scheds.wp_id')
+            ->get();
+
+            $sched->zone_sched = $zoneSubSched;
+        }
+
+        $this->RESULT = ['Fetch all Schedules', 'Successfully Fetched All Schedules', $schedules];
+    }
+
     public function getResult(){
         return $this->RESULT;
     }

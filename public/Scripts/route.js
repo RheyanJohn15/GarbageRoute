@@ -1,6 +1,47 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoicmhleWFuIiwiYSI6ImNsenpydzA4eDFnajUyanB4M2V3NjZjdDUifQ.7cXuHyW86hXStq6Mh2kF8Q';
 
-window.onload = LoadMap();
+window.onload = ()=> {
+    LoadMap();
+    fetchDataForTable().then(processedData => {
+        $('#driversScheduleSummary').DataTable({
+            data: processedData,
+            columns: [
+                {title: "Driver", data: "name"},
+                {title: "Scheduled Days", data: null,
+                    render: data => {
+                        if (data.days == 'everyday') {
+                            return `
+                                <ul>
+                                    <li>Monday</li>
+                                    <li>Tuesday</li>
+                                    <li>Wednesday</li>
+                                    <li>Thursday</li>
+                                    <li>Friday</li>
+                                    <li>Saturday</li>
+                                    <li>Sunday</li>
+                                </ul>`;
+                        } else {
+                            const dayMap = {
+                                Mon: "Monday",
+                                Tue: "Tuesday",
+                                Wed: "Wednesday",
+                                Thu: "Thursday",
+                                Fri: "Friday",
+                                Sat: "Saturday",
+                                Sun: "Sunday"
+                            };
+                            return `<ul>${data.days.split(',').map(d => `<li>${dayMap[d]}</li>`).join('')}</ul>`;
+                        }
+                    }
+                },
+                {title: "Time Start/End", data: null,
+                    render: data => `${convertToAmPm(data.collection_start)} - ${convertToAmPm(data.collection_end)}`
+                },
+                {title: "Waypoint Schedules", data: "waypointSchedules"}
+            ]
+        });
+    });
+};
 
 async function getGeoData() {
     const response = await fetch('/api/get/zone/getgeodata');
@@ -1217,4 +1258,51 @@ function loadAssignedSched() {
             });
         }, error: xhr => console.log(xhr.responseText)
     })
+}
+
+function convertToAmPm(time24) {
+    // Split the time into hours and minutes
+    const [hour, minute] = time24.split(':').map(Number);
+    
+    // Determine AM or PM
+    const period = hour >= 12 ? 'PM' : 'AM';
+    
+    // Convert hour to 12-hour format
+    const hour12 = hour % 12 || 12;
+  
+    // Return formatted time with AM/PM
+    return `${hour12}:${minute.toString().padStart(2, '0')} ${period}`;
+  }
+  
+  async function buildZoneList(data) {
+    let listZone = '';
+    
+    if(data.zone_sched.length > 0){
+        const placeNames = await Promise.all(
+            data.zone_sched.map(async val => {
+                return await getPlaceName(val.latitude, val.longitude);
+            })
+        );
+    
+        // Build the list from resolved place names
+        listZone = placeNames.map(place_name => `<li>${place_name}</li>`).join('');
+    
+        return `<ul>${listZone}</ul>`;
+    }
+
+    return 'Not Set';
+}
+
+
+async function fetchDataForTable() {
+    // Fetch data from the API
+    const response = await fetch('/api/get/adminaccount/loadschedules');
+    const data = await response.json();
+    
+    // Process the data to include `Waypoint Schedules`
+    for (const row of data.result.data) {
+        row.waypointSchedules = await buildZoneList(row);
+    }
+
+    return data.result.data;
 }
