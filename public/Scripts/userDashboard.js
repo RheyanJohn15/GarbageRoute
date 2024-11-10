@@ -567,3 +567,213 @@ function groupByMonthYear(data) {
 
     return result;
 }
+
+async function getschedule(){
+    const response = await $.ajax({
+        type:"GET",
+        url: "/api/get/drivers/loadschedules",
+        dataType: "json"
+    });
+
+    const result = response.result.data;
+
+    return result
+}
+
+async function loadschedules(){
+
+    const result = await getschedule();
+    
+    loadAllSchedule(result);
+}
+
+async function loadAllSchedule(data) {
+    const table = document.getElementById('allSchedulesTable');
+    table.innerHTML = '';
+    let tr = '';
+
+    if (data.days === 'everyday') {
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+        for (const d of days) {
+            let waypoints = '';
+
+            if (data.zone_sched.length > 0) {
+                const waypointPromises = data.zone_sched
+                    .filter(wp => wp.days === d)
+                    .map(async wp => {
+                        const placeName = await getPlaceName(wp.latitude, wp.longitude);
+                        return `${wp.days} => ${placeName}`;
+                    });
+
+                // Wait for all waypointPromises to resolve
+                const resolvedWaypoints = await Promise.all(waypointPromises);
+                waypoints = resolvedWaypoints.join(', ');
+            }else{
+                waypoints = 'Not Set';
+            }
+
+            tr += `<tr>
+                <td>${d}</td>
+                <td>${convertToAmPm(data.collection_start)} - ${convertToAmPm(data.collection_end)}</td>
+                <td>${waypoints}</td>
+            </tr>`;
+        }
+
+        table.innerHTML = tr;
+    }else{
+        const days = data.days.split(',');
+        for (const d of days) {
+            let waypoints = '';
+
+            if (data.zone_sched.length > 0) {
+                const waypointPromises = data.zone_sched
+                    .filter(wp => wp.days === d)
+                    .map(async wp => {
+                        const placeName = await getPlaceName(wp.latitude, wp.longitude);
+                        return `${wp.days} => ${placeName}`;
+                    });
+
+                // Wait for all waypointPromises to resolve
+                const resolvedWaypoints = await Promise.all(waypointPromises);
+                waypoints = resolvedWaypoints.join(', ');
+            }else{
+                waypoints = 'Not Set';
+            }
+
+            tr += `<tr>
+                <td>${d}</td>
+                <td>${convertToAmPm(data.collection_start)} - ${convertToAmPm(data.collection_end)}</td>
+                <td>${waypoints}</td>
+            </tr>`;
+        }
+
+        table.innerHTML = tr;
+    }
+}
+
+async function loadTodaySchedule(data){
+    const table = document.getElementById('allSchedulesTable');
+    table.innerHTML = '';
+    let tr = '';
+    const currentDate = new Date();
+    const currentDay = currentDate.toLocaleString('en-US', { weekday: 'short' });
+
+    if (data.days === 'everyday') {
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+        for (const d of days) {
+            let waypoints = '';
+
+            if (data.zone_sched.length > 0) {
+                const waypointPromises = data.zone_sched
+                    .filter(wp => wp.days === d)
+                    .map(async wp => {
+                        const placeName = await getPlaceName(wp.latitude, wp.longitude);
+                        return `${wp.days} => ${placeName}`;
+                    });
+
+                // Wait for all waypointPromises to resolve
+                const resolvedWaypoints = await Promise.all(waypointPromises);
+                waypoints = resolvedWaypoints.join(', ');
+            }else{
+                waypoints = 'Not Set';
+            }
+            if(d == currentDay){
+                tr += `<tr>
+                <td>${d}</td>
+                <td>${convertToAmPm(data.collection_start)} - ${convertToAmPm(data.collection_end)}</td>
+                <td>${waypoints}</td>
+                </tr>`;
+            }
+
+      
+        }
+
+        table.innerHTML = tr;
+    }else{
+        const days = data.days.split(',');
+        for (const d of days) {
+            let waypoints = '';
+
+            if (data.zone_sched.length > 0) {
+                const waypointPromises = data.zone_sched
+                    .filter(wp => wp.days === d)
+                    .map(async wp => {
+                        const placeName = await getPlaceName(wp.latitude, wp.longitude);
+                        return `${wp.days} => ${placeName}`;
+                    });
+
+                // Wait for all waypointPromises to resolve
+                const resolvedWaypoints = await Promise.all(waypointPromises);
+                waypoints = resolvedWaypoints.join(', ');
+            }else{
+                waypoints = 'Not Set';
+            }
+
+           if(d == currentDay){
+                tr += `<tr>
+                <td>${d}</td>
+                <td>${convertToAmPm(data.collection_start)} - ${convertToAmPm(data.collection_end)}</td>
+                <td>${waypoints}</td>
+            </tr>`;
+            }
+        }
+
+        table.innerHTML = tr;
+    }
+}
+
+document.getElementById('scheduleFilter').addEventListener('change',async e=> {
+    const type = e.target.value;
+    const result = await getschedule();
+    if(type== 'all'){
+        loadAllSchedule(result);
+    }else{
+        loadTodaySchedule(result);
+    }
+});
+
+function convertToAmPm(time24) {
+    // Split the time into hours and minutes
+    const [hour, minute] = time24.split(':').map(Number);
+    
+    // Determine AM or PM
+    const period = hour >= 12 ? 'PM' : 'AM';
+    
+    // Convert hour to 12-hour format
+    const hour12 = hour % 12 || 12;
+  
+    // Return formatted time with AM/PM
+    return `${hour12}:${minute.toString().padStart(2, '0')} ${period}`;
+  }
+
+  async function getPlaceName(latitude, longitude) {
+    // Prepare the Mapbox Geocoding API URL
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${mapboxgl.accessToken}`;
+
+    try {
+        // Fetch the response from the Mapbox API
+        const response = await fetch(url);
+
+        // Check if the response is ok (status code 200-299)
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Parse the JSON response
+        const data = await response.json();
+
+        // Check if any features were returned
+        if (data.features && data.features.length > 0) {
+            // Get the place name from the first feature
+            return data.features[0].place_name;
+        } else {
+            return "No place found for the provided coordinates.";
+        }
+    } catch (error) {
+        // Handle any errors that occurred during the fetch
+        console.error("Error fetching place name:", error);
+        return "Error fetching place name.";
+    }
+}

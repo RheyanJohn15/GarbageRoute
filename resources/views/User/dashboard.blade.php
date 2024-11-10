@@ -47,8 +47,8 @@
                     <a class="nav-link" id="line-contact-tab" data-bs-toggle="pill" href="#records" role="tab" aria-controls="records" aria-selected="false" tabindex="-1">Records</a>
                   </li>
 
-                  <li class="nav-item" onclick="" role="presentation">
-                    <a class="nav-link" id="line-contact-tab" data-bs-toggle="pill" href="#schedules" role="tab" aria-controls="scheduleTab" aria-selected="false" tabindex="-1">Schedules</a>
+                  <li class="nav-item" onclick="loadschedules()" role="presentation">
+                    <a class="nav-link" id="line-schedule-tab" data-bs-toggle="pill" href="#scheduleTab" role="tab" aria-controls="scheduleTab" aria-selected="false" tabindex="-1">Schedules</a>
                   </li>
 
                 </ul>
@@ -112,15 +112,15 @@
   
                   </div>
 
-                  <div class="tab-pane fade active show" id="scheduleTab" role="tabpanel" aria-labelledby="schedule">
+                  <div class="tab-pane fade" id="scheduleTab" role="tabpanel" aria-labelledby="schedule">
                     <h3>Your Daily Collection Schedules</h3>
                     <p>Your schedule is set by your admin and you cannot continue garbage collection if it is not your schedule</p>
                     <label for="scheduleFilter">Filter Schedule</label>
-                    <select name="" id="scheduleFilter" class="form-select">
-                      <option value="today">Today</option>
+                    <select id="scheduleFilter" class="form-select">
                       <option value="all">All Schedule</option>
+                      <option value="today">Today</option>
                     </select>
-                    <table class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
+                    <table  class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
                       <thead>
                         <tr>
                           <th scope="col">Days</th>
@@ -129,24 +129,8 @@
 
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
+                      <tbody id="allSchedulesTable">
+                       
                       </tbody>
                     </table>
 

@@ -13,6 +13,7 @@ use App\Models\DumpTruckModel;
 use Illuminate\Support\Facades\Hash;
 use App\Services\ApiException;
 use App\Models\DumpsiteTurnovers;
+use Carbon\Carbon;
 
 class Driver{
 
@@ -213,16 +214,26 @@ class Driver{
     private function loadschedules($req){
         $driver = TruckDriverModel::where('access_token', session('access_token'))->first();
         $schedule = Schedules::where('td_id', $driver->td_id)->first();
+        $zone_drivers = ZoneDrivers::where('td_id', $driver->td_id)->first();
+        $zoneSubSched = ZoneSubSched::where('zone_sub_scheds.zone_id', $zone_drivers->zone_id)
+        ->join('waypoints', 'waypoints.wp_id', '=', 'zone_sub_scheds.wp_id')->get();
 
-        if($req->filter = 'all'){
-            if($schedule->days == 'everyday'){
-
-            }else{
-                
-            }
+        $schedule->zone_sched = $zoneSubSched;
+        $currentDay = Carbon::now()->format('D');
+        if($schedule->days == 'everyday'){
+            $zoneSubSchedToday = ZoneSubSched::where('zone_sub_scheds.zone_id', $zone_drivers->zone_id)->where('days', $currentDay)
+            ->join('waypoints', 'waypoints.wp_id', '=', 'zone_sub_scheds.wp_id')->get();
+            $schedule->today = $zoneSubSchedToday;
         }else{
-
+            $days = explode(',', $schedule->days);
+            if(in_array($currentDay, $days)){
+                $zoneSubSchedToday = ZoneSubSched::where('zone_sub_scheds.zone_id', $zone_drivers->zone_id)->where('days', $currentDay)
+                ->join('waypoints', 'waypoints.wp_id', '=', 'zone_sub_scheds.wp_id')->get();
+                $schedule->today = $zoneSubSchedToday;
+            }
         }
+        
+        $this->RESULT = ['Load Driver Sched', "Successfully Fetch all driver Schedules", $schedule];
     }
 
     public function getResult(){
