@@ -200,9 +200,72 @@ window.onload = () =>{
         }, error: xhr=> console.log(xhr.responseText)
     });
 
+
+    loadschedules();
     
 }
 
+
+async function loadschedules(){
+    const response = await $.ajax({
+        type: "GET",
+        url: "/api/get/landing/loadschedule",
+        dataType: "json"
+    });
+
+    const result = response.result.data;
+    console.log(result);
+
+    const table = document.getElementById('driverSchedules');
+    table.innerHTML= '';
+    let tr = '';
+
+    result.forEach(data=> {
+        let initialData = '';
+
+        initialData += `<td><strong>${data.name}</strong></td>`
+        
+       if(data.schedule){
+        if(data.schedule.days == 'everyday'){
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            
+            days.forEach(d=> {
+                initialData += `
+                <td>${d} (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})</td>
+                `
+            });
+        }else{
+            const days = data.days.split(',');
+            days.forEach(d=> {
+                initialData += `
+            <td>${d == 'Mon' ? `Monday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
+            <td>${d == 'Tue' ? `Tuesday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
+            <td>${d == 'Wed' ? `Wednesday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
+            <td>${d == 'Thu' ? `Thursday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
+            <td>${d == 'Fri' ? `Friday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
+            <td>${d == 'Sat' ? `Saturday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
+            <td>${d == 'Sun' ? `Sunday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
+            `
+            });
+        }
+       }else{
+        initialData +=`
+        <td>Not Available</td>
+        <td>Not Available</td>
+        <td>Not Available</td>
+        <td>Not Available</td>
+        <td>Not Available</td>
+        <td>Not Available</td>
+        <td>Not Available</td>
+        `;
+       }
+
+        tr += `<tr>${initialData}</tr>`;
+    });
+
+    table.innerHTML = tr;
+    
+}
 function checkStatus(status){
     switch(status){
         case 0:
@@ -219,6 +282,51 @@ window.addEventListener('keydown', function(event) {
             window.location.href = "/auth/login";
     }
 });
+
+
+function convertToAmPm(time24) {
+    // Split the time into hours and minutes
+    const [hour, minute] = time24.split(':').map(Number);
+    
+    // Determine AM or PM
+    const period = hour >= 12 ? 'PM' : 'AM';
+    
+    // Convert hour to 12-hour format
+    const hour12 = hour % 12 || 12;
+  
+    // Return formatted time with AM/PM
+    return `${hour12}:${minute.toString().padStart(2, '0')} ${period}`;
+  }
+
+  async function getPlaceName(latitude, longitude) {
+    // Prepare the Mapbox Geocoding API URL
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${mapboxgl.accessToken}`;
+
+    try {
+        // Fetch the response from the Mapbox API
+        const response = await fetch(url);
+
+        // Check if the response is ok (status code 200-299)
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Parse the JSON response
+        const data = await response.json();
+
+        // Check if any features were returned
+        if (data.features && data.features.length > 0) {
+            // Get the place name from the first feature
+            return data.features[0].place_name;
+        } else {
+            return "No place found for the provided coordinates.";
+        }
+    } catch (error) {
+        // Handle any errors that occurred during the fetch
+        console.error("Error fetching place name:", error);
+        return "Error fetching place name.";
+    }
+}
 
 
 function updateRouteStatus(route) {

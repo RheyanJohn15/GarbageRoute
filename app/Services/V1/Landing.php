@@ -6,6 +6,8 @@ use App\Models\GeoDataCoordinates;
 use App\Models\Zones;
 use App\Models\Settings;
 use App\Models\Waypoints;
+use App\Models\TruckDriverModel;
+use App\Models\Schedules;
 use App\Models\CollectionProgress;
 use Carbon\Carbon;
 
@@ -58,6 +60,18 @@ class Landing{
         ];
 
         $this->RESULT = ['dashboard', 'Get All Dashboard', $data];
+    }
+
+    private function loadschedule($req){
+        $drivers = TruckDriverModel::all();
+
+        foreach($drivers as $drive){
+            $schedules = Schedules::where('td_id', $drive->td_id)->first();
+          
+            $drive->schedule = $schedules;
+        }
+
+        $this->RESULT = ['Load Schedule', "Successfully Loaded the schedule", $drivers];
     }
 
     public function getResult(){

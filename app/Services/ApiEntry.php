@@ -185,7 +185,8 @@ class ApiEntry{
             'getval'=> ['params'=>['context'], 'logs'=> false]
         ],
         'landing'=> [
-            'dashboard'=> ['params'=>['empty'], 'logs'=> false]
+            'dashboard'=> ['params'=>['empty'], 'logs'=> false],
+            'loadschedule' => ['params'=> ['empty'], 'logs'=> false]
         ]
     ];
 
