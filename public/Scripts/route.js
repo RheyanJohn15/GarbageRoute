@@ -1280,12 +1280,13 @@ function convertToAmPm(time24) {
     if(data.zone_sched.length > 0){
         const placeNames = await Promise.all(
             data.zone_sched.map(async val => {
-                return await getPlaceName(val.latitude, val.longitude);
+                const placeName = await getPlaceName(val.latitude, val.longitude);
+                return [val.days, placeName];
             })
         );
     
         // Build the list from resolved place names
-        listZone = placeNames.map(place_name => `<li>${place_name}</li>`).join('');
+        listZone = placeNames.map(place_name => `<li>(${place_name[0]}) => ${place_name[1]}</li>`).join('');
     
         return `<ul>${listZone}</ul>`;
     }
