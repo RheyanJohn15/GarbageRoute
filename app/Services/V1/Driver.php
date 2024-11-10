@@ -4,6 +4,8 @@ use App\Models\ZoneDrivers;
 use App\Models\Zones;
 use App\Models\BrgyList;
 use App\Events\GpsUpdate;
+use App\Models\Schedules;
+use App\Models\ZoneSubSched;
 use App\Models\ActiveDrivers;
 use App\Models\TruckDriverModel;
 use App\Models\CollectionProgress;
@@ -209,7 +211,18 @@ class Driver{
 
     
     private function loadschedules($req){
+        $driver = TruckDriverModel::where('access_token', session('access_token'))->first();
+        $schedule = Schedules::where('td_id', $driver->td_id)->first();
 
+        if($req->filter = 'all'){
+            if($schedule->days == 'everyday'){
+
+            }else{
+                
+            }
+        }else{
+
+        }
     }
 
     public function getResult(){
