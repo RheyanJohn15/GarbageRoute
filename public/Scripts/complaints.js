@@ -38,6 +38,7 @@ function  loadAllComplaints(){
                         return data.comp_email != null ? `<a href="mailto:${data.comp_email}">${data.comp_email}</a>` : 'N/A';
                     }
                 },
+                {title: "Zone", data: "zone_name"},
                 {title: 'Date', data: null, render: data => parseDate(data.created_at) },
                 {title: 'Nature of Complaint', data: "comp_nature"},
                 {title: 'Remarks', data: null,

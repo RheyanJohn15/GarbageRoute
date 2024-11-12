@@ -42,6 +42,7 @@
                         <tr>
                           <th>Complainant</th>
                           <th>Email</th>
+                          <th>Zone</th>
                           <th>Date</th>
                           <th>Nature of Complaint</th>
                           <th>Remarks</th>

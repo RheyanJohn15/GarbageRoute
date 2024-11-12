@@ -48,7 +48,9 @@ class ComplaintsClass{
     }
 
     private function list($request){
-        $complaints = Complaints::join('zones', 'zones.zone_id', '=', 'complaints.comp_zone')->get();
+        $complaints = Complaints::join('zones', 'zones.zone_id', '=', 'complaints.comp_zone')
+        ->select('complaints.*', 'zones.zone_name')
+        ->get();
 
         $this->RESULT = ['list', 'Complaint List', $complaints];
     }
