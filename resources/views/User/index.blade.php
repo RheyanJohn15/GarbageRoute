@@ -193,7 +193,7 @@ tbody:hover tr:hover td {
                                         <div class="col-lg-12">
                                             <fieldset>
                                                 <input oninput="autoCaps(this)" type="email" name="email" id="email"
-                                                    pattern="[^ @]*@[^ @]*" placeholder="Your Email" required>
+                                                    pattern="[^ @]*@[^ @]*" placeholder="Your Email">
                                             </fieldset>
                                         </div>
                                         <div class="col-lg-12">

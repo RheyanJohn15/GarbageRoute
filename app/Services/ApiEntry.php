@@ -127,7 +127,7 @@ class ApiEntry{
                 'list' => ['params'=>['empty'], 'logs'=> false]
              ],
         'complaints' => [
-            'submit' => ['params'=>['comp_name', 'email', 'contact', 'nature', 'zone'], 'logs'=> false],
+            'submit' => ['params'=>['comp_name', 'contact', 'nature', 'zone'], 'logs'=> false],
             'list'=> ['params'=>['empty'], 'logs'=> false],
             'remove'=> ['params'=>['comp_id'], 'logs'=> true],
             'details'=> ['params'=>['comp_id'], 'logs'=> false],

@@ -35,14 +35,14 @@ function  loadAllComplaints(){
                 {title: 'Complainant', data: "comp_name"},
                 {title: 'Email', data: null, 
                     render: data=> {
-                        return `<a href="mailto:${data.comp_email}">${data.comp_email}</a>`
+                        return data.comp_email != null ? `<a href="mailto:${data.comp_email}">${data.comp_email}</a>` : 'N/A';
                     }
                 },
                 {title: 'Date', data: null, render: data => parseDate(data.created_at) },
                 {title: 'Nature of Complaint', data: "comp_nature"},
                 {title: 'Remarks', data: null,
                     render: data=>{
-                        return data.comp_remarks.length > 30 ? data.comp_remarks.substring(0, 30) + "......" : data.comp_remarks;
+                        return data.comp_remarks != null ? (data.comp_remarks.length > 30 ? data.comp_remarks.substring(0, 30) + "......" : data.comp_remarks) : 'N/A';
                     }
                 },
                 {title: 'Status', data: null,
