@@ -9,6 +9,7 @@ use App\Models\Waypoints;
 use App\Models\TruckDriverModel;
 use App\Models\Schedules;
 use App\Models\CollectionProgress;
+use App\Models\ZoneDrivers;
 use Carbon\Carbon;
 
 class Landing{
@@ -63,15 +64,21 @@ class Landing{
     }
 
     private function loadschedule($req){
-        $drivers = TruckDriverModel::all();
+        $zones = Zones::all();
 
-        foreach($drivers as $drive){
-            $schedules = Schedules::where('td_id', $drive->td_id)->first();
-          
-            $drive->schedule = $schedules;
+        foreach($zones as $zone){
+            $drivers = ZoneDrivers::where('zone_id', $zone->zone_id)->first();
+
+            if($drivers){
+                $schedules = Schedules::where('td_id', $drivers->td_id)->first();
+            }else{
+                $schedules = null;
+            }
+
+            $zone->schedule = $schedules;
         }
 
-        $this->RESULT = ['Load Schedule', "Successfully Loaded the schedule", $drivers];
+        $this->RESULT = ['Load Schedule', "Successfully Loaded the schedule", $zones];
     }
 
     public function getResult(){

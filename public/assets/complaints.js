@@ -222,7 +222,7 @@ async function loadschedules(){
     result.forEach(data=> {
         let initialData = '';
 
-        initialData += `<td><strong>${data.name}</strong></td>`
+        initialData += `<td><strong>${data.zone_name}</strong></td>`
         
        if(data.schedule){
         if(data.schedule.days == 'everyday'){

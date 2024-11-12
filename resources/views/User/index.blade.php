@@ -365,7 +365,7 @@ tbody:hover tr:hover td {
             <table>
                 <thead>
                   <tr>
-                    <th>Driver</th>
+                    <th>Zone</th>
                     <th>Monday</th>
                     <th>Tuesday</th>
                     <th>Wednesday</th>
