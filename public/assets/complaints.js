@@ -77,7 +77,6 @@ window.onload = () =>{
                             <img src="ComplaintAssets/${d.comp_image}" alt="Complaint Image" class="img-fluid"
                                 style="width: 350px; height: 250px; ">
                             <p class="text-start m-0">
-                                <strong>Name:</strong>${d.comp_name}<br>
                                 <strong>Nature:</strong>${d.comp_nature}<br>
                                 <strong>Status:</strong> ${checkStatus(d.comp_status)}<br>
                             </p>
