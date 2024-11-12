@@ -354,7 +354,7 @@ tbody:hover tr:hover td {
         </div>
     </div>
 
-    <div  class="contact-us section">
+    <div id="schedules" class="contact-us section">
         <div class="container" style="padding-left: 15px; padding-right: 15px;">
             <div class="section-heading text-center">
                 <h2 style="font-size: 40px !important">
