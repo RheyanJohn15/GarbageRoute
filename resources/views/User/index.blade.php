@@ -226,8 +226,7 @@ tbody:hover tr:hover td {
                                             </fieldset>
                                         </div>
                                         <div class="col-lg-12 mb-4">
-                                            <label for="attachment" class="form-label">Attach a Photo
-                                                (Optional):</label>
+                                            <label for="attachment" class="form-label">Attach a Photo:</label>
                                             <input type="file" class="form-control" name="attachment" id="attachment"
                                                 accept=".jpg,.jpeg,.png" onchange="previewImage(event)">
 
