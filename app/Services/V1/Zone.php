@@ -212,9 +212,22 @@ class Zone{
         $wp = Waypoints::where('zone_id', $req->zone)->get();
 
         foreach($wp as $w){
-            $w->delete();
+            $schedule = ZoneSubSched::where('wp_id', $w->wp_id)->get();
+            
+            foreach($schedule as $sched){
+                $sched->delete();
+            }
+
+            $progress = CollectionProgress::where('wp_id', $w->wp_id)->get();
+            foreach($progress as $prog){
+                $prog->delete();
+            }
         }
 
+        foreach($wp as $w){
+
+            $w->delete();
+        }
         $this->RESULT = ['Remove All Waypoints', "Zone waypoint are successfully removed for redo", 'null'];
     }
 
