@@ -9,10 +9,10 @@
                             <img class="img-fluid mt-2" alt="Medium Logo" style="max-width: 70px;" src="assets/images/logo.png">
                         </a>
                         <!-- ***** Logo End ***** -->
-                        
+
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+                            {{-- <li class="scroll-to-section"><a href="#top" class="active">Home</a></li> --}}
                             <li class="scroll-to-section"><a href="#services">Complaints Overview</a></li>
                             <li class="scroll-to-section"><a href="#about">Complaint Metrics</a></li>
                             <li class="scroll-to-section"><a href="#mapview">Collection Routes</a></li>

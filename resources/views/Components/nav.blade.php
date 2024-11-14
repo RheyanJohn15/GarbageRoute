@@ -77,7 +77,7 @@
           <li class="nav-item  {{$active == 'activity' ? 'active' : ''}}">
             <a href="/activity-logs">
               <i class="fas fa-clipboard-list"></i>
-              <p>Activit Logs</p>
+              <p>Activity Logs</p>
             </a>
           </li>
 
