@@ -40,19 +40,6 @@
             </span>
             <h4 class="text-section">Admin Navigation</h4>
           </li>
-          <li class="nav-item  {{$active == 'routes' ? 'active' : ''}}">
-            <a href="{{route('routes')}}">
-              <i class="fas fa-map"></i>
-              <p>Map & Zones</p>
-            </a>
-          </li>
-
-          <li class="nav-item  {{$active == 'truck' ? 'active' : ''}}">
-            <a href="{{route('truckregister')}}">
-              <i class="fas fa-truck-moving "></i>
-              <p>Dump Trucks</p>
-            </a>
-          </li>
 
           <li class="nav-item  {{$active == 'driver' ? 'active' : ''}}">
             <a href="{{route('truckdriver')}}">
@@ -62,21 +49,38 @@
           </li>
 
 
+          <li class="nav-item  {{$active == 'truck' ? 'active' : ''}}">
+            <a href="{{route('truckregister')}}">
+              <i class="fas fa-truck-moving "></i>
+              <p>Dump Trucks</p>
+            </a>
+          </li>
+
+
+          <li class="nav-item  {{$active == 'routes' ? 'active' : ''}}">
+            <a href="{{route('routes')}}">
+              <i class="fas fa-map"></i>
+              <p>Map & Zones</p>
+            </a>
+          </li>
+
+
+
           <li class="nav-item  {{$active == 'complaints' ? 'active' : ''}}">
             <a href="{{route('complaints')}}">
               <i class="fas fa-paper-plane"></i>
               <p>Complaints</p>
             </a>
           </li>
-         
-    
+
+
           <li class="nav-item  {{$active == 'activity' ? 'active' : ''}}">
             <a href="/activity-logs">
               <i class="fas fa-clipboard-list"></i>
               <p>Activit Logs</p>
             </a>
           </li>
-         
+
         </ul>
       </div>
     </div>
