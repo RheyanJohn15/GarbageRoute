@@ -25,7 +25,7 @@ class Authenticate extends Controller
     public function Complaints(Request $req){
         return $this->redirectRoute('complaints', $req);
     }
-    
+
     public function MapNavigator(Request $req){
         return $this->redirectRoute('mapnavigator', $req);
     }
@@ -42,13 +42,13 @@ class Authenticate extends Controller
         return $this->redirectRoute('viewtruck', $req);
     }
     public function ViewDriver(Request $req){
-        return $this->redirectRoute('viewDriver', $req);
+        return $this->redirectRoute('viewdriver', $req);
     }
 
     public function ActivityLogs(Request $req){
         return $this->redirectRoute('activitylogs', $req);
     }
-    
+
     private function redirectRoute($routes, $req){
         $auth = new Auth();
         return $auth->checkAuth($req) ? view('Dashboard.'. $routes) : redirect()->route('login');
