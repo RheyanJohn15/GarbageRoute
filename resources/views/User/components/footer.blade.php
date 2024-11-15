@@ -35,10 +35,9 @@
                 <div class="services footer-item">
                     <h4>Services</h4>
                     <ul>
-                        <li><a href="#">Waste Segregation</a></li>
-                        <li><a href="#">Waste Collection</a></li>
-                        <li><a href="#">Recycling Programs</a></li>
-                        <li><a href="#">Solid Waste Disposal</a></li>
+                        <li><a href="#">Garbage Collection</a></li>
+                        <li><a href="#">Waste Removal</a></li>
+                        <li><a href="#">Trash Pickup</a></li>
                     </ul>
                 </div>
             </div>
@@ -46,17 +45,17 @@
                 <div class="community footer-item">
                     <h4>Community</h4>
                     <ul>
-                        <li><a href="#">Hazardous Waste Management</a></li>
-                        <li><a href="#">Public Education Campaigns</a></li>
-                        <li><a href="#">Flood and Landslide Mitigation</a></li>
-                        <li><a href="#">Climate Change Adaptation</a></li>
+                        <li><a href="#">Waste Management</a></li>
+                        <li><a href="#">Community Cleanliness</a></li>
+                        <li><a href="#">Environmental Services</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="subscribe-newsletters footer-item">
-                    <h4>Join the Movement for Sustainable Waste Management</h4>
-                    <p>Together, we can reduce waste, promote recycling, and create a cleaner, greener planet.</p>
+                <div class="text-primary footer-item">
+                    <p>The General Services Office (GSO) of Silay City is committed to ensuring a clean and sustainable environment for our community. We are dedicated to implementing efficient and effective waste management practices to minimize waste and protect our natural resources
+                        You sent
+                        </p>
                 </div>
             </div>
             <div class="col-lg-12">
