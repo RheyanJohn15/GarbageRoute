@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SettingsSeeder::class);
         $this->call(ZoneDriverSeeder::class);
         $this->call(DumpsiteTurnoverSeeder::class);
+        $this->call(ZoneSchedules::class);
     }
 }
