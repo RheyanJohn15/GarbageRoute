@@ -31,7 +31,7 @@ return [
     'connections' => [
 
         'reverb' => [
-            'driver' => 'pusher',
+            'driver' => 'reverb',
             'key' => env('REVERB_APP_KEY'),
             'secret' => env('REVERB_APP_SECRET'),
             'app_id' => env('REVERB_APP_ID'),
