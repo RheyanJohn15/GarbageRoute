@@ -8,7 +8,7 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    build: {
-        outDir: './../../silaywastemanagement',
-    },
+    // build: {
+    //     outDir: './../../silaywastemanagement',
+    // },
 });

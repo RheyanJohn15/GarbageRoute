@@ -13,6 +13,7 @@ use App\Models\ActiveDrivers;
 use App\Models\ZoneDrivers;
 use App\Models\TruckDriverModel;
 use App\Models\DumpTruckModel;
+use Illuminate\Broadcasting\InteractsWithBroadcasting;
 
 class GpsUpdate implements ShouldBroadcast
 {
@@ -24,7 +25,7 @@ class GpsUpdate implements ShouldBroadcast
 
     public function __construct()
     {
-        //
+
     }
 
     /**
@@ -33,24 +34,31 @@ class GpsUpdate implements ShouldBroadcast
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
 
-     public function broadcastWith():array{
+     public function broadcastWith(): array
+     {
+         $activeDrivers = ActiveDrivers::where('status', 'active')->get();
 
-        $activeDrivers = ActiveDrivers::where('status', 'active')->get();
-        foreach($activeDrivers as $active){
-            $driver = TruckDriverModel::where('td_id', $active->td_id)->first();
-            $zone = ZoneDrivers::where('td_id', $active->td_id)->join('zones', 'zones.zone_id', '=', 'zone_drivers.zone_id')->first();
-            $dumptruck = DumpTruckModel::where('td_id', $active->td_id)->first();
-            $active->driver = $driver;
-            $active->zone = $zone;
-            $active->truck = $dumptruck;
-            
-        }
-        return ['message'=> "success", "data" => $activeDrivers];
+         foreach ($activeDrivers as $active) {
+             $driver = TruckDriverModel::where('td_id', $active->td_id)->first();
+             $zone = ZoneDrivers::where('td_id', $active->td_id)
+                 ->join('zones', 'zones.zone_id', '=', 'zone_drivers.zone_id')
+                 ->first();
+             $dumptruck = DumpTruckModel::where('td_id', $active->td_id)->first();
+
+             $active->driver = $driver;
+             $active->zone = $zone;
+             $active->truck = $dumptruck;
+         }
+
+         return [
+             'message' => 'success',
+             'data' => $activeDrivers,
+         ];
      }
-    public function broadcastOn(): array
-    {
-        return [
-            new Channel('gps-update'),
-        ];
-    }
+
+     public function broadcastOn()
+     {
+        return new Channel('gps-update');
+     }
+
 }

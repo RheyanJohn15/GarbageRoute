@@ -4,6 +4,7 @@
 <head>
     @include('Components.header', ['title' => 'Routes'])
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 </head>
 <style>
     #map {
@@ -98,11 +99,11 @@
                       <div class="d-flex justify-content-center align-items-center flex-column gap-2 w-100">
                         <img src="/assets/img/zone5.png" alt="Zone5">
                         <p>Zone 5</p>
-                        <div class="rounded-pill" style="height:24px; width:24px; background-color:#6DD47E"></div>  
+                        <div class="rounded-pill" style="height:24px; width:24px; background-color:#6DD47E"></div>
                       </div>
                     </div>
                     <div id="activeTableDiv">
-                        
+
                     <h3>Currently Collecting Active Drivers</h3>
                     <p>Track All Active drivers and there location on the map</p>
                     <table class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
@@ -133,7 +134,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          
+
                         </tbody>
                       </table>
                     </div>
@@ -271,7 +272,7 @@
                     </div>
 
                     <div class="d-none" id="waypointsTableDiv">
-                        
+
                     <table id="waypointsTable" class="table table-hover">
                         <thead>
                             <tr>
@@ -485,17 +486,17 @@
             </div>
         </div>
     </div>
-    @vite('resources/js/app.js')
 
     @include('Components.script', ['type' => 'admin'])
     <script src="{{ asset('Scripts/route.js') }}"></script>
     <script>
-        setTimeout(() => {
-            window.Echo.channel('gps-update')
-                .listen('GpsUpdate', (e) => {
-                    updateRouteStatus(e);
-                })
-        }, 2000);
+        setTimeout(async() => {
+            const response = await fetch('/api/getactivedriver');
+
+            const result = await response.json();
+
+            updateRouteStatus(result);
+        }, 1000);
     </script>
 </body>
 
