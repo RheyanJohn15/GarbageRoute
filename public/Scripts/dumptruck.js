@@ -9,7 +9,11 @@ async function getDumpTruckList() {
       adminTable = [
         { title: "Truck Model", data: "model" },
         { title: "Capacity(Tons)", data: "can_carry" },
-        { title: "Driver", data: "driver" },
+        { title: "Driver", data: null,
+            render: data=> {
+                return data.driver ?? 'N/A';
+            }
+         },
         { title: "Plate Number", data: "plate_num"},
         {
           title: "Action",
@@ -27,8 +31,8 @@ async function getDumpTruckList() {
               <button onclick="RemoveTruck('${data.dt_id}')" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
             </div>`;
           },
-          orderable: false,  
-          searchable: false 
+          orderable: false,
+          searchable: false
         }
       ]
     }else{
@@ -45,8 +49,8 @@ async function getDumpTruckList() {
               Not Available
             </div>`;
           },
-          orderable: false,  
-          searchable: false 
+          orderable: false,
+          searchable: false
         }
       ]
     }
