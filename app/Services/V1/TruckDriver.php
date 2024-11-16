@@ -46,10 +46,35 @@ class TruckDriver {
          }
        }
 
+       $activeDrivers = ActiveDrivers::where('td_id', $req->id)->get();
 
-       $check->update([
-        'status'=> 'disable'
-       ]);
+       foreach($activeDrivers as $ad){
+        $ad->delete();
+       }
+
+       $collectionProgress = CollectionProgress::where('td_id', $req->id)->get();
+       foreach($collectionProgress as $cp){
+        $cp->delete();
+       }
+
+       $dumpsiteTurnover = DumpsiteTurnovers::where('td_id', $req->id)->get();
+       foreach($dumpsiteTurnover as $dt){
+        $dt->delete();
+       }
+
+       $schedules = Schedules::where("td_id", $req->id)->first();
+
+      if($schedules){
+        $schedules->delete();
+      }
+       $zoneDrivers = ZoneDrivers::where("td_id", $req->id)->first();
+
+        if($zoneDrivers){
+            $zoneDrivers->delete();
+        }
+
+       $check->delete();
+
         $this->RESULT = ['Delete Truck Drivers', 'Truck Driver is Successfully Deleted', null];
 
 
