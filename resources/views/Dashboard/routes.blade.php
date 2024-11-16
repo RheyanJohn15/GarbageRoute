@@ -475,7 +475,7 @@
                     </div>
 
                 </div>
-                <div class="modal-footer border-0">
+                <div class="modal-footer border-0" id="saveFooterforAssign">
                     <button type="button" id="saveDriverToZone" class="btn btn-primary">
                         Save
                     </button>

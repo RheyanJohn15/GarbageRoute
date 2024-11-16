@@ -638,6 +638,7 @@ function viewDriverOnMap(lat, lng) {
 
 let selectedZoneSched;
 function chooseZone(id) {
+
     selectedZoneSched = id;
     $.ajax({
         type: "GET",
@@ -686,7 +687,7 @@ function chooseZone(id) {
                 collectionStart.value = data.collection_start;
                 collectionEnd.value = data.collection_end;
             }
-
+            isShow('saveFooterforAssign', true, 'block');
         }, error: xhr => console.log(xhr.responseText)
     })
 }
@@ -1081,6 +1082,7 @@ async function getPlaceName(latitude, longitude) {
 document.getElementById('manageSchedules').addEventListener('click', async () => {
     isShow('assignScheduleDiv', false, 'block');
     isShow('manageScheduleDiv', true, 'block');
+    isShow('saveFooterforAssign', false, 'block');
     loadAssignedSched();
     const response = await fetch(`/api/get/truckdriver/getschedule?zone=${selectedZoneSched}`, {
         method: "GET",
@@ -1136,6 +1138,7 @@ document.getElementById('manageSchedules').addEventListener('click', async () =>
 document.getElementById('closeManageSchedule').addEventListener('click', () => {
     isShow('assignScheduleDiv', true, 'block');
     isShow('manageScheduleDiv', false, 'block');
+    isShow('saveFooterforAssign', true, 'block');
 });
 
 document.getElementById('saveManageSchedule').addEventListener('click', async () => {
@@ -1313,7 +1316,6 @@ async function fetchDataForTable() {
     // Fetch data from the API
     const response = await fetch('/api/get/adminaccount/loadschedules');
     const data = await response.json();
-
     // Process the data to include `Waypoint Schedules`
     for (const row of data.result.data) {
         row.waypointSchedules = await buildZoneList(row);
