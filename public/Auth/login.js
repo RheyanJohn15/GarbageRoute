@@ -26,3 +26,13 @@ document.getElementById('loginForm').addEventListener('submit', (e)=>{
         toastr.error('Please complete necessary credentials', 'Error')
     }
 });
+
+document.getElementById('showPass').addEventListener('click', ()=> {
+    const pass = document.getElementById('password');
+
+    if(pass.type == 'password'){
+        pass.type = 'text';
+    }else{
+        pass.type = 'password';
+    }
+});
