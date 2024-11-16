@@ -54,7 +54,6 @@
             <div class="col-lg-3">
                 <div class="text-primary footer-item">
                     <p>The General Services Office (GSO) of Silay City is committed to ensuring a clean and sustainable environment for our community. We are dedicated to implementing efficient and effective waste management practices to minimize waste and protect our natural resources
-                        You sent
                         </p>
                 </div>
             </div>

@@ -204,7 +204,7 @@
                           <select name="driver" id="addDriver" class="form-select">
                             <option selected disabled value="0">------Select Driver------</options>
                              @php
-                         $driver = App\Models\TruckDriverModel::where('td_id', '!=', 0)->get();
+                         $driver = App\Models\TruckDriverModel::where('td_id', '!=', 0)->where('status', 'enable')->get();
                         @endphp
                         @foreach ($driver as $d)
                             <option value="{{$d->td_id}}">{{$d->name}}</option>
