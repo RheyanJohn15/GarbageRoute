@@ -50,12 +50,12 @@ class APIHandler extends Controller
         if($method === 'logout' && $data === 'user'){
             Logger::save(['Logout', 'Successfully Logged Out'], $req);
             $req->session()->flush();
-            return response()->json(["status"=>"success", "method"=> "logout", "result"=> "Logout Successfully" ]);
+            return response()->json(["status"=>"success", "method"=> "logout", "message"=> "Logout Successfully" ]);
         }
 
         if($method === 'logout' && $data === 'drivers'){
             $req->session()->flush();
-            return response()->json(["status"=>"success", "method"=> "logout", "result"=> "Logout Successfully" ]);
+            return response()->json(["status"=>"success", "method"=> "logout", "message"=> "Logout Successfully" ]);
         }
 
         return response()->json($this->isAuthenticated($check, $req, $data, $method, 'post'));
@@ -63,11 +63,11 @@ class APIHandler extends Controller
     }
 
     private function isAuthenticated($check, $req, $data, $method, $reqType){
-        if($check->checkAuth($req) 
-        || ($data == "complaints" && $method == "submit") 
-        || ($data == "complaints" && $method == 'getzone') 
+        if($check->checkAuth($req)
+        || ($data == "complaints" && $method == "submit")
+        || ($data == "complaints" && $method == 'getzone')
         || ($data == 'landing' && $method   == 'dashboard')
-        || ($data == 'landing' && $method == 'loadschedule') 
+        || ($data == 'landing' && $method == 'loadschedule')
         ){
             $entry = new ApiEntry($data, $method, $req, $reqType);
             return $entry->getResponse();
