@@ -18,6 +18,7 @@ class TruckDriverModel extends Model
        'contact',
        'address',
        'profile_pic',
-       'access_token'
+       'access_token',
+       'status'
     ];
 }

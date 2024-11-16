@@ -5,10 +5,13 @@ use Illuminate\Support\Facades\Hash;
 use App\Services\ApiException;
 use App\Models\DumpTruckModel;
 use App\Models\ZoneDrivers;
+use App\Models\ActiveDrivers;
+use App\Models\CollectionProgress;
+use App\Models\DumpsiteTurnovers;
 use App\Models\Schedules;
 
 class TruckDriver {
-    
+
     private $RESULT = null;
     public function __construct($method, $request)
     {
@@ -29,7 +32,7 @@ class TruckDriver {
     }
 
     private function delete($req){
-        
+
        $check = TruckDriverModel::where('td_id', $req->id)->first();
 
        if(!$check){
@@ -43,17 +46,22 @@ class TruckDriver {
          }
        }
 
-       $check->delete();
+
+       $check->update([
+        'status'=> 'disable'
+       ]);
         $this->RESULT = ['Delete Truck Drivers', 'Truck Driver is Successfully Deleted', null];
+
+
      }
 
     private function list($req){
-        $truck = TruckDriverModel::all();
+        $truck = TruckDriverModel::where('status', 'enable')->get();
         foreach($truck as $tr){
           $dump = DumpTruckModel::where('td_id', $tr->td_id)->first();
           $tr->dumptruck = $dump ? $dump : null;
         }
-        
+
         $this->RESULT = ['list', 'List of all truck drivers', $truck];
     }
 
@@ -84,7 +92,7 @@ class TruckDriver {
       }
 
       $truck = DumpTruckModel::where('td_id', $req->id)->first();
-      
+
       $check->truck = $truck;
 
       $this->RESULT = ['details', 'Show truck details', $check];
@@ -92,7 +100,7 @@ class TruckDriver {
 
     private function getdriverbyzone($req){
       $drivers = TruckDriverModel::all();
-      
+
       foreach($drivers as $drive){
         $zone = ZoneDrivers::where('td_id', $drive->td_id)->join('zones', 'zones.zone_id', '=', 'zone_drivers.zone_id')->first();
         if($zone){
@@ -104,10 +112,10 @@ class TruckDriver {
     }
 
     private function driverassignedzone($req){
-      $zone = ZoneDrivers::where('zone_id', $req->zone)->get(); 
+      $zone = ZoneDrivers::where('zone_id', $req->zone)->get();
       $mainDriver = explode('-', $req->maindriver);
       $standbyDriver = explode('-', $req->standbydriver);
-      
+
       if(count($zone) == 2){
         foreach($zone as $z){
           switch($z->type){

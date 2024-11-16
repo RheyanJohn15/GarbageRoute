@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('profile_pic')->nullable();
             $table->string('access_token')->nullable();
+            $table->string('status')->default('enable');
             $table->timestamps();
         });
     }
