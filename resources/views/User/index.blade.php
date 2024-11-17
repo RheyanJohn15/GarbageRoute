@@ -3,13 +3,13 @@
 
 @include('User.components.head')
 <style>
-    
+
 strong {
-	font-weight: bold; 
+	font-weight: bold;
 }
 
 em {
-	font-style: italic; 
+	font-style: italic;
 }
 
 table {
@@ -21,7 +21,7 @@ table {
 	margin: 30px auto;
 	text-align: left;
 	width: 100%;
-}	
+}
 
 th {
 	background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
@@ -34,7 +34,7 @@ th {
   font-weight: bold;
 	padding: 10px 15px;
 	position: relative;
-	text-shadow: 0 1px 0 #000;	
+	text-shadow: 0 1px 0 #000;
 }
 
 th:after {
@@ -50,7 +50,7 @@ th:after {
 }
 
 th:first-child {
-	border-left: 1px solid #777;	
+	border-left: 1px solid #777;
 	box-shadow: inset 1px 1px 0 #999;
 }
 
@@ -70,32 +70,32 @@ td {
 
 td:first-child {
 	box-shadow: inset 1px 0 0 #fff;
-}	
+}
 
 td:last-child {
 	border-right: 1px solid #e8e8e8;
 	box-shadow: inset -1px 0 0 #fff;
-}	
+}
 
 tr {
-	background: url(https://jackrugile.com/images/misc/noise-diagonal.png);	
+	background: url(https://jackrugile.com/images/misc/noise-diagonal.png);
 }
 
 tr:nth-child(odd) td {
-	background: #f1f1f1 url(https://jackrugile.com/images/misc/noise-diagonal.png);	
+	background: #f1f1f1 url(https://jackrugile.com/images/misc/noise-diagonal.png);
 }
 
 tr:last-of-type td {
-	box-shadow: inset 0 -1px 0 #fff; 
+	box-shadow: inset 0 -1px 0 #fff;
 }
 
 tr:last-of-type td:first-child {
 	box-shadow: inset 1px -1px 0 #fff;
-}	
+}
 
 tr:last-of-type td:last-child {
 	box-shadow: inset -1px -1px 0 #fff;
-}	
+}
 
 tbody:hover td {
 	color: transparent;
@@ -119,7 +119,7 @@ tbody:hover tr:hover td {
     transform: translateZ(0);
     animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
   }
-  
+
   @keyframes mltShdSpin {
     0% {
       box-shadow: 0 -0.83em 0 -0.4em,
@@ -128,37 +128,37 @@ tbody:hover tr:hover td {
     }
     5%,
     95% {
-      box-shadow: 0 -0.83em 0 -0.4em, 
-      0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 
+      box-shadow: 0 -0.83em 0 -0.4em,
+      0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
       0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
     }
     10%,
     59% {
-      box-shadow: 0 -0.83em 0 -0.4em, 
-      -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, 
+      box-shadow: 0 -0.83em 0 -0.4em,
+      -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em,
       -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
     }
     20% {
       box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em,
-       -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, 
+       -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em,
        -0.749em -0.34em 0 -0.477em;
     }
     38% {
       box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em,
-       -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, 
+       -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em,
        -0.82em -0.09em 0 -0.477em;
     }
     100% {
-      box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 
+      box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em,
       0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
     }
   }
-  
+
   @keyframes round {
     0% { transform: rotate(0deg) }
     100% { transform: rotate(360deg) }
   }
-   
+
 </style>
 <body>
     @include('Components.dashload')
@@ -376,7 +376,7 @@ tbody:hover tr:hover td {
                   </tr>
                 </thead>
                 <tbody id="driverSchedules">
-                  
+
                 </tbody>
               </table>
 
@@ -393,8 +393,36 @@ tbody:hover tr:hover td {
                 <!-- Map Row -->
                 <div class="col-lg-12">
                     <div id="webMap">
-                        
+
                     </div>
+
+                    <div class="w-100 d-flex p-3 gap-2 border border-primary rounded">
+                        <div class="d-flex justify-content-center align-items-center flex-column gap-2 w-100">
+                          <img src="/assets/img/zone1.png" class="w-25" alt="Zone1">
+                          <p>Zone 1</p>
+                          <div class="rounded-pill" style="height:24px; width:24px; background-color:#F48C06"></div>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center flex-column gap-2 w-100">
+                          <img src="/assets/img/zone2.png" class="w-25" alt="Zone2">
+                          <p>Zone 2</p>
+                          <div class="rounded-pill" style="height:24px; width:24px; background-color:#5C8D89"></div>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center flex-column gap-2 w-100">
+                          <img src="/assets/img/zone3.png" class="w-25" alt="Zone3">
+                          <p>Zone 3</p>
+                          <div class="rounded-pill" style="height:24px; width:24px; background-color:#DA627D"></div>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center flex-column gap-2 w-100">
+                          <img src="/assets/img/zone4.png" class="w-25" alt="Zone4">
+                          <p>Zone 4</p>
+                          <div class="rounded-pill" style="height:24px; width:24px; background-color:#345995"></div>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center flex-column gap-2 w-100">
+                          <img src="/assets/img/zone5.png" class="w-25" alt="Zone5">
+                          <p>Zone 5</p>
+                          <div class="rounded-pill" style="height:24px; width:24px; background-color:#6DD47E"></div>
+                        </div>
+                      </div>
                 </div>
             </div>
 
