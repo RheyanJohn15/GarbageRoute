@@ -316,7 +316,16 @@ if(driverLogoutBtn){
             data: {"_token": csrf},
             success: res=> {
                 load.off();
-                parseResult(res);
+                $.notify({'message': res.message,'icon': 'icon-check' }, {
+                    type: 'success',
+                    placement: {
+                      from: 'top',
+                      align: 'right',
+                    },
+                    z_index: 99999999999,
+                    time: 1000,
+                    delay: 2000,
+                    });
                 window.location.href="/auth/driver/login";
             }, error: xhr=> console.log(xhr.responseText)
         })

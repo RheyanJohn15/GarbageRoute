@@ -475,69 +475,76 @@ function loadRecords() {
             // Wait for all place names to be fetched
             const enrichedCollection = await Promise.all(placeNamePromises);
     
-            $('#collectionReports').DataTable({
-                data: enrichedCollection,
-                columns: [
-                    {
-                        title: "Waypoint Location",
-                        data: "place_name" // Use the pre-fetched place_name directly
-                    },
-                    {
-                        title: "Time Completed", 
-                        data: null,
-                        render: data => {
-                            const date = new Date(data.created_at.replace(' ', 'T'));
-    
-                            // Extract the hours and minutes
-                            let hours = date.getHours();
-                            const minutes = date.getMinutes();
-    
-                            // Determine AM/PM and adjust hours
-                            const ampm = hours >= 12 ? 'PM' : 'AM';
-                            hours = hours % 12;
-                            hours = hours || 12; // Adjust hour '0' to '12' for AM/PM
-    
-                            // Format minutes to be two digits
-                            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-    
-                            // Combine hours, minutes, and AM/PM into the desired format
-                            return `${hours}:${formattedMinutes} ${ampm}`;
+            if ($.fn.DataTable.isDataTable('#collectionReports')) {
+                $('#collectionReports').DataTable().clear().rows.add(enrichedCollection).draw();
+            } else {
+                $('#collectionReports').DataTable({
+                    data: enrichedCollection,
+                    columns: [
+                        {
+                            title: "Waypoint Location",
+                            data: "place_name" // Use the pre-fetched place_name directly
+                        },
+                        {
+                            title: "Time Completed",
+                            data: null,
+                            render: data => {
+                                const date = new Date(data.created_at.replace(' ', 'T'));
+            
+                                // Extract the hours and minutes
+                                let hours = date.getHours();
+                                const minutes = date.getMinutes();
+            
+                                // Determine AM/PM and adjust hours
+                                const ampm = hours >= 12 ? 'PM' : 'AM';
+                                hours = hours % 12;
+                                hours = hours || 12; // Adjust hour '0' to '12' for AM/PM
+            
+                                // Format minutes to be two digits
+                                const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+            
+                                // Combine hours, minutes, and AM/PM into the desired format
+                                return `${hours}:${formattedMinutes} ${ampm}`;
+                            }
+                        },
+                        {
+                            title: "Date",
+                            data: null,
+                            render: data => {
+                                const date = new Date(data.created_at);
+            
+                                // Array of month names
+                                const months = [
+                                    "January", "February", "March", "April", "May", "June",
+                                    "July", "August", "September", "October", "November", "December"
+                                ];
+            
+                                // Extract the month, day, and year
+                                const month = months[date.getMonth()]; // getMonth() returns month index (0-11)
+                                const day = date.getDate();
+                                const year = date.getFullYear();
+            
+                                // Combine into the desired format
+                                return `${month}, ${day}, ${year}`;
+                            }
                         }
-                    },
-                    {
-                        title: "Date", 
-                        data: null,
-                        render: data => {
-                            const date = new Date(data.created_at);
-    
-                            // Array of month names
-                            const months = [
-                                "January", "February", "March", "April", "May", "June",
-                                "July", "August", "September", "October", "November", "December"
-                            ];
-    
-                            // Extract the month, day, and year
-                            const month = months[date.getMonth()]; // getMonth() returns month index (0-11)
-                            const day = date.getDate();
-                            const year = date.getFullYear();
-    
-                            // Combine into the desired format
-                            return `${month}, ${day}, ${year}`;
-                        }
-                    }
-                ]
-            });
+                    ]
+                });
+            }
     
             const cleanData = groupByMonthYear(dumpsite);
     
-            $('#dumpsiteTurnOverRecords').DataTable({
-                data: cleanData,
-                columns: [
-                    { title: "Month-Year", data: "month" },
-                    { title: "Total Turn Over(Tons)", data: "total_turnover" }
-                ]
-            });
-    
+            if ($.fn.DataTable.isDataTable('#dumpsiteTurnOverRecords')) {
+                $('#dumpsiteTurnOverRecords').DataTable().clear().rows.add(cleanData).draw();
+            } else {
+                $('#dumpsiteTurnOverRecords').DataTable({
+                    data: cleanData,
+                    columns: [
+                        { title: "Month-Year", data: "month" },
+                        { title: "Total Turn Over(Tons)", data: "total_turnover" }
+                    ]
+                });
+            }
         }, 
         error: xhr => console.log(xhr.responseText)
     });
