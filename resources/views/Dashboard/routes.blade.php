@@ -490,7 +490,7 @@
     @include('Components.script', ['type' => 'admin'])
     <script src="{{ asset('Scripts/route.js') }}"></script>
     <script>
-        setTimeout(async() => {
+        setInterval(async() => {
             const response = await fetch('/api/getactivedriver');
 
             const result = await response.json();
