@@ -7,6 +7,8 @@ use App\Services\V1\Auth;
 use App\Services\ApiEntry;
 use App\Services\ApiException;
 use App\Services\V1\Logger;
+use App\Models\ActiveDrivers;
+use App\Models\TruckDriverModel;
 
 class APIHandler extends Controller
 {
@@ -54,6 +56,13 @@ class APIHandler extends Controller
         }
 
         if($method === 'logout' && $data === 'drivers'){
+
+            $driver = TruckDriverModel::where('access_token', session('driver_access_token'))->first();
+
+            $activeDriver = ActiveDrivers::where('td_id', $driver->td_id)->first();
+
+            $activeDriver->delete();
+
             $req->session()->flush();
             return response()->json(["status"=>"success", "method"=> "logout", "message"=> "Logout Successfully" ]);
         }
