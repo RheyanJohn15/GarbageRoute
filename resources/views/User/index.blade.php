@@ -366,6 +366,7 @@ tbody:hover tr:hover td {
                 <thead>
                   <tr>
                     <th>Zone</th>
+                    <th>Assigned Baranggay</th>
                     <th>Monday</th>
                     <th>Tuesday</th>
                     <th>Wednesday</th>

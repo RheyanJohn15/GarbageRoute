@@ -220,7 +220,19 @@ async function loadschedules(){
         let initialData = '';
 
         initialData += `<td><strong>${data.zone_name}</strong></td>`
-        
+        let brgyList = '';
+        let brgyNameList = '';
+        if(data.brgy.length > 0){
+            data.brgy.forEach(br=> {
+                brgyNameList += `<li>-${br.brgy_name}</li>`;
+            });
+
+            brgyList = `<ul>${brgyNameList}</ul>`
+        }else{
+            brgyNameList = 'Nothing Assigned';
+        }
+
+        initialData += `<td>${brgyList}</td>`
        if(data.schedule){
         if(data.schedule.days == 'everyday'){
             const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];

@@ -6,7 +6,7 @@ use App\Models\GeoDataCoordinates;
 use App\Models\Zones;
 use App\Models\Settings;
 use App\Models\Waypoints;
-use App\Models\TruckDriverModel;
+use App\Models\BrgyList;
 use App\Models\Schedules;
 use App\Models\CollectionProgress;
 use App\Models\ZoneDrivers;
@@ -68,7 +68,7 @@ class Landing{
 
         foreach($zones as $zone){
             $drivers = ZoneDrivers::where('zone_id', $zone->zone_id)->first();
-
+            $brgy = BrgyList::where('zone_id', $zone->zone_id)->get();
             if($drivers){
                 $schedules = Schedules::where('td_id', $drivers->td_id)->first();
             }else{
@@ -76,6 +76,7 @@ class Landing{
             }
 
             $zone->schedule = $schedules;
+            $zone->brgy = $brgy;
         }
 
         $this->RESULT = ['Load Schedule', "Successfully Loaded the schedule", $zones];
