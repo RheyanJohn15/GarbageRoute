@@ -33,8 +33,14 @@ class ComplaintsClass
 
         $url = "https://semysms.net/api/3/sms.php";
 
+        if(empty($request->remarks)){
+            $message = '';
+        }else{
+            $message = "with a message of '{$request->remarks}'";
+        }
         $phone = $request->contact;
-        $msg = "Hi,Ms/Mr {$request->comp_name} we have received your complaint and want to assure you that we are working to resolve it as quickly as possible. Thank you for your patience and understanding.";
+        $msg = "Hi,Ms/Mr {$request->comp_name} this is From GSO
+            we have received your complaint regarding with '{$request->nature}' {$message} we want to assure you that we are working to resolve it as quickly as possible. Thank you for your patience and understanding.";
         $device = '348599';
         $token = '25599652cf0f719e20d5f63db090219a';
 
