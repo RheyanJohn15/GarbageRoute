@@ -11,6 +11,8 @@ window.onload = () => {
             setText('driverNum', data[1]);
             setText('complaintNum', data[2]);
             setText('resolvedComplaintNum', data[4]);
+            setText('overAllTotalGarbageCollected', data[9]);
+            setText('overAllTotalGarbageCollectedAllZones', data[10])
             console.log(data[0].length);
             const complaintChart = document.getElementById('complaintChart').getContext('2d');
             var myPieChart = new Chart(complaintChart, {

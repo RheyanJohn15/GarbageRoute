@@ -127,6 +127,9 @@ class AdminAccount{
         $garbagePerZone = [];
         $dumpsiteTurnovers = DumpsiteTurnovers::join('truck_drivers', 'truck_drivers.td_id', '=', 'dumpsite_turnovers.td_id')->get();
         $zones = Zones::all();
+
+        $overAllTotalGarbageCollected = 0;
+        $overAllTotalGarbageCollectedAllZones = 0;
         foreach($zones as $zone){
             $zoneArry[] = $zone->zone_name;
             $garbagePerZone[] = 0;
@@ -134,10 +137,15 @@ class AdminAccount{
         foreach($dumpsiteTurnovers as $dt){
             $ZoneDrivers = ZoneDrivers::where('td_id', $dt->td_id)->first();
             $dumpTruck = DumpTruckModel::where('dt_id', $dt->dt_id)->first();
-            $getZone = Zones::where('zone_id', $ZoneDrivers->zone_id)->first();
 
-            $zoneIndex = array_search($getZone->zone_name, $zoneArry);
-            $garbagePerZone[$zoneIndex] += $dumpTruck->can_carry;
+            $overAllTotalGarbageCollected += $dumpTruck->can_carry;
+            if($ZoneDrivers){
+                $getZone = Zones::where('zone_id', $ZoneDrivers->zone_id)->first();
+                $overAllTotalGarbageCollectedAllZones += $dumpTruck->can_carry;
+                $zoneIndex = array_search($getZone->zone_name, $zoneArry);
+                $garbagePerZone[$zoneIndex] += $dumpTruck->can_carry;
+            }
+          
         }
 
         $driversCollection = [];
@@ -193,7 +201,9 @@ class AdminAccount{
             $complaintStatus,
             $zoneArry,
             $garbagePerZone,
-            $driversCollection
+            $driversCollection,
+            $overAllTotalGarbageCollected,
+            $overAllTotalGarbageCollectedAllZones,
         ];
 
         $this->RESULT = ['dashboard', 'Succesfully fetch all dashboard data', $dashboard];
