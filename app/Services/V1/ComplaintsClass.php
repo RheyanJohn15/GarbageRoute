@@ -34,7 +34,7 @@ class ComplaintsClass
         $url = "https://semysms.net/api/3/sms.php";
 
         $phone = $request->contact;
-        $msg = 'Hi, we have received your complaint and want to assure you that we are working to resolve it as quickly as possible. Thank you for your patience and understanding.';
+        $msg = "Hi,Ms/Mr {$request->comp_name} we have received your complaint and want to assure you that we are working to resolve it as quickly as possible. Thank you for your patience and understanding.";
         $device = '348599';
         $token = '25599652cf0f719e20d5f63db090219a';
 
