@@ -332,7 +332,7 @@ function updateRouteStatus(route) {
     const data = route.data;
 
     // Remove existing markers from the map
-    driverMarker.length;
+    driverMarker.length = 0;
     driverMarker = [];
 
     data.forEach(async e => {
