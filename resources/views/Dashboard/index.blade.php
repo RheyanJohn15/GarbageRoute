@@ -182,10 +182,8 @@
               </div>
             </div>
 
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">Garbage Collection Statistics</div>
-              </div>
+            <div class="">
+            
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-12">
