@@ -506,12 +506,13 @@ tbody:hover tr:hover td {
 
 <script src="{{ asset('assets/complaints.js') }}"></script>
 <script>
-    setTimeout(() => {
-        window.Echo.channel('gps-update')
-            .listen('GpsUpdate', (e) => {
-                updateRouteStatus(e);
-            })
-    }, 2000);
+    setInterval(async () => {
+        const response = await fetch('/api/getactivedriver');
+
+        const result = await response.json();
+
+        updateRouteStatus(result);
+    }, 1000);
 </script>
 
 <script src="{{ asset('Scripts/helper.js') }}"></script>
