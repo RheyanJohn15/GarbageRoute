@@ -12,8 +12,7 @@
 
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            {{-- <li class="scroll-to-section"><a href="#top" class="active">Home</a></li> --}}
-                            <li class="scroll-to-section"><a href="#services">Complaints Overview</a></li>
+                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
                             <li class="scroll-to-section"><a href="#about">Complaint Metrics</a></li>
                             <li class="scroll-to-section"><a href="#mapview">Collection Routes</a></li>
                             <li class="scroll-to-section"><a href="#schedules">Collection Schedules</a></li>

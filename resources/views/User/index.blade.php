@@ -266,32 +266,6 @@ tbody:hover tr:hover td {
         </div>
     </div>
 
-    <div id="services" class="our-services section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="section-heading">
-                        <h2 style="font-size: 40px"> Community <em> Complaints </em> Overview </h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="w-100 d-none justify-content-center align-items-center flex-column gap-4" id="emptyCpl">
-                        <img src="/assets/images/empty.png" class="w-25" alt="empty">
-                        <h2>No <em>Complaints</em></h2>
-                    </div>
-                    <div style="height: 40vh" id="compLoader" class="w-100 d-flex justify-content-center flex-column gap-4 align-items-center">
-                        <div class="loader"></div>
-                        <p>Please Wait.......</p>
-                    </div>
-                    <div class="owl-carousel owl-services d-none" id="complaintList">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="footer-dec" style="margin-top: -5%">
         <img src="assets/images/footer-dec.png" alt="">
     </div>

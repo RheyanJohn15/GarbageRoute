@@ -66,24 +66,7 @@ window.onload = () =>{
             return;
            }
            
-           isShow('complaintList', true, 'block');
-           const compList = document.getElementById('complaintList');
-
-           compList.innerHTML = '';
-           let listNum = 1;
-           data[3].forEach(d=> {
-            compList.innerHTML += `<div class="item">
-                            <h4>Complaint #${listNum}</h4>
-                            <img src="ComplaintAssets/${d.comp_image}" alt="Complaint Image" class="img-fluid"
-                                style="width: 350px; height: 250px; ">
-                            <p class="text-start m-0">
-                                <strong>Nature:</strong>${d.comp_nature}<br>
-                                <strong>Status:</strong> ${checkStatus(d.comp_status)}<br>
-                            </p>
-                        </div>`;
-
-                        listNum++;
-           });
+         
            webmaps = new mapboxgl.Map({
             container: 'webMap', 
             style: 'mapbox://styles/mapbox/satellite-streets-v12', 
