@@ -163,10 +163,10 @@ async function loadMap() {
 
                     setText('currentLocationName', placeName);
 
-                    const waypointProximityThreshold = 10; // 10 meters threshold
+                    const waypointProximityThreshold = 80; // 80 meters threshold
                     let stayTimer = null;
                     let countdownTimer = null;
-                    let countdownValue = 180; // 3 minutes in seconds (180 seconds)
+                    let countdownValue = 120; // 2 minutes in seconds (120 seconds)
                     waypointMarker.forEach((waypoint) => {
                         const waypointCoords = waypoint.marker.getLngLat();
                         const waypointPoint = turf.point([waypointCoords.lng, waypointCoords.lat]);
