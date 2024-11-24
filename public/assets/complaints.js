@@ -222,20 +222,20 @@ async function loadschedules(){
             
             days.forEach(d=> {
                 initialData += `
-                <td>${d} (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})</td>
+                <td>${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)}</td>
                 `
             });
         }else{
             const days = data.schedule.days.split(',');
         
             initialData += `
-            <td>${days.includes('Mon') ? `Monday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
-            <td>${days.includes('Tue') ? `Tuesday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
-            <td>${days.includes('Wed') ? `Wednesday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
-            <td>${days.includes('Thu') ? `Thursday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
-            <td>${days.includes('Fri') ? `Friday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
-            <td>${days.includes('Sat') ? `Saturday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
-            <td>${days.includes('Sun') ? `Sunday (${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)})` : 'Not Available'}</td>
+            <td>${days.includes('Mon') ? `${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)}` : 'Not Available'}</td>
+            <td>${days.includes('Tue') ? `${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)}` : 'Not Available'}</td>
+            <td>${days.includes('Wed') ? `${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)}` : 'Not Available'}</td>
+            <td>${days.includes('Thu') ? `${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)}` : 'Not Available'}</td>
+            <td>${days.includes('Fri') ? `${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)}` : 'Not Available'}</td>
+            <td>${days.includes('Sat') ? `${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)}` : 'Not Available'}</td>
+            <td>${days.includes('Sun') ? `${convertToAmPm(data.schedule.collection_start)} - ${convertToAmPm(data.schedule.collection_end)}` : 'Not Available'}</td>
             `
         }
        }else{
