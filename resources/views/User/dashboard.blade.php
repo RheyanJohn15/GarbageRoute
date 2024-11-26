@@ -55,7 +55,7 @@
                 <div class="tab-content mt-3 mb-3" id="line-tabContent">
                   <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info">
                     <h1 id="infoAssignedZone" class="text-center">Loading...</h1>
-  
+
                     <table id="infoTable" class="table table-hover">
                       <thead>
                         <tr>
@@ -69,10 +69,16 @@
                         </tr>
                       </tbody>
                     </table>
-  
+
                     </div>
                   <div class="tab-pane fade active show" id="mapTab" role="tabpanel" aria-labelledby="map">
                     <button id="cpmpleteCollectionBtn" class="btn btn-success w-100 mb-3" disabled>Go to your collection waypoint</span></button>
+                    <select id="turnOverPercentage" disabled class="form-select d-none w-100">
+                        <option value="25">25%</option>
+                        <option value="50">50%</option>
+                        <option value="75">75%</option>
+                        <option selected value="100">100%</option>
+                    </select>
                     <button id="turnOverToDumpsite" class="btn btn-success w-100 mb-3 d-none" disabled> Dumpsite Turn Over </span></button>
                       <div id="currentLocationDiv" class="d-none">
                           <h5>Current Location</h5>
@@ -93,10 +99,10 @@
                         </tr>
                       </thead>
                       <tbody>
-                      
+
                       </tbody>
                     </table>
-  
+
                     <h3>Dumpsite Turn Over Reports</h3>
                     <table id="dumpsiteTurnOverRecords" class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
                       <thead>
@@ -106,10 +112,10 @@
                         </tr>
                       </thead>
                       <tbody>
-                      
+
                       </tbody>
                     </table>
-  
+
                   </div>
 
                   <div class="tab-pane fade" id="scheduleTab" role="tabpanel" aria-labelledby="schedule">
@@ -130,13 +136,13 @@
                         </tr>
                       </thead>
                       <tbody id="allSchedulesTable">
-                       
+
                       </tbody>
                     </table>
 
                   </div>
                 </div>
-  
+
               </div>
           </div>
         </div>

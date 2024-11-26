@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('td_id')->references('td_id')->on('truck_drivers');
             $table->unsignedBigInteger('dt_id')->nullable();
             $table->foreign('dt_id')->references('dt_id')->on('dump_truck');
+            $table->integer('percentage')->nullable()->default(100);
             $table->timestamps();
         });
     }

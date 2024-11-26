@@ -137,15 +137,15 @@ class AdminAccount{
         foreach($dumpsiteTurnovers as $dt){
             $ZoneDrivers = ZoneDrivers::where('td_id', $dt->td_id)->first();
             $dumpTruck = DumpTruckModel::where('dt_id', $dt->dt_id)->first();
-
-            $overAllTotalGarbageCollected += $dumpTruck->can_carry;
+            $calcTons = ($dt->percentage / 100) * $dumpTruck->can_carry;
+            $overAllTotalGarbageCollected += $calcTons;
             if($ZoneDrivers){
                 $getZone = Zones::where('zone_id', $ZoneDrivers->zone_id)->first();
-                $overAllTotalGarbageCollectedAllZones += $dumpTruck->can_carry;
+                $overAllTotalGarbageCollectedAllZones += $calcTons;
                 $zoneIndex = array_search($getZone->zone_name, $zoneArry);
-                $garbagePerZone[$zoneIndex] += $dumpTruck->can_carry;
+                $garbagePerZone[$zoneIndex] += $calcTons;
             }
-          
+
         }
 
         $driversCollection = [];
@@ -161,7 +161,7 @@ class AdminAccount{
             $tons = 0;
             foreach($turnovers as $to){
                 $truck = DumpTruckModel::where('dt_id', $to->dt_id)->first();
-                $tons += $truck->can_carry;
+                $tons += ($to->percentage / 100) * $truck->can_carry;
             }
             $driversCollection[$driver->name][$i] = $tons;
            }
@@ -213,7 +213,7 @@ class AdminAccount{
 
         $zoneArry = [];
         $garbagePerZone = [];
-        
+
         if($req->month == 'all'){
             $dumpsiteTurnovers = DumpsiteTurnovers::join('truck_drivers', 'truck_drivers.td_id', '=', 'dumpsite_turnovers.td_id')->get();
         }else{
@@ -233,13 +233,13 @@ class AdminAccount{
             $getZone = Zones::where('zone_id', $ZoneDrivers->zone_id)->first();
 
             $zoneIndex = array_search($getZone->zone_name, $zoneArry);
-            $garbagePerZone[$zoneIndex] += $dumpTruck->can_carry;
+            $garbagePerZone[$zoneIndex] += ($dt->percentage / 100) * $dumpTruck->can_carry;
         }
 
         $data = [$zoneArry, $garbagePerZone];
 
         $this->RESULT = ['garbageperzonefilters', "Filter Garbage Per Zone", $data];
-    }   
+    }
 
     private function getallactivity($rq){
         $act = Logger::list();

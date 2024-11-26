@@ -70,7 +70,7 @@ async function loadMap() {
         url: `/api/get/zone/getdriverassignedzone?driver_id=${driverId}`,
         dataType: "json",
         success: res => {
-            
+
             if(!res.result.data[3]){
                 isShow('notScheduleToday', true);
                 isShow('todaySchedule', false, 'block');
@@ -155,7 +155,7 @@ async function loadMap() {
 
                     const dumpSiteLong = parseFloat(dumpSiteLocation[0]);
                     const dumpSiteLat = parseFloat(dumpSiteLocation[1]);
-                    
+
                     const currentLocationPoint = turf.point([e.coords.longitude, e.coords.latitude]);
                     const dumpSitePoint = turf.point([dumpSiteLong, dumpSiteLat]);
 
@@ -200,7 +200,7 @@ async function loadMap() {
                                     clearInterval(countdownTimer); // Stop the countdown timer when the time is up
                                     updateCountdownText(0); // Set to 0 after the timer completes
                                     setText('cpmpleteCollectionBtn', 'Complete Collection in this waypoint');
-                                }, 1000 * 60 * 2); 
+                                }, 1000 * 60 * 2);
                             }
                         } else {
                             // If the driver moves away from the waypoint, clear the timer and reset the button
@@ -232,17 +232,20 @@ async function loadMap() {
                     const proximityThreshold = 100; // Set your threshold distance (in meters)
                     if (distanceToDumpSite <= proximityThreshold) {
                         isShow('turnOverToDumpsite', true, 'block');
+                        isShow('turnOverPercentage', true, 'block');
                         isShow('cpmpleteCollectionBtn', false, 'block');
                         setText('turnOverToDumpsite', "Dumpsite Turn Over(Nearby! Get closer to turn over)")
                         if (distanceToDumpSite < 20) {
                             setText('turnOverToDumpsite', "Dumpsite Turn Over")
                             if (!dumpsiteEnterStatus) {
                                 reactive('turnOverToDumpsite', false);
+                                reactive('turnOverPercentage', false);
                             }
                         }
                     } else {
                         isShow('turnOverToDumpsite', false, 'block');
                         isShow('cpmpleteCollectionBtn', true, 'block');
+                        isShow('turnOverPercentage', false, 'block');
                         reactive('turnOverToDumpsite', true);
                         dumpsiteEnterStatus = false;
                     }
@@ -438,7 +441,7 @@ document.getElementById('turnOverToDumpsite').addEventListener('click', async ()
     $.ajax({
         type: "POST",
         url: "/api/post/drivers/dumpsiteturnover",
-        data: { "_token": csrf, "td_id": driverId },
+        data: { "_token": csrf, "td_id": driverId, 'percentage': getVal('turnOverPercentage') },
         success: res => {
             parseResult(res);
             load.off();
@@ -471,10 +474,10 @@ function loadRecords() {
                     place_name // Attach the resolved place_name to the data object
                 }));
             });
-    
+
             // Wait for all place names to be fetched
             const enrichedCollection = await Promise.all(placeNamePromises);
-    
+
             if ($.fn.DataTable.isDataTable('#collectionReports')) {
                 $('#collectionReports').DataTable().clear().rows.add(enrichedCollection).draw();
             } else {
@@ -490,19 +493,19 @@ function loadRecords() {
                             data: null,
                             render: data => {
                                 const date = new Date(data.created_at.replace(' ', 'T'));
-            
+
                                 // Extract the hours and minutes
                                 let hours = date.getHours();
                                 const minutes = date.getMinutes();
-            
+
                                 // Determine AM/PM and adjust hours
                                 const ampm = hours >= 12 ? 'PM' : 'AM';
                                 hours = hours % 12;
                                 hours = hours || 12; // Adjust hour '0' to '12' for AM/PM
-            
+
                                 // Format minutes to be two digits
                                 const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-            
+
                                 // Combine hours, minutes, and AM/PM into the desired format
                                 return `${hours}:${formattedMinutes} ${ampm}`;
                             }
@@ -512,18 +515,18 @@ function loadRecords() {
                             data: null,
                             render: data => {
                                 const date = new Date(data.created_at);
-            
+
                                 // Array of month names
                                 const months = [
                                     "January", "February", "March", "April", "May", "June",
                                     "July", "August", "September", "October", "November", "December"
                                 ];
-            
+
                                 // Extract the month, day, and year
                                 const month = months[date.getMonth()]; // getMonth() returns month index (0-11)
                                 const day = date.getDate();
                                 const year = date.getFullYear();
-            
+
                                 // Combine into the desired format
                                 return `${month}, ${day}, ${year}`;
                             }
@@ -531,9 +534,9 @@ function loadRecords() {
                     ]
                 });
             }
-    
+
             const cleanData = groupByMonthYear(dumpsite);
-    
+
             if ($.fn.DataTable.isDataTable('#dumpsiteTurnOverRecords')) {
                 $('#dumpsiteTurnOverRecords').DataTable().clear().rows.add(cleanData).draw();
             } else {
@@ -545,10 +548,10 @@ function loadRecords() {
                     ]
                 });
             }
-        }, 
+        },
         error: xhr => console.log(xhr.responseText)
     });
-    
+
 }
 
 function groupByMonthYear(data) {
@@ -590,7 +593,7 @@ async function getschedule(){
 async function loadschedules(){
 
     const result = await getschedule();
-    
+
     loadAllSchedule(result);
 }
 
@@ -694,7 +697,7 @@ async function loadTodaySchedule(data){
                 </tr>`;
             }
 
-      
+
         }
 
         table.innerHTML = tr;
@@ -744,13 +747,13 @@ document.getElementById('scheduleFilter').addEventListener('change',async e=> {
 function convertToAmPm(time24) {
     // Split the time into hours and minutes
     const [hour, minute] = time24.split(':').map(Number);
-    
+
     // Determine AM or PM
     const period = hour >= 12 ? 'PM' : 'AM';
-    
+
     // Convert hour to 12-hour format
     const hour12 = hour % 12 || 12;
-  
+
     // Return formatted time with AM/PM
     return `${hour12}:${minute.toString().padStart(2, '0')} ${period}`;
   }

@@ -186,6 +186,7 @@ class Driver{
         $truck = DumpTruckModel::where('td_id', $req->td_id)->first();
         $turnover->td_id = $req->td_id;
         $turnover->dt_id = $truck->dt_id;
+        $turnover->percentage = $req->percentage;
         $turnover->save();
 
         $this->RESULT = ['dumpsiteturnover', "Garbage is successfully dump in the dumpsite", 'null'];
@@ -210,7 +211,7 @@ class Driver{
         $this->RESULT = ['records', "Get All Records", $data];
     }
 
-    
+
     private function loadschedules($req){
         $driver = TruckDriverModel::where('access_token', session('access_token'))->first();
         $schedule = Schedules::where('td_id', $driver->td_id)->first();
@@ -232,7 +233,7 @@ class Driver{
                 $schedule->today = $zoneSubSchedToday;
             }
         }
-        
+
         $this->RESULT = ['Load Driver Sched', "Successfully Fetch all driver Schedules", $schedule];
     }
 

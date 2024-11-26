@@ -13,5 +13,6 @@ class DumpsiteTurnovers extends Model
     protected $fillable = [
         'td_id',
         'dt_id',
+        'percentage'
     ];
 }

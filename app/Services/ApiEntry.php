@@ -54,7 +54,7 @@ class ApiEntry{
             }else{
                 if($this->checkParams($request)){
 
-               
+
                 $init = new ApiRequest($type, $method, $request);
                 if($this->VALID_METHOD['logs']){
                     Logger::save($init->getResponse(), $request);
@@ -145,7 +145,7 @@ class ApiEntry{
             'active'=> ['params'=>['driver_id'], 'logs'=> false],
             'updatelocation'=> ['params'=>['driver_id', 'longitude', 'latitude'], 'logs'=> false],
             'completecollection' => ['params'=>['driver_id', 'waypoint_id'], 'logs'=> false],
-            'dumpsiteturnover'=> ['params'=>['td_id'], 'logs'=> false],
+            'dumpsiteturnover'=> ['params'=>['td_id', 'percentage'], 'logs'=> false],
             'records'=> ['params'=>['empty'], 'logs'=> false],
             'loadschedules'=> ['params'=> ['empty'], 'logs'=> false]
         ],
